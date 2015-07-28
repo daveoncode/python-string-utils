@@ -28,7 +28,7 @@ class IsEmailTestCase(TestCase):
         self.assertFalse(is_email('name@site'))
         self.assertFalse(is_email('name@site.'))
 
-    def test_domain_extension_must_be_letters_only_from_2_to_4_chars(self):
+    def test_domain_extension_should_be_letters_only_from_2_to_4_chars(self):
         self.assertFalse(is_email('me@foo.123'))
         self.assertFalse(is_email('me@foo.c'))
         self.assertFalse(is_email('me@foo.!!'))
@@ -128,15 +128,15 @@ class IsCreditCardTestCase(TestCase):
     def test_string_cannot_contain_letters(self):
         self.assertFalse(is_credit_card('not a credit card for sure'))
 
-    def test_numbers_in_string_must_be_15_at_least(self):
+    def test_numbers_in_string_should_be_15_at_least(self):
         self.assertFalse(is_credit_card('1' * 14))
 
-    def test_must_accept_any_valid_card_number_if_type_is_not_specified(self):
+    def test_should_accept_any_valid_card_number_if_type_is_not_specified(self):
         for card_type in self.sample_cards:
             for card_number in self.sample_cards[card_type]:
                 self.assertTrue(is_credit_card(card_number), 'Invalid card: %s (%s)' % (card_number, card_type))
 
-    def test_must_validate_only_specific_card_type_if_specified(self):
+    def test_should_validate_only_specific_card_type_if_specified(self):
         for card_type in self.sample_cards:
             for card_number in self.sample_cards[card_type]:
                 self.assertTrue(
@@ -156,68 +156,89 @@ class IsCreditCardTestCase(TestCase):
 
 
 class IsCamelCaseTestCase(TestCase):
-    def test_raises_type_error_if_provided_object_is_not_a_string(self):
+    def test_cannot_handle_non_string_objects(self):
         self.assertRaises(TypeError, lambda: is_camel_case(None))
         self.assertRaises(TypeError, lambda: is_camel_case(False))
         self.assertRaises(TypeError, lambda: is_camel_case(0))
         self.assertRaises(TypeError, lambda: is_camel_case([]))
         self.assertRaises(TypeError, lambda: is_camel_case({'a': 1}))
 
-    def test_returns_false_for_empty_string(self):
+    def test_string_cannot_be_empty(self):
         self.assertFalse(is_camel_case(''))
+        self.assertFalse(is_camel_case(' '))
 
-    def test_returns_false_for_lowercase_string(self):
+    def test_string_cannot_be_all_lowercase(self):
         self.assertFalse(is_camel_case('lowercase'))
 
-    def test_returns_false_for_uppercase_string(self):
+    def test_string_cannot_be_all_uppercase(self):
         self.assertFalse(is_camel_case('UPPERCASE'))
 
-    def test_returns_false_if_string_has_spaces(self):
+    def test_string_cannot_contain_spaces(self):
         self.assertFalse(is_camel_case(' CamelCase '))
 
-    def test_returns_false_if_string_starts_with_number(self):
+    def test_string_cannot_start_with_number(self):
         self.assertFalse(is_camel_case('1000Times'))
 
-    def test_returns_false_if_string_contains_invalid_chars(self):
+    def test_string_cannot_contain_invalid_chars(self):
         self.assertFalse(is_camel_case('<#NotCamelCaseHere!?>'))
 
-    def test_returns_true_if_camel_case(self):
+    def test_should_accept_valid_camel_case_string(self):
         self.assertTrue(is_camel_case('Camel'))
         self.assertTrue(is_camel_case('CamelCase'))
+        self.assertTrue(is_camel_case('camelCase'))
         self.assertTrue(is_camel_case('CamelCaseTOO'))
         self.assertTrue(is_camel_case('ACamelCaseIsAlsoAStringLikeThis1'))
         self.assertTrue(is_camel_case('camelCaseStartingLowerEndingUPPER'))
 
 
 class IsSnakeCaseTestCase(TestCase):
-    def test_raises_type_error_if_provided_object_is_not_a_string(self):
+    def test_cannot_handle_non_string_objects(self):
         self.assertRaises(TypeError, lambda: is_snake_case(None))
         self.assertRaises(TypeError, lambda: is_snake_case(False))
         self.assertRaises(TypeError, lambda: is_snake_case(0))
         self.assertRaises(TypeError, lambda: is_snake_case([]))
         self.assertRaises(TypeError, lambda: is_snake_case({'a': 1}))
 
-    def test_returns_true_if_custom_separator_is_used(self):
-        s = 'snake-string-with-dashes'
-        self.assertFalse(is_snake_case(s))
-        self.assertTrue(is_snake_case(s, separator='-'))
-
-    def test_returns_false_for_no_snake_string(self):
+    def test_string_cannot_be_blank(self):
         self.assertFalse(is_snake_case(''))
-        self.assertFalse(is_snake_case('foo'))
+        self.assertFalse(is_snake_case(' '))
+        
+    def test_string_cannot_be_lowercase_letters_only(self):
+        self.assertFalse(is_snake_case('lowercaseonly'))
+        
+    def test_string_cannot_be_camel_case(self):
         self.assertFalse(is_snake_case('Banana'))
+        
+    def test_string_cannot_be_all_uppercase(self):
         self.assertFalse(is_snake_case('HELLO'))
-        self.assertFalse(is_snake_case('HELLO_WORLD'))
-        self.assertFalse(is_snake_case('_hello_world_'))
+        
+    def test_string_cannot_contain_bad_signs(self):
         self.assertFalse(is_snake_case('1_no_snake'))
         self.assertFalse(is_snake_case('%_no_snake'))
+        self.assertFalse(is_snake_case('no_snake#'))
+        
+    def test_should_consider_single_chars_only_snake_sequence_invalid(self):
         self.assertFalse(is_snake_case('a_b_c_d_e'))
+        
+    def test_snake_string_cannot_be_uppercase(self):
+        self.assertFalse(is_snake_case('HELLO_WORLD'))
 
-    def test_returns_true_for_snake_strings(self):
+    def test_string_cannot_start_with_underscore(self):
+        self.assertFalse(is_snake_case('_hello_world'))
+        
+    def test_string_cannot_end_with_underscore(self):
+        self.assertFalse(is_snake_case('hello_world_'))
+        
+    def test_should_accept_valid_snake_strings(self):
         self.assertTrue(is_snake_case('hello_world'))
         self.assertTrue(is_snake_case('snake_case_string'))
         self.assertTrue(is_snake_case('snake_2'))
         self.assertTrue(is_snake_case('a_snake_string_4_you'))
+        
+    def test_should_consider_custom_separator(self):
+        s = 'snake-string-with-dashes'
+        self.assertFalse(is_snake_case(s))
+        self.assertTrue(is_snake_case(s, separator='-'))
 
 
 class ReverseTestCase(TestCase):
@@ -231,7 +252,7 @@ class ReverseTestCase(TestCase):
 
 
 class CamelCaseToSnakeTestCase(TestCase):
-    def test_raises_type_error_if_provided_object_is_not_a_string(self):
+    def test_cannot_handle_non_string_objects(self):
         self.assertRaises(TypeError, lambda: camel_case_to_snake(None))
         self.assertRaises(TypeError, lambda: camel_case_to_snake(False))
         self.assertRaises(TypeError, lambda: camel_case_to_snake(0))
@@ -274,7 +295,7 @@ class CamelCaseToSnakeTestCase(TestCase):
 
 
 class SnakeCaseToCamelTestCase(TestCase):
-    def test_raises_type_error_if_provided_object_is_not_a_string(self):
+    def test_cannot_handle_non_string_objects(self):
         self.assertRaises(TypeError, lambda: snake_case_to_camel(None))
         self.assertRaises(TypeError, lambda: snake_case_to_camel(False))
         self.assertRaises(TypeError, lambda: snake_case_to_camel(0))
@@ -296,7 +317,7 @@ class SnakeCaseToCamelTestCase(TestCase):
         self.assertEqual(snake_case_to_camel('the_snake_is_green'), 'TheSnakeIsGreen')
         self.assertEqual(snake_case_to_camel('the_number_of_the_beast_is_666'), 'TheNumberOfTheBeastIs666')
 
-    def test_returns_camel_case_for_custom_separator(self):
+    def test_should_consider_custom_separator(self):
         s = 'snake-case-using-dashes'
         self.assertEqual(snake_case_to_camel(s), s)
         self.assertEqual(snake_case_to_camel(s, separator='-'), 'SnakeCaseUsingDashes')
