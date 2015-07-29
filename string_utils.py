@@ -3,6 +3,7 @@ import re
 # module settings
 __version__ = '0.0.0'
 __all__ = [
+    'is_url',
     'is_email',
     'is_credit_card',
     'is_camel_case',
@@ -13,6 +14,20 @@ __all__ = [
 ]
 
 # compiled regex
+URL_RE = re.compile(
+    r'^'
+    r'([a-z-]+://)'  # scheme
+    r'([a-z_\d-]+:[a-z_\d-]+@)?'  # user:password
+    r'(www\.)?'  # www.
+    r'((?<!\.)[a-z\d\.-]+\.[a-z]{2,6}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|localhost)'  # domain
+    r'(:\d{2,})?'  # port number
+    r'(/[a-z\d_%\+-]*)*'  # folders
+    r'(\.[a-z\d_%\+-]+)*'  # file extension
+    r'(\?[a-z\d_\+%-=]*)?'  # query string
+    r'(#\S*)?'  # hash
+    r'$',
+    re.IGNORECASE
+)
 EMAIL_RE = re.compile('^[a-zA-Z\d\._\+-]+@([a-z\d-]+\.?[a-z\d-]+)+\.[a-z]{2,4}$')
 CAMEL_CASE_TEST_RE = re.compile('^[a-zA-Z]*([a-z]+[A-Z]+|[A-Z]+[a-z]+)[a-zA-Z\d]*$')
 CAMEL_CASE_REPLACE_RE = re.compile('([a-z]|[A-Z]+)(?=[A-Z])')
@@ -31,6 +46,15 @@ CREDIT_CARDS = {
 
 
 # string checking functions
+
+
+# scheme://username:password@www.domain.com:8042/folder/subfolder/file.extension?param=value&param2=value2#hash
+def is_url(string, allowed_schemes=None):
+    valid = bool(URL_RE.match(string))
+    if allowed_schemes:
+        return valid and any([string.startswith(s) for s in allowed_schemes])
+    return valid
+
 
 def is_email(string):
     """
@@ -125,11 +149,6 @@ def reverse(string):
 #
 # def is_multiline(string):
 #     pass
-#
-#
-# def is_url(string):
-#     pass
-#
 #
 # def is_zip_code(string, country_code=None):
 #     pass
