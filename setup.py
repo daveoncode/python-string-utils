@@ -6,5 +6,5 @@ setup(
     description='Utility functions for strings checking and manipulation.',
     author='Davide Zanotti',
     author_email='davidezanotti@gmail.com',
-    # url='https://www.python.org/sigs/distutils-sig/',
+    url='https://github.com/daveoncode/python-string-utils',
 )
