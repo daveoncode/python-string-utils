@@ -1,7 +1,14 @@
+import re
 from unittest.case import TestCase
 
 from string_utils import *
 
+from uuid import uuid4
+
+import json
+
+
+# string checking tests
 
 class IsUrlTestCase(TestCase):
     def test_cannot_handle_non_string_objects(self):
@@ -20,7 +27,7 @@ class IsUrlTestCase(TestCase):
         self.assertFalse(is_url('http://www.google.com '))
         self.assertFalse(is_url('http://www.google.com/ ncr'))
         self.assertFalse(is_url('http://www.goo gle.com'))
-    
+
     def test_scheme_is_required(self):
         self.assertFalse(is_url('google.com'))
 
@@ -306,47 +313,197 @@ class IsSnakeCaseTestCase(TestCase):
     def test_string_cannot_be_blank(self):
         self.assertFalse(is_snake_case(''))
         self.assertFalse(is_snake_case(' '))
-        
+
     def test_string_cannot_be_lowercase_letters_only(self):
         self.assertFalse(is_snake_case('lowercaseonly'))
-        
+
     def test_string_cannot_be_camel_case(self):
         self.assertFalse(is_snake_case('Banana'))
-        
+
     def test_string_cannot_be_all_uppercase(self):
         self.assertFalse(is_snake_case('HELLO'))
-        
+
     def test_string_cannot_contain_bad_signs(self):
         self.assertFalse(is_snake_case('1_no_snake'))
         self.assertFalse(is_snake_case('%_no_snake'))
         self.assertFalse(is_snake_case('no_snake#'))
-        
+
     def test_should_consider_single_chars_only_snake_sequence_invalid(self):
         self.assertFalse(is_snake_case('a_b_c_d_e'))
-        
+
     def test_snake_string_cannot_be_uppercase(self):
         self.assertFalse(is_snake_case('HELLO_WORLD'))
 
     def test_string_cannot_start_with_underscore(self):
         self.assertFalse(is_snake_case('_hello_world'))
-        
+
     def test_string_cannot_end_with_underscore(self):
         self.assertFalse(is_snake_case('hello_world_'))
-        
+
     def test_should_accept_valid_snake_strings(self):
         self.assertTrue(is_snake_case('hello_world'))
         self.assertTrue(is_snake_case('snake_case_string'))
         self.assertTrue(is_snake_case('snake_2'))
         self.assertTrue(is_snake_case('a_snake_string_4_you'))
-        
+
     def test_should_consider_custom_separator(self):
         s = 'snake-string-with-dashes'
         self.assertFalse(is_snake_case(s))
         self.assertTrue(is_snake_case(s, separator='-'))
 
 
+class IsJsonTestCase(TestCase):
+    def test_non_string_objects_are_properly_handled(self):
+        self.assertFalse(is_json({'a': 1}))
+        self.assertFalse(is_json(None))
+        self.assertFalse(is_json([1, 2, 3]))
+        self.assertFalse(is_json(500))
+        self.assertFalse(is_json(True))
+        self.assertFalse(is_json(set([1, 2])))
+
+    def test_empty_string_are_invalid(self):
+        self.assertFalse(is_json(''))
+        self.assertFalse(is_json(' '))
+
+    def test_json_object_can_be_empty(self):
+        self.assertTrue(is_json('{}'))
+
+    def test_external_spaces_are_ignored(self):
+        self.assertTrue(is_json('{"foo":"bar"}'))
+        self.assertTrue(is_json(' { "foo": "bar" } '))
+        self.assertTrue(is_json('''
+            {
+                "foo": "bar"
+            }
+        '''))
+
+    def test_attributes_quotes_are_mandatory(self):
+        self.assertFalse(is_json('{foo: 1}'))
+
+    def test_attributes_quotes_should_be_double_quotes(self):
+        self.assertFalse(is_json("{'foo': 1}"))
+
+    def test_string_values_should_be_wrapped_by_double_quotes(self):
+        self.assertFalse(is_json('{"foo": hello}'))
+        self.assertFalse(is_json('{"foo": \'hello\'}'))
+        self.assertTrue(is_json('{"foo": "hello"}'))
+
+    def test_boolean_should_be_lowercase(self):
+        self.assertFalse(is_json('{"bool": True}'))
+        self.assertFalse(is_json('{"bool": FALSE}'))
+        self.assertTrue(is_json('{"bool": true}'))
+        self.assertIsInstance(json.loads('{"bool": true}'), dict)
+        self.assertTrue(is_json('{"bool": false}'))
+        self.assertIsInstance(json.loads('{"bool": false}'), dict)
+
+    def test_null_should_be_lowercase(self):
+        self.assertFalse(is_json('{"null": NULL}'))
+        self.assertFalse(is_json('{"null": Null}'))
+        self.assertTrue(is_json('{"null": null}'))
+        self.assertIsInstance(json.loads('{"null": null}'), dict)
+
+    def test_int_number_can_be_any_length(self):
+        self.assertTrue(is_json('{"number": 1}'))
+        self.assertTrue(is_json('{"number": 99}'))
+        self.assertTrue(is_json('{"number": 1000}'))
+        self.assertTrue(is_json('{"number": 1234567890}'))
+
+    def test_float_numbers_should_use_dot_as_separator(self):
+        self.assertFalse(is_json('{"float": 4,5}'))
+        self.assertTrue(is_json('{"float": 4.5}'))
+        self.assertIsInstance(json.loads('{"float": 4.5}'), dict)
+
+    def test_negative_numbers_should_be_start_with_minus(self):
+        self.assertFalse(is_json('{"number": - 2}'))
+        self.assertFalse(is_json('{"number": - 2.5}'))
+        self.assertTrue(is_json('{"number": -2}'))
+        self.assertTrue(is_json('{"number": -2.5}'))
+
+    def test_array_can_be_empty(self):
+        self.assertTrue(is_json('{"array": []}'))
+        self.assertTrue(is_json('{"array": [ ]}'))
+
+    def test_object_can_be_empty(self):
+        self.assertTrue(is_json('{"obj": {}}'))
+        self.assertTrue(is_json('{"obj": { }}'))
+
+    def test_cannot_have_trailing_comma_in_array(self):
+        self.assertFalse(is_json('{"numbers": [1,2,3,]}'))
+
+    def test_cannot_have_multiple_comma_in_array(self):
+        self.assertFalse(is_json('{"numbers": [1,2,,3]}'))
+
+    def test_cannot_have_trailing_comma_in_object(self):
+        self.assertFalse(is_json('{"numbers": {"a": 1, "b": 2,}}'))
+
+    def test_cannot_have_multiple_comma_in_object(self):
+        self.assertFalse(is_json('{"numbers": {"a": 1,, "b": 2}}'))
+
+    def test_string_can_contain_escaped_quotes(self):
+        s = '{"string": "Look: \\"escaped string here!\\""}'
+        self.assertTrue(is_json(s))
+        self.assertIsInstance(json.loads(s), dict)
+
+    def test_array_is_not_json(self):
+        self.assertFalse(is_json('[1,2,3]'))
+
+    def test_complete_json_case(self):
+        string = '''
+            {
+                "books": [
+                    {
+                        "title": "Book title 1",
+                        "author": "FirstName LastName",
+                        "tags": ["tech", "programming", "python"],
+                        "available": true,
+                        "pageCount": 516,
+                        "rating": 4.5,
+                        "comments": [
+                            {
+                                "author": "FirstName LastName",
+                                "content": "Nice book!"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Book title 2",
+                        "author": "FirstName LastName",
+                        "tags": ["tech", "programming", "javascript"],
+                        "available": true,
+                        "rating": 4,
+                        "pageCount": 422,
+                        "comments": [
+
+                        ]
+                    }
+                ]
+            }
+        '''
+        self.assertTrue(is_json(string))
+        self.assertIsInstance(json.loads(string), dict)
+
+
+class IsUUIDTestCase(TestCase):
+    def test_should_consider_false_non_string_objects(self):
+        self.assertFalse(is_uuid(None))
+        self.assertFalse(is_uuid(1))
+        self.assertFalse(is_uuid([]))
+        self.assertFalse(is_uuid({'a': 1}))
+        self.assertFalse(is_uuid(True))
+
+    def test_should_accept_valid_uuid_objects(self):
+        for i in range(1000):
+            self.assertTrue(is_uuid(uuid4()))
+
+    def test_should_accept_valid_uuid_strings(self):
+        for i in range(1000):
+            self.assertTrue(is_uuid(str(uuid4())))
+
+
+# string manipulation tests
+
 class ReverseTestCase(TestCase):
-    def test_returns_original_string_if_unreversable(self):
+    def test_returns_original_string_if_unreversible(self):
         self.assertEqual(reverse(''), '')
         self.assertEqual(reverse('x'), 'x')
         self.assertEqual(reverse('!!!'), '!!!')
@@ -428,3 +585,32 @@ class SnakeCaseToCamelTestCase(TestCase):
 
     def test_should_not_capitalize_first_letter_if_specified(self):
         self.assertEqual(snake_case_to_camel('this_will_starts_lower_case', False), 'thisWillStartsLowerCase')
+
+
+class UUUIDTestCase(TestCase):
+    def test_generates_uuid_string(self):
+        uid = uuid()
+        self.assertIsInstance(uid, str)
+        self.assertTrue(is_uuid(uid))
+
+
+class ShuffleTestCase(TestCase):
+    original_string = 'Hello World!'
+
+    def test_shuffled_string_should_be_different_from_original_one(self):
+        self.assertNotEqual(self.original_string, shuffle(self.original_string))
+
+    def test_original_string_is_not_modified(self):
+        shuffle(self.original_string)
+        self.assertEqual(self.original_string, 'Hello World!')
+
+    def test_shuffle_generates_new_string_for_each_call(self):
+        self.assertNotEqual(shuffle(self.original_string), shuffle(self.original_string))
+
+    def test_shuffled_string_should_have_same_len_of_original_one(self):
+        shuffled = shuffle(self.original_string)
+        self.assertTrue(len(self.original_string), len(shuffled))
+
+    def test_sorted_strings_should_match(self):
+        shuffled = shuffle(self.original_string)
+        self.assertEqual(sorted(self.original_string), sorted(shuffled))

@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to foo’s documentation! &mdash; foo 0.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="foo 0.0.0 documentation" href="#"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="#" class="icon icon-home"> foo
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="simple">
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">foo</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Welcome to foo&#8217;s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="welcome-to-foo-s-documentation">
+<h1>Welcome to foo&#8217;s documentation!<a class="headerlink" href="#welcome-to-foo-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-string_utils"></span><dl class="function">
+<dt id="string_utils.is_url">
+<code class="descclassname">string_utils.</code><code class="descname">is_url</code><span class="sig-paren">(</span><em>string</em>, <em>allowed_schemes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a string is a valid url.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; String to check.</li>
+<li><strong>allowed_schemes</strong> &#8211; List of valid schemes (&#8216;http&#8217;, &#8216;https&#8217;, &#8216;ftp&#8217;...). Default to None (any scheme is valid).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_email">
+<code class="descclassname">string_utils.</code><code class="descname">is_email</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_email" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the string is a valid email.
+IMPORTANT NOTES:
+By design, the implementation of this checking does not follow the specification for a valid
+email address, but instead it&#8217;s based on real world cases in order to match more than 99%
+of emails and catch user mistakes. For example the percentage sign &#8220;%&#8221; is a valid sign for an email,
+but actually no one use it, instead if such sign is found in a string coming from user input (like a
+web form) is very likely that the intention was to type &#8220;5&#8221; (which is on the same key on a US keyboard).
+You can take a look at &#8220;IsEmailTestCase&#8221; in tests.py for further details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if email, false otherwise.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_credit_card">
+<code class="descclassname">string_utils.</code><code class="descname">is_credit_card</code><span class="sig-paren">(</span><em>string</em>, <em>card_type=None</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_credit_card" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a string is a valid credit card number.
+If card type is provided then it checks that specific type,
+otherwise any known credit card number will be accepted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to check.</li>
+<li><strong>card_type</strong> (<em>str</em>) &#8211; Card type.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Can be one of these:</p>
+<ul class="simple">
+<li>VISA</li>
+<li>MASTERCARD</li>
+<li>AMERICAN_EXPRESS</li>
+<li>DINERS_CLUB</li>
+<li>DISCOVER</li>
+<li>JCB</li>
+</ul>
+<p>or None. Default to None (any card).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if credit card, false otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_camel_case">
+<code class="descclassname">string_utils.</code><code class="descname">is_camel_case</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_camel_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a string is formatted as camel case.
+A string is considered camel case when:
+- its composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])
+- it contains both lowercase and uppercase letters
+- it does not start with a number</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to test.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True for a camel case string, false otherwise.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_snake_case">
+<code class="descclassname">string_utils.</code><code class="descname">is_snake_case</code><span class="sig-paren">(</span><em>string</em>, <em>separator='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_snake_case" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a string is formatted as snake case.
+A string is considered snake case when:</p>
+<ul class="simple">
+<li>it&#8217;s composed only by lowercase letters ([a-z]), underscores (or provided separator)     and optionally numbers ([0-9])</li>
+<li>it does not start/end with an underscore (or provided separator)</li>
+<li>it does not start with a number</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to test.</li>
+<li><strong>separator</strong> (<em>str</em>) &#8211; String to use as separator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True for a snake case string, false otherwise.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_json">
+<code class="descclassname">string_utils.</code><code class="descname">is_json</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a string is a valid json.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if json, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_uuid">
+<code class="descclassname">string_utils.</code><code class="descname">is_uuid</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a string is a valid UUID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if UUID, false otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.camel_case_to_snake">
+<code class="descclassname">string_utils.</code><code class="descname">camel_case_to_snake</code><span class="sig-paren">(</span><em>string</em>, <em>separator='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.camel_case_to_snake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a camel case string into a snake case one.
+(The original string is returned if is not a valid camel case string)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to convert.</li>
+<li><strong>separator</strong> (<em>str</em>) &#8211; Sign to use as separator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Converted string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.snake_case_to_camel">
+<code class="descclassname">string_utils.</code><code class="descname">snake_case_to_camel</code><span class="sig-paren">(</span><em>string</em>, <em>upper_case_first=True</em>, <em>separator='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.snake_case_to_camel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a snake case string into a camel case one.
+(The original string is returned if is not a valid snake case string)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to convert.</li>
+<li><strong>upper_case_first</strong> (<em>bool</em>) &#8211; True to turn the first letter into uppercase (default).</li>
+<li><strong>separator</strong> (<em>str</em>) &#8211; Sign to use as separator (default to &#8220;_&#8221;).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Converted string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.reverse">
+<code class="descclassname">string_utils.</code><code class="descname">reverse</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the string reversed (&#8220;abc&#8221; -&gt; &#8220;cba&#8221;).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to revert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Reversed string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.uuid">
+<code class="descclassname">string_utils.</code><code class="descname">uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.uuid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generated an UUID string (using uuid.uuid4()).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">uuid string.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.shuffle">
+<code class="descclassname">string_utils.</code><code class="descname">shuffle</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.shuffle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new string containing shuffled items.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to shuffle</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Shuffled string</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, io.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
