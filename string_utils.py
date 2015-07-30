@@ -65,7 +65,8 @@ def is_url(string, allowed_schemes=None):
 
     :param string: String to check.
     :param allowed_schemes: List of valid schemes ('http', 'https', 'ftp'...). Default to None (any scheme is valid).
-    :return:
+    :return: True if url, false otherwise
+    :rtype: bool
     """
     valid = bool(URL_RE.match(string))
     if allowed_schemes:
@@ -75,14 +76,17 @@ def is_url(string, allowed_schemes=None):
 
 def is_email(string):
     """
-    Returns true if the string is a valid email.
-    IMPORTANT NOTES:
-    By design, the implementation of this checking does not follow the specification for a valid
-    email address, but instead it's based on real world cases in order to match more than 99%
-    of emails and catch user mistakes. For example the percentage sign "%" is a valid sign for an email,
-    but actually no one use it, instead if such sign is found in a string coming from user input (like a
+    Check if a string is an email.
+
+    | **IMPORTANT NOTES**:
+    | By design, the implementation of this checking does not follow the specification for a valid \
+    email address, but instead it's based on real world cases in order to match more than 99% \
+    of emails and catch user mistakes. For example the percentage sign "%" is a valid sign for an email, \
+    but actually no one use it, instead if such sign is found in a string coming from user input (like a \
     web form) is very likely that the intention was to type "5" (which is on the same key on a US keyboard).
-    You can take a look at "IsEmailTestCase" in tests.py for further details.
+
+    | You can take a look at "**IsEmailTestCase**" in tests.py for further details.
+
 
     :param string: String to check.
     :type string: str
@@ -133,9 +137,11 @@ def is_camel_case(string):
     """
     Checks if a string is formatted as camel case.
     A string is considered camel case when:
-    - its composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])
+
+    - it's composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])
     - it contains both lowercase and uppercase letters
     - it does not start with a number
+
 
     :param string: String to test.
     :type string: str

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to foo’s documentation! &mdash; foo 0.0.0 documentation</title>
+  <title>Welcome to Python String Utils’s documentation! &mdash; Python String Utils 0.1.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="foo 0.0.0 documentation" href="#"/> 
+    <link rel="top" title="Python String Utils 0.1.0 documentation" href="#"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -47,7 +47,7 @@
         
 
         
-          <a href="#" class="icon icon-home"> foo
+          <a href="#" class="icon icon-home"> Python String Utils
         
 
         
@@ -83,7 +83,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">foo</a>
+        <a href="#">Python String Utils</a>
       </nav>
 
 
@@ -94,7 +94,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
-    <li>Welcome to foo&#8217;s documentation!</li>
+    <li>Welcome to Python String Utils&#8217;s documentation!</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -107,8 +107,8 @@
 </div>
           <div role="main" class="document">
             
-  <div class="section" id="welcome-to-foo-s-documentation">
-<h1>Welcome to foo&#8217;s documentation!<a class="headerlink" href="#welcome-to-foo-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-python-string-utils-s-documentation">
+<h1>Welcome to Python String Utils&#8217;s documentation!<a class="headerlink" href="#welcome-to-python-string-utils-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul class="simple">
@@ -128,7 +128,10 @@
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if url, false otherwise</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
@@ -138,14 +141,14 @@
 <dl class="function">
 <dt id="string_utils.is_email">
 <code class="descclassname">string_utils.</code><code class="descname">is_email</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if the string is a valid email.
-IMPORTANT NOTES:
-By design, the implementation of this checking does not follow the specification for a valid
-email address, but instead it&#8217;s based on real world cases in order to match more than 99%
-of emails and catch user mistakes. For example the percentage sign &#8220;%&#8221; is a valid sign for an email,
-but actually no one use it, instead if such sign is found in a string coming from user input (like a
-web form) is very likely that the intention was to type &#8220;5&#8221; (which is on the same key on a US keyboard).
-You can take a look at &#8220;IsEmailTestCase&#8221; in tests.py for further details.</p>
+<dd><p>Check if a string is an email.</p>
+<div class="line-block">
+<div class="line"><strong>IMPORTANT NOTES</strong>:</div>
+<div class="line">By design, the implementation of this checking does not follow the specification for a valid     email address, but instead it&#8217;s based on real world cases in order to match more than 99%     of emails and catch user mistakes. For example the percentage sign &#8220;%&#8221; is a valid sign for an email,     but actually no one use it, instead if such sign is found in a string coming from user input (like a     web form) is very likely that the intention was to type &#8220;5&#8221; (which is on the same key on a US keyboard).</div>
+</div>
+<div class="line-block">
+<div class="line">You can take a look at &#8220;<strong>IsEmailTestCase</strong>&#8221; in tests.py for further details.</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -204,10 +207,12 @@ otherwise any known credit card number will be accepted.</p>
 <dt id="string_utils.is_camel_case">
 <code class="descclassname">string_utils.</code><code class="descname">is_camel_case</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_camel_case" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a string is formatted as camel case.
-A string is considered camel case when:
-- its composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])
-- it contains both lowercase and uppercase letters
-- it does not start with a number</p>
+A string is considered camel case when:</p>
+<ul class="simple">
+<li>it&#8217;s composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])</li>
+<li>it contains both lowercase and uppercase letters</li>
+<li>it does not start with a number</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -410,7 +415,7 @@ A string is considered snake case when:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, io.
+        &copy; Copyright 2015, Davide Zanotti.
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
@@ -431,7 +436,7 @@ A string is considered snake case when:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.0',
+            VERSION:'0.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
