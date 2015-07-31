@@ -5,7 +5,7 @@ with open('README.md', 'r') as readme:
 
 setup(
     name='python-string-utils',
-    version='0.1.1',
+    version='0.1.2',
     description='Utility functions for strings checking and manipulation.',
     long_description=long_description,
     author='Davide Zanotti',
@@ -34,4 +34,6 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     keywords='string str utilities development',
+    py_modules=['string_utils'],
+    data_files=[('README', ['README.md'])],
 )

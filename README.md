@@ -1,6 +1,6 @@
 # Python String Utils
 
-A small utility library for strings.
+A small utility library to check and manipulate strings.
 
 - simple and pythonic
 - no external dependencies
@@ -8,6 +8,7 @@ A small utility library for strings.
 - PEP8 complaint
 - 100% code coverage
 - tested against multiple python versions (2.7, 3.2, 3.3, 3.4)
+
 
 ## What's inside...
 
@@ -33,6 +34,11 @@ A small utility library for strings.
 ...and more are coming!
 
 
----
+## Installation
+
+    pip install python-string-utils
+
+
+## Documentation
 
 Full API documentation available on: <http://python-string-utils.readthedocs.org/en/latest/>
