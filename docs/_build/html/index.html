@@ -330,6 +330,28 @@ A string is considered snake case when:</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="string_utils.words_count">
+<code class="descclassname">string_utils.</code><code class="descname">words_count</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.words_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of words contained into the given string.</p>
+<p>This method is smart, it does consider only sequence of one or more letter and/or numbers
+as &#8220;words&#8221;, so a string like this: &#8221;! &#64; # % ... []&#8221; will return zero!
+Moreover it is aware of punctuation, so the count for a string like &#8220;one,two,three.stop&#8221;
+will be 4 not 1 (even if there are no spaces in the string).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; String to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Number of words.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="string_utils.camel_case_to_snake">
 <code class="descclassname">string_utils.</code><code class="descname">camel_case_to_snake</code><span class="sig-paren">(</span><em>string</em>, <em>separator='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.camel_case_to_snake" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a camel case string into a snake case one.

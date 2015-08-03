@@ -259,6 +259,19 @@ def is_ip(string):
 
 
 def words_count(string):
+    """
+    Returns the number of words contained into the given string.
+
+    This method is smart, it does consider only sequence of one or more letter and/or numbers
+    as "words", so a string like this: "! @ # % ... []" will return zero!
+    Moreover it is aware of punctuation, so the count for a string like "one,two,three.stop"
+    will be 4 not 1 (even if there are no spaces in the string).
+
+    :param string: String to check.
+    :type string: str
+    :return: Number of words.
+    :rtype: int
+    """
     return len(WORDS_COUNT_RE.findall(string))
 
 
