@@ -14,6 +14,8 @@ A small utility library to check and manipulate strings.
 
 ### String checking functions:
 
+- is_string
+- is_ip
 - is_url
 - is_email
 - is_credit_card
@@ -21,6 +23,7 @@ A small utility library to check and manipulate strings.
 - is_snake_case
 - is_json
 - is_uuid
+- words_count
 
 ### String manipulation and generation
 

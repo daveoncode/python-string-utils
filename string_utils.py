@@ -6,7 +6,7 @@ from uuid import uuid4
 import random
 
 # module settings
-__version__ = '0.1.2'
+__version__ = '0.2.0'
 __all__ = [
     'is_string',
     'is_url',
@@ -17,6 +17,7 @@ __all__ = [
     'is_json',
     'is_uuid',
     'is_ip',
+    'words_count',
     'camel_case_to_snake',
     'snake_case_to_camel',
     'reverse',
@@ -57,7 +58,7 @@ CREDIT_CARDS = {
 JSON_WRAPPER_RE = re.compile(r'^\s*\{\s*(.|\s)*\s*\}\s*$', re.MULTILINE)
 UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$', re.IGNORECASE)
 IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
-
+WORDS_COUNT_RE = re.compile(r'\W*[^\W_]+\W*', re.IGNORECASE | re.MULTILINE | re.UNICODE)
 
 # string checking functions
 
@@ -257,6 +258,10 @@ def is_ip(string):
         return False
 
 
+def words_count(string):
+    return len(WORDS_COUNT_RE.findall(string))
+
+
 # string manipulation functions
 
 def reverse(string):
@@ -364,7 +369,4 @@ def shuffle(string):
 # ' unprettified string ,, like this one,will be"prettified" .it' s awesome!( like python)) '
 # 'Unprettified string, like this one, will be "prettified". It's awesome! (like python)'
 # def prettify(string):
-#     pass
-#
-# def words_count(string):
 #     pass

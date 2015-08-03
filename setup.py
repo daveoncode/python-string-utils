@@ -5,7 +5,7 @@ with open('README.md', 'r') as readme:
 
 setup(
     name='python-string-utils',
-    version='0.1.2',
+    version='0.2.0',
     description='Utility functions for strings checking and manipulation.',
     long_description=long_description,
     author='Davide Zanotti',
