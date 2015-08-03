@@ -1,11 +1,10 @@
-import re
+# -*- coding: utf-8 -*-
+
 from unittest.case import TestCase
+from uuid import uuid4
+import json
 
 from string_utils import *
-
-from uuid import uuid4
-
-import json
 
 
 # string checking tests

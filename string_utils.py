@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 import re
 from uuid import uuid4
@@ -13,6 +15,7 @@ __all__ = [
     'is_snake_case',
     'is_json',
     'is_uuid',
+    'is_ip',
     'camel_case_to_snake',
     'snake_case_to_camel',
     'reverse',
@@ -208,6 +211,10 @@ def is_uuid(string):
     return bool(UUID_RE.match(str(string)))
 
 
+def is_ip(string):
+    pass
+
+
 # string manipulation functions
 
 def reverse(string):
@@ -289,7 +296,6 @@ def shuffle(string):
     random.shuffle(s)  # shuffle the list
     return ''.join(s)  # convert the shuffled list back to string
 
-
 # NEW FUNCTIONS
 # def is_multiline(string):
 #     pass
@@ -301,9 +307,6 @@ def shuffle(string):
 #     pass
 #
 # def slugify(string):
-#     pass
-#
-# def is_ip(string):
 #     pass
 #
 # def contains_html(string):
