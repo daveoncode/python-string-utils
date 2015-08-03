@@ -9,13 +9,28 @@ from string_utils import *
 
 # string checking tests
 
+class IsStringTestCase(TestCase):
+    def test_return_false_for_non_string_objects(self):
+        self.assertFalse(is_string(None))
+        self.assertFalse(is_string(False))
+        self.assertFalse(is_string(0))
+        self.assertFalse(is_string([]))
+        self.assertFalse(is_string({'a': 1}))
+
+    def test_return_true_for_string_objects(self):
+        self.assertTrue(is_string(''))
+        self.assertTrue(is_string('hello world'))
+        self.assertTrue(is_string(r'[a-z]'))
+        self.assertTrue(is_string(u'string'))
+
+
 class IsUrlTestCase(TestCase):
-    def test_cannot_handle_non_string_objects(self):
-        self.assertRaises(TypeError, lambda: is_url(None))
-        self.assertRaises(TypeError, lambda: is_url(False))
-        self.assertRaises(TypeError, lambda: is_url(0))
-        self.assertRaises(TypeError, lambda: is_url([]))
-        self.assertRaises(TypeError, lambda: is_url({'a': 1}))
+    def test_should_return_false_for_non_string_objects(self):
+        self.assertFalse(is_url(None))
+        self.assertFalse(is_url(False))
+        self.assertFalse(is_url(0))
+        self.assertFalse(is_url([]))
+        self.assertFalse(is_url({'a': 1}))
 
     def test_string_cannot_be_blank(self):
         self.assertFalse(is_url(''))
@@ -114,12 +129,12 @@ class IsUrlTestCase(TestCase):
 
 
 class IsEmailTestCase(TestCase):
-    def test_cannot_handle_non_string_objects(self):
-        self.assertRaises(TypeError, lambda: is_email(None))
-        self.assertRaises(TypeError, lambda: is_email(False))
-        self.assertRaises(TypeError, lambda: is_email(0))
-        self.assertRaises(TypeError, lambda: is_email([]))
-        self.assertRaises(TypeError, lambda: is_email({'a': 1}))
+    def test_should_return_false_for_non_string_objects(self):
+        self.assertFalse(is_email(None))
+        self.assertFalse(is_email(False))
+        self.assertFalse(is_email(0))
+        self.assertFalse(is_email([]))
+        self.assertFalse(is_email({'a': 1}))
 
     def test_string_cannot_be_empty(self):
         self.assertFalse(is_email(''))
@@ -224,12 +239,12 @@ class IsCreditCardTestCase(TestCase):
         ]
     }
 
-    def test_cannot_handle_non_string_objects(self):
-        self.assertRaises(TypeError, lambda: is_credit_card(None))
-        self.assertRaises(TypeError, lambda: is_credit_card(False))
-        self.assertRaises(TypeError, lambda: is_credit_card(0))
-        self.assertRaises(TypeError, lambda: is_credit_card([]))
-        self.assertRaises(TypeError, lambda: is_credit_card({'a': 1}))
+    def test_should_return_false_for_non_string_objects(self):
+        self.assertFalse(is_credit_card(None))
+        self.assertFalse(is_credit_card(False))
+        self.assertFalse(is_credit_card(0))
+        self.assertFalse(is_credit_card([]))
+        self.assertFalse(is_credit_card({'a': 1}))
 
     def test_string_cannot_be_empty(self):
         self.assertFalse(is_credit_card(''))
@@ -266,12 +281,12 @@ class IsCreditCardTestCase(TestCase):
 
 
 class IsCamelCaseTestCase(TestCase):
-    def test_cannot_handle_non_string_objects(self):
-        self.assertRaises(TypeError, lambda: is_camel_case(None))
-        self.assertRaises(TypeError, lambda: is_camel_case(False))
-        self.assertRaises(TypeError, lambda: is_camel_case(0))
-        self.assertRaises(TypeError, lambda: is_camel_case([]))
-        self.assertRaises(TypeError, lambda: is_camel_case({'a': 1}))
+    def test_should_return_false_for_non_string_objects(self):
+        self.assertFalse(is_camel_case(None))
+        self.assertFalse(is_camel_case(False))
+        self.assertFalse(is_camel_case(0))
+        self.assertFalse(is_camel_case([]))
+        self.assertFalse(is_camel_case({'a': 1}))
 
     def test_string_cannot_be_empty(self):
         self.assertFalse(is_camel_case(''))
@@ -302,12 +317,12 @@ class IsCamelCaseTestCase(TestCase):
 
 
 class IsSnakeCaseTestCase(TestCase):
-    def test_cannot_handle_non_string_objects(self):
-        self.assertRaises(TypeError, lambda: is_snake_case(None))
-        self.assertRaises(TypeError, lambda: is_snake_case(False))
-        self.assertRaises(TypeError, lambda: is_snake_case(0))
-        self.assertRaises(TypeError, lambda: is_snake_case([]))
-        self.assertRaises(TypeError, lambda: is_snake_case({'a': 1}))
+    def test_return_false_for_non_string_objects(self):
+        self.assertFalse(is_snake_case(None))
+        self.assertFalse(is_snake_case(False))
+        self.assertFalse(is_snake_case(0))
+        self.assertFalse(is_snake_case([]))
+        self.assertFalse(is_snake_case({'a': 1}))
 
     def test_string_cannot_be_blank(self):
         self.assertFalse(is_snake_case(''))
@@ -497,6 +512,40 @@ class IsUUIDTestCase(TestCase):
     def test_should_accept_valid_uuid_strings(self):
         for i in range(1000):
             self.assertTrue(is_uuid(str(uuid4())))
+
+
+class IsIpTestCase(TestCase):
+    def test_return_false_for_non_string_objects(self):
+        self.assertFalse(is_ip(None))
+        self.assertFalse(is_ip(1))
+        self.assertFalse(is_ip([]))
+        self.assertFalse(is_ip({'a': 1}))
+        self.assertFalse(is_ip(True))
+
+    def test_recognize_ip_strings(self):
+        self.assertTrue(is_ip('127.0.0.1'))
+        self.assertTrue(is_ip('0.0.0.0'))
+        self.assertTrue(is_ip('255.255.10.1'))
+
+    def test_ip_cannot_contain_spaces(self):
+        self.assertFalse(is_ip(' 127.0.0.1 '))
+        self.assertFalse(is_ip('0.0.0.0 '))
+        self.assertFalse(is_ip(' 255.255.10.1'))
+        self.assertFalse(is_ip('255. 255.10.1'))
+
+    def test_ip_cannot_have_multiple_dots(self):
+        self.assertFalse(is_ip('127.0.0..1'))
+        self.assertFalse(is_ip('0..0.0.0'))
+        self.assertFalse(is_ip('255.255.10.1.'))
+
+    def test_numbers_cannot_be_divided_by_other_signs(self):
+        self.assertFalse(is_ip('127-0-0-1'))
+        self.assertFalse(is_ip('0_0_0_0'))
+        self.assertFalse(is_ip('255,255,10,1'))
+
+    def test_ip_cannot_be_blank(self):
+        self.assertFalse(is_ip(''))
+        self.assertFalse(is_ip(' '))
 
 
 # string manipulation tests

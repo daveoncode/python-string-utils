@@ -8,6 +8,7 @@ import random
 # module settings
 __version__ = '0.1.2'
 __all__ = [
+    'is_string',
     'is_url',
     'is_email',
     'is_credit_card',
@@ -55,9 +56,24 @@ CREDIT_CARDS = {
 }
 JSON_WRAPPER_RE = re.compile(r'^\s*\{\s*(.|\s)*\s*\}\s*$', re.MULTILINE)
 UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$', re.IGNORECASE)
+IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 
 # string checking functions
+
+
+def is_string(obj):
+    """
+    Checks if an object is a string.
+
+    :param obj: Object to test.
+    :return: True if string, false otherwise.
+    :rtype: bool
+    """
+    try:  # basestring is available in python 2 but missing in python 3!
+        return isinstance(obj, basestring)
+    except NameError:
+        return isinstance(obj, str)
 
 
 # Full url example:
@@ -71,7 +87,10 @@ def is_url(string, allowed_schemes=None):
     :return: True if url, false otherwise
     :rtype: bool
     """
-    valid = bool(URL_RE.match(string))
+    try:
+        valid = bool(URL_RE.match(string))
+    except TypeError:
+        return False
     if allowed_schemes:
         return valid and any([string.startswith(s) for s in allowed_schemes])
     return valid
@@ -96,7 +115,10 @@ def is_email(string):
     :return: True if email, false otherwise.
     :rtype: bool
     """
-    return bool(EMAIL_RE.match(string))
+    try:
+        return bool(EMAIL_RE.match(string))
+    except TypeError:
+        return False
 
 
 def is_credit_card(string, card_type=None):
@@ -124,15 +146,18 @@ def is_credit_card(string, card_type=None):
     :return: True if credit card, false otherwise.
     :rtype: bool
     """
-    if card_type:
-        if card_type not in CREDIT_CARDS:
-            raise KeyError(
-                'Invalid card type "%s". Valid types are: %s' % (card_type, ', '.join(CREDIT_CARDS.keys()))
-            )
-        return bool(CREDIT_CARDS[card_type].match(string))
-    for c in CREDIT_CARDS:
-        if CREDIT_CARDS[c].match(string):
-            return True
+    try:
+        if card_type:
+            if card_type not in CREDIT_CARDS:
+                raise KeyError(
+                    'Invalid card type "%s". Valid types are: %s' % (card_type, ', '.join(CREDIT_CARDS.keys()))
+                )
+            return bool(CREDIT_CARDS[card_type].match(string))
+        for c in CREDIT_CARDS:
+            if CREDIT_CARDS[c].match(string):
+                return True
+    except TypeError:
+        return False
     return False
 
 
@@ -151,7 +176,10 @@ def is_camel_case(string):
     :return: True for a camel case string, false otherwise.
     :rtype: bool
     """
-    return bool(CAMEL_CASE_TEST_RE.match(string))
+    try:
+        return bool(CAMEL_CASE_TEST_RE.match(string))
+    except TypeError:
+        return False
 
 
 def is_snake_case(string, separator='_'):
@@ -178,7 +206,10 @@ def is_snake_case(string, separator='_'):
     }
     re_template = '^[a-z]+([a-z\d]+{sign}|{sign}[a-z\d]+)+[a-z\d]+$'
     r = re_map.get(separator, re.compile(re_template.format(sign=re.escape(separator))))
-    return bool(r.match(string))
+    try:
+        return bool(r.match(string))
+    except TypeError:
+        return False
 
 
 def is_json(string):
@@ -212,7 +243,18 @@ def is_uuid(string):
 
 
 def is_ip(string):
-    pass
+    """
+    Checks if a string is a valid ip.
+
+    :param string: String to check.
+    :type string: str
+    :return: True if an ip, false otherwise.
+    :rtype: bool
+    """
+    try:
+        return bool(IP_RE.match(string))
+    except TypeError:
+        return False
 
 
 # string manipulation functions
@@ -241,6 +283,8 @@ def camel_case_to_snake(string, separator='_'):
     :return: Converted string.
     :rtype: str
     """
+    if not is_string(string):
+        raise TypeError('Expected string')
     if not is_camel_case(string):
         return string
     return CAMEL_CASE_REPLACE_RE.sub(lambda m: m.group(1) + separator, string).lower()
@@ -260,6 +304,8 @@ def snake_case_to_camel(string, upper_case_first=True, separator='_'):
     :return: Converted string
     :rtype: str
     """
+    if not is_string(string):
+        raise TypeError('Expected string')
     if not is_snake_case(string, separator):
         return string
     re_map = {
