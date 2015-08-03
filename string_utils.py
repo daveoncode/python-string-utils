@@ -311,4 +311,11 @@ def shuffle(string):
 #
 # def strip_html(string, preserve_tag_content=False):
 #     pass
-
+#
+# ' unprettified string ,, like this one,will be"prettified" .it' s awesome!( like python)) '
+# 'Unprettified string, like this one, will be "prettified". It's awesome! (like python)'
+# def prettify(string):
+#     pass
+#
+# def words_count(string):
+#     pass
