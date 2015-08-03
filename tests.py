@@ -21,7 +21,6 @@ class IsStringTestCase(TestCase):
         self.assertTrue(is_string(''))
         self.assertTrue(is_string('hello world'))
         self.assertTrue(is_string(r'[a-z]'))
-        self.assertTrue(is_string(u'string'))
 
 
 class IsUrlTestCase(TestCase):
