@@ -60,6 +60,7 @@ UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$
 IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 WORDS_COUNT_RE = re.compile(r'\W*[^\W_]+\W*', re.IGNORECASE | re.MULTILINE | re.UNICODE)
 
+
 # string checking functions
 
 
@@ -359,27 +360,3 @@ def shuffle(string):
     s = sorted(string)  # turn the string into a list of chars
     random.shuffle(s)  # shuffle the list
     return ''.join(s)  # convert the shuffled list back to string
-
-# NEW FUNCTIONS
-# def is_multiline(string):
-#     pass
-#
-# def is_zip_code(string, country_code=None):
-#     pass
-#
-# def is_slug(string):
-#     pass
-#
-# def slugify(string):
-#     pass
-#
-# def contains_html(string):
-#     pass
-#
-# def strip_html(string, preserve_tag_content=False):
-#     pass
-#
-# ' unprettified string ,, like this one,will be"prettified" .it' s awesome!( like python)) '
-# 'Unprettified string, like this one, will be "prettified". It's awesome! (like python)'
-# def prettify(string):
-#     pass
