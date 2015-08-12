@@ -352,6 +352,26 @@ will be 4 not 1 (even if there are no spaces in the string).</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="string_utils.contains_html">
+<code class="descclassname">string_utils.</code><code class="descname">contains_html</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.contains_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given string contains html code.
+By design, this function is very permissive regarding what to consider html code, don&#8217;t expect to use it
+as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired html tags in the text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> (<em>str</em>) &#8211; Text to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if string contains html, false otherwise.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="string_utils.camel_case_to_snake">
 <code class="descclassname">string_utils.</code><code class="descname">camel_case_to_snake</code><span class="sig-paren">(</span><em>string</em>, <em>separator='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.camel_case_to_snake" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a camel case string into a snake case one.
@@ -449,6 +469,30 @@ will be 4 not 1 (even if there are no spaces in the string).</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Shuffled string</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.strip_html">
+<code class="descclassname">string_utils.</code><code class="descname">strip_html</code><span class="sig-paren">(</span><em>string</em>, <em>keep_tag_content=False</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.strip_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove html code contained into the given string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to manipulate.</li>
+<li><strong>keep_tag_content</strong> (<em>bool</em>) &#8211; True to preserve tag content, False to remove tag and its content too (default).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">String with html removed.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
 </tr>
 </tbody>
 </table>
