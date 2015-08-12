@@ -18,11 +18,13 @@ __all__ = [
     'is_uuid',
     'is_ip',
     'words_count',
+    'contains_html',
     'camel_case_to_snake',
     'snake_case_to_camel',
     'reverse',
     'uuid',
     'shuffle',
+    'strip_html',
 ]
 
 # compiled regex
@@ -55,10 +57,18 @@ CREDIT_CARDS = {
     'DISCOVER': re.compile(r'^6(?:011|5[0-9]{2})[0-9]{12}$'),
     'JCB': re.compile(r'^(?:2131|1800|35\d{3})\d{11}$')
 }
-JSON_WRAPPER_RE = re.compile(r'^\s*\{\s*(.|\s)*\s*\}\s*$', re.MULTILINE)
+JSON_WRAPPER_RE = re.compile(r'^\s*\{\s*.*\s*\}\s*$', re.MULTILINE | re.DOTALL)
 UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$', re.IGNORECASE)
 IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 WORDS_COUNT_RE = re.compile(r'\W*[^\W_]+\W*', re.IGNORECASE | re.MULTILINE | re.UNICODE)
+HTML_RE = re.compile(
+    r'((?P<open><([a-z]+:)?[a-z]+[^>]*/?>)((?P<content>.*?)(?P<close></([a-z]+:)?[a-z]+>))?|<!--.*-->|<!doctype.*>)',
+    re.IGNORECASE | re.MULTILINE | re.DOTALL
+)
+HTML_TAG_ONLY_RE = re.compile(
+    r'(<([a-z]+:)?[a-z]+[^>]*/?>|</([a-z]+:)?[a-z]+>|<!--.*-->|<!doctype.*>)',
+    re.IGNORECASE | re.MULTILINE | re.DOTALL
+)
 
 
 # string checking functions
@@ -90,7 +100,7 @@ def is_url(string, allowed_schemes=None):
     :rtype: bool
     """
     try:
-        valid = bool(URL_RE.match(string))
+        valid = bool(URL_RE.search(string))
     except TypeError:
         return False
     if allowed_schemes:
@@ -118,7 +128,7 @@ def is_email(string):
     :rtype: bool
     """
     try:
-        return bool(EMAIL_RE.match(string))
+        return bool(EMAIL_RE.search(string))
     except TypeError:
         return False
 
@@ -154,9 +164,9 @@ def is_credit_card(string, card_type=None):
                 raise KeyError(
                     'Invalid card type "%s". Valid types are: %s' % (card_type, ', '.join(CREDIT_CARDS.keys()))
                 )
-            return bool(CREDIT_CARDS[card_type].match(string))
+            return bool(CREDIT_CARDS[card_type].search(string))
         for c in CREDIT_CARDS:
-            if CREDIT_CARDS[c].match(string):
+            if CREDIT_CARDS[c].search(string):
                 return True
     except TypeError:
         return False
@@ -179,7 +189,7 @@ def is_camel_case(string):
     :rtype: bool
     """
     try:
-        return bool(CAMEL_CASE_TEST_RE.match(string))
+        return bool(CAMEL_CASE_TEST_RE.search(string))
     except TypeError:
         return False
 
@@ -209,7 +219,7 @@ def is_snake_case(string, separator='_'):
     re_template = '^[a-z]+([a-z\d]+{sign}|{sign}[a-z\d]+)+[a-z\d]+$'
     r = re_map.get(separator, re.compile(re_template.format(sign=re.escape(separator))))
     try:
-        return bool(r.match(string))
+        return bool(r.search(string))
     except TypeError:
         return False
 
@@ -224,7 +234,7 @@ def is_json(string):
     :rtype: bool
     """
     s = str(string)
-    if bool(JSON_WRAPPER_RE.match(s)):
+    if bool(JSON_WRAPPER_RE.search(s)):
         try:
             return isinstance(json.loads(s), dict)
         except (TypeError, ValueError, OverflowError):
@@ -241,7 +251,7 @@ def is_uuid(string):
     :return: True if UUID, false otherwise
     :rtype: bool
     """
-    return bool(UUID_RE.match(str(string)))
+    return bool(UUID_RE.search(str(string)))
 
 
 def is_ip(string):
@@ -254,7 +264,7 @@ def is_ip(string):
     :rtype: bool
     """
     try:
-        return bool(IP_RE.match(string))
+        return bool(IP_RE.search(string))
     except TypeError:
         return False
 
@@ -274,6 +284,20 @@ def words_count(string):
     :rtype: int
     """
     return len(WORDS_COUNT_RE.findall(string))
+
+
+def contains_html(string):
+    """
+    Checks if the given string contains html code.
+    By design, this function is very permissive regarding what to consider html code, don't expect to use it
+    as an html validator, its goal is to detect "malicious" or undesired html tags in the text.
+
+    :param string: Text to check
+    :type string: str
+    :return: True if string contains html, false otherwise.
+    :rtype: bool
+    """
+    return bool(HTML_RE.search(string))
 
 
 # string manipulation functions
@@ -360,3 +384,14 @@ def shuffle(string):
     s = sorted(string)  # turn the string into a list of chars
     random.shuffle(s)  # shuffle the list
     return ''.join(s)  # convert the shuffled list back to string
+
+
+def strip_html(string, keep_tag_content=False):
+    """
+
+    :param string:
+    :param keep_tag_content:
+    :return:
+    """
+    r = HTML_TAG_ONLY_RE if keep_tag_content else HTML_RE
+    return r.sub('', string)
