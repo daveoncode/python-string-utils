@@ -62,7 +62,7 @@ UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$
 IP_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 WORDS_COUNT_RE = re.compile(r'\W*[^\W_]+\W*', re.IGNORECASE | re.MULTILINE | re.UNICODE)
 HTML_RE = re.compile(
-    r'((?P<open><([a-z]+:)?[a-z]+[^>]*/?>)((?P<content>.*?)(?P<close></([a-z]+:)?[a-z]+>))?|<!--.*-->|<!doctype.*>)',
+    r'((<([a-z]+:)?[a-z]+[^>]*/?>)(.*?(</([a-z]+:)?[a-z]+>))?|<!--.*-->|<!doctype.*>)',
     re.IGNORECASE | re.MULTILINE | re.DOTALL
 )
 HTML_TAG_ONLY_RE = re.compile(
