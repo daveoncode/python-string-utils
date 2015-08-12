@@ -3,6 +3,7 @@
 A small utility library to check and manipulate strings.
 
 - simple and pythonic
+- fast (based on compiled regex)
 - no external dependencies
 - fully documented
 - PEP8 complaint
@@ -24,6 +25,7 @@ A small utility library to check and manipulate strings.
 - is_json
 - is_uuid
 - words_count
+- contains_html
 
 ### String manipulation and generation
 
@@ -32,6 +34,7 @@ A small utility library to check and manipulate strings.
 - reverse
 - uuid
 - shuffle
+- strip_html
 
 
 ...and more are coming!
