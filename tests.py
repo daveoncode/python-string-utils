@@ -976,3 +976,205 @@ class StripHtmlTestCase(TestCase):
             </html>
         '''
         self.assertEqual('content text!', strip_html(multiline_string, keep_tag_content=True).strip())
+
+
+class PrettifyTestCase(TestCase):
+    def test_cannot_handle_non_string_objects(self):
+        self.assertRaises(TypeError, lambda: words_count(None))
+        self.assertRaises(TypeError, lambda: words_count(False))
+        self.assertRaises(TypeError, lambda: words_count(0))
+        self.assertRaises(TypeError, lambda: words_count([]))
+        self.assertRaises(TypeError, lambda: words_count({'a': 1}))
+
+    def test_should_return_empty_string_from_empty_string_or_space_only_string(self):
+        self.assertEqual('', prettify(''))
+        self.assertEqual('', prettify(' '))
+
+    def test_should_uppercase_first_letter(self):
+        self.assertEqual('Hello world', prettify('hello world'))
+
+    def test_should_strip_string(self):
+        self.assertEqual('Hello world', prettify(' hello world '))
+
+    def test_should_strip_empty_lines(self):
+        self.assertEqual('Hello world', prettify('''
+
+            hello world
+
+        '''))
+
+    def test_should_replace_multiple_brackets_with_single_ones(self):
+        self.assertEqual('(foo)', prettify('((foo)'))
+        self.assertEqual('(foo)', prettify('(foo))'))
+        self.assertEqual('(foo)', prettify('((foo))'))
+        self.assertEqual('(foo)', prettify('((((((((foo)))'))
+        self.assertEqual('[foo]', prettify('[[foo]'))
+        self.assertEqual('[foo]', prettify('[foo]]'))
+        self.assertEqual('[foo]', prettify('[[foo]]'))
+        self.assertEqual('[foo]', prettify('[[[[[[[[foo]]]'))
+        self.assertEqual('{foo}', prettify('{{foo}'))
+        self.assertEqual('{foo}', prettify('{foo}}'))
+        self.assertEqual('{foo}', prettify('{{foo}}'))
+        self.assertEqual('{foo}', prettify('{{{{{{{{foo}}}'))
+
+    def test_should_remove_internal_spaces_in_brackets(self):
+        self.assertEqual('(foo)', prettify('( foo)'))
+        self.assertEqual('(foo)', prettify('(foo )'))
+        self.assertEqual('(foo)', prettify('( foo )'))
+
+    def test_should_add_spaces_outside_brackets(self):
+        self.assertEqual('Boo (bar) baz', prettify('boo(bar)baz'))
+
+    def test_should_not_add_right_space_after_bracket_if_followed_by_punctuation(self):
+        self.assertEqual('Foo (bar)? Yes!', prettify('Foo(bar)? Yes!'))
+        self.assertEqual('Foo (bar): Yes!', prettify('Foo(bar): Yes!'))
+        self.assertEqual('Foo (bar). Yes!', prettify('Foo(bar). Yes!'))
+        self.assertEqual('Foo (bar); yes!', prettify('Foo(bar); yes!'))
+        self.assertEqual('Foo (bar), yes!', prettify('Foo(bar), yes!'))
+
+    def test_should_replace_multiple_commas_with_single_ones(self):
+        self.assertEqual('Hello, world', prettify('Hello,,, world'))
+        self.assertEqual('Hello, world, banana', prettify('Hello,,, world,, banana'))
+
+    def test_should_replace_multiple_colons_with_single_ones(self):
+        self.assertEqual('Hello: world', prettify('Hello::: world'))
+        self.assertEqual('Hello: world: banana', prettify('Hello::: world:: banana'))
+
+    def test_should_replace_multiple_semicolons_with_single_ones(self):
+        self.assertEqual('Hello; world', prettify('Hello;;; world'))
+        self.assertEqual('Hello; world; banana', prettify('Hello;;; world;; banana'))
+
+    def test_should_replace_multiple_double_quotes_with_single_ones(self):
+        self.assertEqual('"hello" world', prettify('""hello"" world'))
+        self.assertEqual('"hello" world', prettify('""hello" world'))
+        self.assertEqual('"hello" world', prettify('"hello"" world'))
+        self.assertEqual('"hello" world', prettify('""""""hello""""" world'))
+
+    def test_should_add_spaces_for_double_quotes(self):
+        self.assertEqual('Foo "bar" baz', prettify('foo"bar"baz'))
+        self.assertEqual('Foo "bar" baz', prettify('foo"bar" baz'))
+        self.assertEqual('Foo "bar" baz', prettify('foo "bar"baz'))
+
+    def test_should_trim_spaces_inside_double_quotes(self):
+        self.assertEqual('Foo "bar" baz', prettify('foo " bar " baz'))
+        self.assertEqual('Foo "bar" baz', prettify('foo "bar " baz'))
+        self.assertEqual('Foo "bar" baz', prettify('foo " bar" baz'))
+
+    def test_should_not_add_right_space_after_double_quotes_if_followed_by_punctuation(self):
+        self.assertEqual('Foo "bar"? Yes!', prettify('Foo"bar"? Yes!'))
+        self.assertEqual('Foo "bar": Yes!', prettify('Foo"bar": Yes!'))
+        self.assertEqual('Foo "bar". Yes!', prettify('Foo"bar". Yes!'))
+        self.assertEqual('Foo "bar"; yes!', prettify('Foo"bar"; yes!'))
+        self.assertEqual('Foo "bar", yes!', prettify('Foo"bar", yes!'))
+
+    def test_should_replace_multiple_single_quotes_with_single_ones(self):
+        self.assertEqual('Dave\'s job', prettify("Dave''s job"))
+        self.assertEqual("'destiny'", prettify("'''destiny'''"))
+
+    def should_fix_saxon_genitive_spaces(self):
+        self.assertEqual('Dave\'s dog', prettify('Dave\' s dog'))
+
+    def test_should_replace_multiple_percentage_with_single_ones(self):
+        self.assertEqual('%', prettify('%%%'))
+        self.assertEqual('A % b % c', prettify('a %% b %%%%%% c'))
+
+    def test_should_put_space_after_comma_if_missing(self):
+        self.assertEqual('One, two, three', prettify('one,two,three'))
+
+    def test_should_remove_space_before_comma(self):
+        self.assertEqual('One, two, three', prettify('one , two , three'))
+
+    def test_should_uppercase_first_letter_after_period(self):
+        self.assertEqual('Foo. Bar', prettify('Foo. bar'))
+
+    def test_should_put_space_after_period_if_missing(self):
+        self.assertEqual('One. Two. Three', prettify('one.two.three'))
+
+    def test_should_remove_space_before_period(self):
+        self.assertEqual('One. Two. Three', prettify('one . two . three'))
+
+    def test_should_put_space_after_colon_if_missing(self):
+        self.assertEqual('Test: this', prettify('Test:this'))
+
+    def test_should_remove_space_before_colon(self):
+        self.assertEqual('Test: this', prettify('Test :this'))
+        self.assertEqual('Test:', prettify('Test :'))
+
+    def test_should_put_space_after_semicolon_if_missing(self):
+        self.assertEqual('Test; this', prettify('Test;this'))
+
+    def test_should_remove_space_before_semicolon(self):
+        self.assertEqual('Test; this', prettify('Test ;this'))
+        self.assertEqual('Test;', prettify('Test ;'))
+
+    def test_should_uppercase_first_letter_after_exclamation(self):
+        self.assertEqual('Foo! Bar', prettify('Foo! bar'))
+
+    def test_should_put_space_after_exclamation_if_missing(self):
+        self.assertEqual('Test! This', prettify('Test!this'))
+
+    def test_should_remove_space_before_exclamation(self):
+        self.assertEqual('Test! This', prettify('Test !this'))
+        self.assertEqual('Test!', prettify('Test !'))
+
+    def test_should_uppercase_first_letter_after_question(self):
+        self.assertEqual('Foo? Bar', prettify('Foo? bar'))
+
+    def test_should_put_space_after_question_if_missing(self):
+        self.assertEqual('Test? This', prettify('Test?this'))
+
+    def test_should_remove_space_before_question(self):
+        self.assertEqual('Test? This', prettify('Test ?this'))
+        self.assertEqual('Test?', prettify('Test ?'))
+
+    def test_should_remove_space_before_dot(self):
+        self.assertEqual('Test. This', prettify('Test . This'))
+        self.assertEqual('Test.', prettify('Test .'))
+
+    def test_should_remove_space_after_number_if_followed_by_percentage(self):
+        self.assertEqual('100% python', prettify('100 % python'))
+        self.assertEqual('100%', prettify('100 %'))
+
+    def test_should_add_space_after_percentage_if_missing(self):
+        self.assertEqual('100% python code', prettify('100%python code'))
+
+    def test_should_add_spaces_around_plus_if_missing(self):
+        self.assertEqual('5 + 2', prettify('5 +2'))
+        self.assertEqual('5 + 2', prettify('5+ 2'))
+        self.assertEqual('5 + 2', prettify('5+2'))
+
+    def test_should_add_spaces_around_minus_if_missing(self):
+        self.assertEqual('5 - 2', prettify('5 -2'))
+        self.assertEqual('5 - 2', prettify('5- 2'))
+        self.assertEqual('5 - 2', prettify('5-2'))
+
+    def test_should_add_spaces_around_equal_if_missing(self):
+        self.assertEqual('5 - 2 = 3', prettify('5 - 2=3'))
+        self.assertEqual('5 - 2 = 3', prettify('5 - 2 =3'))
+        self.assertEqual('5 - 2 = 3', prettify('5 - 2= 3'))
+
+    def test_should_add_spaces_around_division_if_missing(self):
+        self.assertEqual('5 / 2 = 2.5', prettify('5/ 2 = 2.5'))
+        self.assertEqual('5 / 2 = 2.5', prettify('5 /2 = 2.5'))
+        self.assertEqual('5 / 2 = 2.5', prettify('5 / 2 = 2.5'))
+
+    def test_should_add_spaces_around_multiplication_if_missing(self):
+        self.assertEqual('5 * 2 = 10', prettify('5* 2 = 10'))
+        self.assertEqual('5 * 2 = 10', prettify('5 *2 = 10'))
+        self.assertEqual('5 * 2 = 10', prettify('5 * 2 = 10'))
+
+    def test_should_prettify_string_as_expected(self):
+        original = ' unprettified string ,, like this one,will be"prettified" .it\' s awesome!( like python)) '
+        pretty = 'Unprettified string, like this one, will be "prettified". It\'s awesome! (like python)'
+        self.assertEqual(pretty, prettify(original))
+
+    def test_should_work_as_expected_for_multiple_lines_string(self):
+        original = '''
+
+        unprettified string ,,
+        like this one,will be"prettified"
+        .it' s awesome!( like python))
+
+        '''
+        pretty = 'Unprettified string, like this one, will be "prettified". It\'s awesome! (like python)'
+        self.assertEqual(pretty, prettify(original))

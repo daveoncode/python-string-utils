@@ -1,5 +1,12 @@
 # Python String Utils Changelog
 
+## v0.3.0
+
+### Added
+
+- contains_html
+- strip_html
+
 
 ## v0.2.0
 

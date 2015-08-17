@@ -25,6 +25,7 @@ __all__ = [
     'uuid',
     'shuffle',
     'strip_html',
+    'prettify',
 ]
 
 # compiled regex
@@ -69,6 +70,74 @@ HTML_TAG_ONLY_RE = re.compile(
     r'(<([a-z]+:)?[a-z]+[^>]*/?>|</([a-z]+:)?[a-z]+>|<!--.*-->|<!doctype.*>)',
     re.IGNORECASE | re.MULTILINE | re.DOTALL
 )
+PRETTIFY_RE = {
+    # match repetitions of signs that should not be repeated (like multiple spaces or duplicated quotes)
+    'DUPLICATES': re.compile(
+        r'(\({2,}|\){2,}|\[{2,}|\]{2,}|\{{2,}|\}{2,}|:{2,}|,{2,}|;{2,}|\+{2,}|\-{2,}|\s{2,}|%{2,}|={2,}|"{2,}|\'{2,})',
+        re.MULTILINE
+    ),
+    # check that a sign cannot have a space before or missing a space after,
+    # unless it is a dot or a comma, where numbers may follow (5.5 or 5,5 is ok)
+    'RIGHT_SPACE': re.compile(
+        r'('
+        r'(?<=[^\s\d]),(?=[^\s\d])|\s,\s|\s,(?=[^\s\d])|\s,(?!.)|'  # comma (,)
+        r'(?<=[^\s\d])\.(?=[^\s\d])|\s\.\s|\s\.(?=[^\s\d])|\s\.(?!.)|'  # dot (.)
+        r'(?<=\S);(?=\S)|\s;\s|\s;(?=\S)|\s;(?!.)|'  # semicolon (;)
+        r'(?<=\S):(?=\S)|\s:\s|\s:(?=\S)|\s:(?!.)|'  # colon (:)
+        r'(?<=\S)!(?=\S)|\s!\s|\s!(?=\S)|\s!(?!.)|'  # exclamation (!)
+        r'(?<=\S)\?(?=\S)|\s\?\s|\s\?(?=\S)|\s\?(?!.)|'  # question (?)
+        r'\d%(?=\S)|(?<=\d)\s%\s|(?<=\d)\s%(?=\S)|(?<=\d)\s%(?!.)'  # percentage (%)
+        r')',
+        re.MULTILINE | re.DOTALL
+    ),
+    'LEFT_SPACE': re.compile(
+        r'('
+
+        # quoted text ("hello world")
+        r'\s"[^"]+"(?=[\?\.:!,;])|(?<=\S)"[^"]+"\s|(?<=\S)"[^"]+"(?=[\?\.:!,;])|'
+
+        # text in round brackets
+        r'\s\([^\)]+\)(?=[\?\.:!,;])|(?<=\S)\([^\)]+\)\s|(?<=\S)(\([^\)]+\))(?=[\?\.:!,;])'
+
+        r')',
+        re.MULTILINE | re.DOTALL
+    ),
+    # match chars that must be followed by uppercase letters (like ".", "?"...)
+    'UPPERCASE_AFTER_SIGN': re.compile(
+        r'([\.\?!]\s\w)',
+        re.MULTILINE | re.UNICODE
+    ),
+    'SPACES_AROUND': re.compile(
+        r'('
+        r'(?<=\S)\+(?=\S)|(?<=\S)\+\s|\s\+(?=\S)|'  # plus (+)
+        r'(?<=\S)\-(?=\S)|(?<=\S)\-\s|\s\-(?=\S)|'  # minus (-)
+        r'(?<=\S)/(?=\S)|(?<=\S)/\s|\s/(?=\S)|'  # division (/)
+        r'(?<=\S)\*(?=\S)|(?<=\S)\*\s|\s\*(?=\S)|'  # multiplication (*)
+        r'(?<=\S)=(?=\S)|(?<=\S)=\s|\s=(?=\S)|'  # equal (=)
+
+        # quoted text ("hello world")
+        r'\s"[^"]+"(?=[^\s\?\.:!,;])|(?<=\S)"[^"]+"\s|(?<=\S)"[^"]+"(?=[^\s\?\.:!,;])|'
+
+        # text in round brackets
+        r'\s\([^\)]+\)(?=[^\s\?\.:!,;])|(?<=\S)\([^\)]+\)\s|(?<=\S)(\([^\)]+\))(?=[^\s\?\.:!,;])'
+
+        r')',
+        re.MULTILINE | re.DOTALL
+    ),
+    'SPACES_INSIDE': re.compile(
+        r'('
+        r'(?<=")[^"]+(?=")|'  # quoted text ("hello world")
+        r'(?<=\()[^\)]+(?=\))'  # text in round brackets
+        r')',
+        re.MULTILINE | re.DOTALL
+    ),
+    'NO_SPACES': re.compile(
+        r'('
+        r'(?<=\w)\'\s(?=s)|\s\'\s(?=s)'  # saxon genitive
+        r')',
+        re.MULTILINE | re.UNICODE
+    )
+}
 
 
 # string checking functions
@@ -399,3 +468,22 @@ def strip_html(string, keep_tag_content=False):
     """
     r = HTML_TAG_ONLY_RE if keep_tag_content else HTML_RE
     return r.sub('', string)
+
+
+def prettify(string):
+    # turns first letter after ".", "?", "!" into uppercase
+    def uppercase_after_sign(regex_match):
+        match = regex_match.group(1)
+        return match[:-1] + match[2].upper()
+
+    p = PRETTIFY_RE['DUPLICATES'].sub(lambda m: m.group(1)[0], string)
+    p = PRETTIFY_RE['RIGHT_SPACE'].sub(lambda m: m.group(1).strip() + ' ', p)
+    p = PRETTIFY_RE['LEFT_SPACE'].sub(lambda m: ' ' + m.group(1).strip(), p)
+    p = PRETTIFY_RE['SPACES_AROUND'].sub(lambda m: ' ' + m.group(1).strip() + ' ', p)
+    p = PRETTIFY_RE['SPACES_INSIDE'].sub(lambda m: m.group(1).strip(), p)
+    p = PRETTIFY_RE['UPPERCASE_AFTER_SIGN'].sub(uppercase_after_sign, p)
+    p = PRETTIFY_RE['NO_SPACES'].sub(lambda m: m.group(1).strip(), p)
+    p = p.strip()
+    if len(p) > 1:
+        p = p[0].capitalize() + p[1:]
+    return p
