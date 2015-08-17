@@ -6,6 +6,7 @@
 
 - contains_html
 - strip_html
+- prettify
 
 
 ## v0.2.0
