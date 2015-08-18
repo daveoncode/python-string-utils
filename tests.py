@@ -1071,8 +1071,10 @@ class PrettifyTestCase(TestCase):
         self.assertEqual('Dave\'s job', prettify("Dave''s job"))
         self.assertEqual("'destiny'", prettify("'''destiny'''"))
 
-    def should_fix_saxon_genitive_spaces(self):
-        self.assertEqual('Dave\'s dog', prettify('Dave\' s dog'))
+    def test_should_fix_saxon_genitive_spaces(self):
+        self.assertEqual("Dave's dog", prettify("Dave' s dog"))
+        self.assertEqual("Dave's dog", prettify("Dave 's dog"))
+        self.assertEqual("Dave's dog", prettify("Dave 'sdog"))
 
     def test_should_replace_multiple_percentage_with_single_ones(self):
         self.assertEqual('%', prettify('%%%'))
@@ -1156,12 +1158,12 @@ class PrettifyTestCase(TestCase):
     def test_should_add_spaces_around_division_if_missing(self):
         self.assertEqual('5 / 2 = 2.5', prettify('5/ 2 = 2.5'))
         self.assertEqual('5 / 2 = 2.5', prettify('5 /2 = 2.5'))
-        self.assertEqual('5 / 2 = 2.5', prettify('5 / 2 = 2.5'))
+        self.assertEqual('5 / 2 = 2.5', prettify('5/2 = 2.5'))
 
     def test_should_add_spaces_around_multiplication_if_missing(self):
         self.assertEqual('5 * 2 = 10', prettify('5* 2 = 10'))
         self.assertEqual('5 * 2 = 10', prettify('5 *2 = 10'))
-        self.assertEqual('5 * 2 = 10', prettify('5 * 2 = 10'))
+        self.assertEqual('5 * 2 = 10', prettify('5*2 = 10'))
 
     def test_should_prettify_string_as_expected(self):
         original = ' unprettified string ,, like this one,will be"prettified" .it\' s awesome!( like python)) '
@@ -1172,7 +1174,9 @@ class PrettifyTestCase(TestCase):
         original = '''
 
         unprettified string ,,
+
         like this one,will be"prettified"
+
         .it' s awesome!( like python))
 
         '''

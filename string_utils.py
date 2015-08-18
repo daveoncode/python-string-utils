@@ -131,9 +131,9 @@ PRETTIFY_RE = {
         r')',
         re.MULTILINE | re.DOTALL
     ),
-    'NO_SPACES': re.compile(
+    'SAXON_GENITIVE': re.compile(
         r'('
-        r'(?<=\w)\'\s(?=s)|\s\'\s(?=s)'  # saxon genitive
+        r'(?<=\w)\'\ss\s|(?<=\w)\s\'s(?=\w)|(?<=\w)\s\'s\s(?=\w)'
         r')',
         re.MULTILINE | re.UNICODE
     )
@@ -482,8 +482,9 @@ def prettify(string):
     p = PRETTIFY_RE['SPACES_AROUND'].sub(lambda m: ' ' + m.group(1).strip() + ' ', p)
     p = PRETTIFY_RE['SPACES_INSIDE'].sub(lambda m: m.group(1).strip(), p)
     p = PRETTIFY_RE['UPPERCASE_AFTER_SIGN'].sub(uppercase_after_sign, p)
-    p = PRETTIFY_RE['NO_SPACES'].sub(lambda m: m.group(1).strip(), p)
+    p = PRETTIFY_RE['SAXON_GENITIVE'].sub(lambda m: m.group(1).replace(' ', '') + ' ', p)
     p = p.strip()
-    if len(p) > 1:
-        p = p[0].capitalize() + p[1:]
-    return p
+    try:
+        return p[0].capitalize() + p[1:]
+    except IndexError:
+        return p
