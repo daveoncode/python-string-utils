@@ -471,18 +471,35 @@ def strip_html(string, keep_tag_content=False):
 
 
 def prettify(string):
-    # turns first letter after ".", "?", "!" into uppercase
-    def uppercase_after_sign(regex_match):
+    def remove_duplicates(regex_match):
+        return regex_match.group(1)[0]
+
+    def uppercase_first_letter_after_sign(regex_match):
         match = regex_match.group(1)
         return match[:-1] + match[2].upper()
 
-    p = PRETTIFY_RE['DUPLICATES'].sub(lambda m: m.group(1)[0], string)
-    p = PRETTIFY_RE['RIGHT_SPACE'].sub(lambda m: m.group(1).strip() + ' ', p)
-    p = PRETTIFY_RE['LEFT_SPACE'].sub(lambda m: ' ' + m.group(1).strip(), p)
-    p = PRETTIFY_RE['SPACES_AROUND'].sub(lambda m: ' ' + m.group(1).strip() + ' ', p)
-    p = PRETTIFY_RE['SPACES_INSIDE'].sub(lambda m: m.group(1).strip(), p)
-    p = PRETTIFY_RE['UPPERCASE_AFTER_SIGN'].sub(uppercase_after_sign, p)
-    p = PRETTIFY_RE['SAXON_GENITIVE'].sub(lambda m: m.group(1).replace(' ', '') + ' ', p)
+    def ensure_right_space_only(regex_match):
+        return regex_match.group(1).strip() + ' '
+
+    def ensure_left_space_only(regex_match):
+        return ' ' + regex_match.group(1).strip()
+
+    def ensure_spaces_around(regex_match):
+        return ' ' + regex_match.group(1).strip() + ' '
+
+    def remove_internal_spaces(regex_match):
+        return regex_match.group(1).strip()
+
+    def fix_saxon_genitive(regex_match):
+        return regex_match.group(1).replace(' ', '') + ' '
+
+    p = PRETTIFY_RE['DUPLICATES'].sub(remove_duplicates, string)
+    p = PRETTIFY_RE['RIGHT_SPACE'].sub(ensure_right_space_only, p)
+    p = PRETTIFY_RE['LEFT_SPACE'].sub(ensure_left_space_only, p)
+    p = PRETTIFY_RE['SPACES_AROUND'].sub(ensure_spaces_around, p)
+    p = PRETTIFY_RE['SPACES_INSIDE'].sub(remove_internal_spaces, p)
+    p = PRETTIFY_RE['UPPERCASE_AFTER_SIGN'].sub(uppercase_first_letter_after_sign, p)
+    p = PRETTIFY_RE['SAXON_GENITIVE'].sub(fix_saxon_genitive, p)
     p = p.strip()
     try:
         return p[0].capitalize() + p[1:]
