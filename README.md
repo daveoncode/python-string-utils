@@ -35,6 +35,7 @@ A small utility library to check and manipulate strings.
 - uuid
 - shuffle
 - strip_html
+- prettify
 
 
 ...and more are coming!
