@@ -6,7 +6,7 @@ from uuid import uuid4
 import random
 
 # module settings
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 __all__ = [
     'is_string',
     'is_url',
@@ -81,11 +81,11 @@ PRETTIFY_RE = {
     'RIGHT_SPACE': re.compile(
         r'('
         r'(?<=[^\s\d]),(?=[^\s\d])|\s,\s|\s,(?=[^\s\d])|\s,(?!.)|'  # comma (,)
-        r'(?<=[^\s\d])\.(?=[^\s\d])|\s\.\s|\s\.(?=[^\s\d])|\s\.(?!.)|'  # dot (.)
+        r'(?<=[^\s\d\.])\.+(?=[^\s\d\.])|\s\.+\s|\s\.+(?=[^\s\d])|\s\.+(?!\.)|'  # dot (.)
         r'(?<=\S);(?=\S)|\s;\s|\s;(?=\S)|\s;(?!.)|'  # semicolon (;)
         r'(?<=\S):(?=\S)|\s:\s|\s:(?=\S)|\s:(?!.)|'  # colon (:)
-        r'(?<=\S)!(?=\S)|\s!\s|\s!(?=\S)|\s!(?!.)|'  # exclamation (!)
-        r'(?<=\S)\?(?=\S)|\s\?\s|\s\?(?=\S)|\s\?(?!.)|'  # question (?)
+        r'(?<=[^\s!])!+(?=[^\s!])|\s!+\s|\s!+(?=[^\s!])|\s!+(?!!)|'  # exclamation (!)
+        r'(?<=[^\s\?])\?+(?=[^\s\?])|\s\?+\s|\s\?+(?=[^\s\?])|\s\?+(?!\?)|'  # question (?)
         r'\d%(?=\S)|(?<=\d)\s%\s|(?<=\d)\s%(?=\S)|(?<=\d)\s%(?!.)'  # percentage (%)
         r')',
         re.MULTILINE | re.DOTALL
@@ -471,6 +471,27 @@ def strip_html(string, keep_tag_content=False):
 
 
 def prettify(string):
+    """
+    Turns an ugly text string into a beautiful one by applying a regex pipeline which ensures the following:
+
+    - String cannot start or end with spaces
+    - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")
+    - Arithmetic operators ("+", "-", "/", "*", "=") must have one, and only one space before and after themselves
+    - The first letter after a dot, an exclamation or a question mark must be uppercase
+    - One, and only one space should follow a dot, an exclamation or a question mark
+    - Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and \
+    after quotes (foo" bar"baz -> foo "bar" baz)
+    - Text inside round brackets cannot start or end with spaces, but one, and only one space must come first and \
+    after brackets ("foo(bar )baz" -> "foo (bar) baz")
+    - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")
+    - Saxon genitive is correct ("Dave' s dog" -> "Dave's dog")
+
+
+    :param string: String to manipulate
+    :return: Prettified string.
+    :rtype: str
+    """
+
     def remove_duplicates(regex_match):
         return regex_match.group(1)[0]
 

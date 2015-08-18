@@ -1080,8 +1080,11 @@ class PrettifyTestCase(TestCase):
         self.assertEqual('%', prettify('%%%'))
         self.assertEqual('A % b % c', prettify('a %% b %%%%%% c'))
 
-    def test_should_put_space_after_comma_if_missing(self):
+    def test_should_add_space_after_comma_if_missing(self):
         self.assertEqual('One, two, three', prettify('one,two,three'))
+
+    def test_should_not_add_right_space_after_dot_for_numbers(self):
+        self.assertEqual('12,55', prettify('12,55'))
 
     def test_should_remove_space_before_comma(self):
         self.assertEqual('One, two, three', prettify('one , two , three'))
@@ -1089,20 +1092,23 @@ class PrettifyTestCase(TestCase):
     def test_should_uppercase_first_letter_after_period(self):
         self.assertEqual('Foo. Bar', prettify('Foo. bar'))
 
-    def test_should_put_space_after_period_if_missing(self):
+    def test_should_add_space_after_period_if_missing(self):
         self.assertEqual('One. Two. Three', prettify('one.two.three'))
+
+    def test_should_not_add_right_space_after_comma_for_numbers(self):
+        self.assertEqual('12.55', prettify('12.55'))
 
     def test_should_remove_space_before_period(self):
         self.assertEqual('One. Two. Three', prettify('one . two . three'))
 
-    def test_should_put_space_after_colon_if_missing(self):
+    def test_should_add_space_after_colon_if_missing(self):
         self.assertEqual('Test: this', prettify('Test:this'))
 
     def test_should_remove_space_before_colon(self):
         self.assertEqual('Test: this', prettify('Test :this'))
         self.assertEqual('Test:', prettify('Test :'))
 
-    def test_should_put_space_after_semicolon_if_missing(self):
+    def test_should_add_space_after_semicolon_if_missing(self):
         self.assertEqual('Test; this', prettify('Test;this'))
 
     def test_should_remove_space_before_semicolon(self):
@@ -1112,7 +1118,7 @@ class PrettifyTestCase(TestCase):
     def test_should_uppercase_first_letter_after_exclamation(self):
         self.assertEqual('Foo! Bar', prettify('Foo! bar'))
 
-    def test_should_put_space_after_exclamation_if_missing(self):
+    def test_should_add_space_after_exclamation_if_missing(self):
         self.assertEqual('Test! This', prettify('Test!this'))
 
     def test_should_remove_space_before_exclamation(self):
@@ -1122,7 +1128,7 @@ class PrettifyTestCase(TestCase):
     def test_should_uppercase_first_letter_after_question(self):
         self.assertEqual('Foo? Bar', prettify('Foo? bar'))
 
-    def test_should_put_space_after_question_if_missing(self):
+    def test_should_add_space_after_question_if_missing(self):
         self.assertEqual('Test? This', prettify('Test?this'))
 
     def test_should_remove_space_before_question(self):
@@ -1164,6 +1170,18 @@ class PrettifyTestCase(TestCase):
         self.assertEqual('5 * 2 = 10', prettify('5* 2 = 10'))
         self.assertEqual('5 * 2 = 10', prettify('5 *2 = 10'))
         self.assertEqual('5 * 2 = 10', prettify('5*2 = 10'))
+
+    def test_triple_dot_preserved(self):
+        self.assertEqual('Test...', prettify('Test...'))
+        self.assertEqual('Test... This', prettify('Test...This'))
+
+    def test_triple_exclamation_preserved(self):
+        self.assertEqual('Test!!!', prettify('Test!!!'))
+        self.assertEqual('Test!!! This', prettify('Test!!!This'))
+
+    def test_triple_question_preserved(self):
+        self.assertEqual('Test???', prettify('Test???'))
+        self.assertEqual('Test??? This', prettify('Test???This'))
 
     def test_should_prettify_string_as_expected(self):
         original = ' unprettified string ,, like this one,will be"prettified" .it\' s awesome!( like python)) '

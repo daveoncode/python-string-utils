@@ -498,6 +498,35 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="string_utils.prettify">
+<code class="descclassname">string_utils.</code><code class="descname">prettify</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.prettify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns an ugly text string into a beautiful one by applying a regex pipeline which ensures the following:</p>
+<ul class="simple">
+<li>String cannot start or end with spaces</li>
+<li>String cannot have multiple sequential spaces, empty lines or punctuation (except for &#8221;?&#8221;, &#8221;!&#8221; and &#8221;.&#8221;)</li>
+<li>Arithmetic operators (&#8220;+&#8221;, &#8220;-&#8221;, &#8220;/&#8221;, &#8220;*&#8221;, &#8220;=&#8221;) must have one, and only one space before and after themselves</li>
+<li>The first letter after a dot, an exclamation or a question mark must be uppercase</li>
+<li>One, and only one space should follow a dot, an exclamation or a question mark</li>
+<li>Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and     after quotes (foo&#8221; bar&#8221;baz -&gt; foo &#8220;bar&#8221; baz)</li>
+<li>Text inside round brackets cannot start or end with spaces, but one, and only one space must come first and     after brackets (&#8220;foo(bar )baz&#8221; -&gt; &#8220;foo (bar) baz&#8221;)</li>
+<li>Percentage sign (&#8220;%&#8221;) cannot be preceded by a space if there is a number before (&#8220;100 %&#8221; -&gt; &#8220;100%&#8221;)</li>
+<li>Saxon genitive is correct (&#8220;Dave&#8217; s dog&#8221; -&gt; &#8220;Dave&#8217;s dog&#8221;)</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; String to manipulate</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Prettified string.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
