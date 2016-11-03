@@ -24,6 +24,8 @@ A small utility library to check and manipulate strings.
 - is_snake_case
 - is_json
 - is_uuid
+- is_pangram
+- id_palindrome
 - words_count
 - contains_html
 
