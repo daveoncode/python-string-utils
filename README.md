@@ -25,7 +25,7 @@ A small utility library to check and manipulate strings.
 - is_json
 - is_uuid
 - is_pangram
-- id_palindrome
+- is_palindrome
 - words_count
 - contains_html
 
