@@ -8,7 +8,7 @@ A small utility library to check and manipulate strings.
 - fully documented
 - PEP8 complaint
 - 100% code coverage
-- tested against multiple python versions (2.7, 3.2, 3.3, 3.4)
+- tested against multiple python versions (2.7, 3.2, 3.3, 3.4, 3.5)
 
 
 ## What's inside...
