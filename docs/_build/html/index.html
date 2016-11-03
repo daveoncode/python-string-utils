@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Python String Utils’s documentation! &mdash; Python String Utils 0.1.0 documentation</title>
+  <title>Welcome to Python String Utils’s documentation! &mdash; Python String Utils 0.4.0 documentation</title>
   
 
   
@@ -30,7 +30,10 @@
   
 
   
-    <link rel="top" title="Python String Utils 0.1.0 documentation" href="#"/> 
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Python String Utils 0.4.0 documentation" href="#"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -43,17 +46,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="#" class="icon icon-home"> Python String Utils
-        
+          
+            <a href="#" class="icon icon-home"> Python String Utils
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                0.4.0
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -62,20 +75,23 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
-              <ul class="simple">
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Python String Utils&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
-
+</div>
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -90,7 +106,13 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
@@ -105,14 +127,13 @@
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="welcome-to-python-string-utils-s-documentation">
 <h1>Welcome to Python String Utils&#8217;s documentation!<a class="headerlink" href="#welcome-to-python-string-utils-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
-<ul class="simple">
-</ul>
 </div>
 <span class="target" id="module-string_utils"></span><dl class="function">
 <dt id="string_utils.is_string">
@@ -330,6 +351,44 @@ A string is considered snake case when:</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="string_utils.is_palindrome">
+<code class="descclassname">string_utils.</code><code class="descname">is_palindrome</code><span class="sig-paren">(</span><em>string</em>, <em>strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_palindrome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the string is a palindrome (<a class="reference external" href="https://en.wikipedia.org/wiki/Palindrome">https://en.wikipedia.org/wiki/Palindrome</a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to check.</li>
+<li><strong>strict</strong> (<em>bool</em>) &#8211; True if white spaces matter (default), false otherwise.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the string is a palindrome (like &#8220;otto&#8221;, or &#8220;i topi non avevano nipoti&#8221; if strict=False),</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>False otherwise</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.is_pangram">
+<code class="descclassname">string_utils.</code><code class="descname">is_pangram</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_pangram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the string is a pangram (<a class="reference external" href="https://en.wikipedia.org/wiki/Pangram">https://en.wikipedia.org/wiki/Pangram</a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>string</strong> &#8211; String to check.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the string is a pangram, False otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="string_utils.words_count">
 <code class="descclassname">string_utils.</code><code class="descname">words_count</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.words_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of words contained into the given string.</p>
@@ -531,13 +590,14 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span>Module Index</span></a></li>
-<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 </div>
 
 
+           </div>
           </div>
           <footer>
   
@@ -546,10 +606,11 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Davide Zanotti.
+        &copy; Copyright 2016, Davide Zanotti.
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -567,7 +628,7 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

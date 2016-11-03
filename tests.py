@@ -1200,3 +1200,22 @@ class PrettifyTestCase(TestCase):
         '''
         pretty = 'Unprettified string, like this one, will be "prettified". It\'s awesome! (like python)'
         self.assertEqual(pretty, prettify(original))
+
+
+class IsPalindromeTestCase(TestCase):
+
+    def test_strict_checking(self):
+        self.assertFalse(is_palindrome('nope!'))
+        self.assertFalse(is_palindrome('i topi non avevano nipoti'))
+        self.assertTrue(is_palindrome('otto'))
+
+    def test_no_strict_mode(self):
+        self.assertFalse(is_palindrome('nope!', False))
+        self.assertTrue(is_palindrome('i topi non avevano nipoti', False))
+        self.assertTrue(is_palindrome('otto', False))
+
+
+class IsPangramTestCase(TestCase):
+    def test_is_pangram_returns_expected_bool(self):
+        self.assertFalse(is_pangram('hello world'))
+        self.assertTrue(is_pangram('The quick brown fox jumps over the lazy dog'))

@@ -1,8 +1,19 @@
 # Python String Utils Changelog
 
+## v0.4.0
+
+### Added:
+
+- is_palindrome
+- is_pangram
+
+### Changed:
+
+- reverse (improved implementation)
+
 ## v0.3.0
 
-### Added
+### Added:
 
 - contains_html
 - strip_html
@@ -17,7 +28,7 @@
 if a non string objects is passed, instead **False** is returned (string_utils.is_url(1) -> **False**).
 - Forced **UTF-8** encoding for module file 
 
-### Added
+### Added:
 
 - is_string
 - is_ip

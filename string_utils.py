@@ -6,7 +6,7 @@ from uuid import uuid4
 import random
 
 # module settings
-__version__ = '0.3.0'
+__version__ = '0.4.0'
 __all__ = [
     'is_string',
     'is_url',
@@ -17,6 +17,8 @@ __all__ = [
     'is_json',
     'is_uuid',
     'is_ip',
+    'is_palindrome',
+    'is_pangram',
     'words_count',
     'contains_html',
     'camel_case_to_snake',
@@ -138,7 +140,9 @@ PRETTIFY_RE = {
         re.MULTILINE | re.UNICODE
     )
 }
+SPACES_RE = re.compile(r'\s')
 
+letters_set = set('abcdefghijklmnopqrstuvwxyz')
 
 # string checking functions
 
@@ -338,6 +342,32 @@ def is_ip(string):
         return False
 
 
+def is_palindrome(string, strict=True):
+    """
+    Checks if the string is a palindrome (https://en.wikipedia.org/wiki/Palindrome).
+
+    :param string: String to check.
+    :type string: str
+    :param strict: True if white spaces matter (default), false otherwise.
+    :type strict: bool
+    :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),
+    False otherwise
+    """
+    if strict:
+        return reverse(string) == string
+    return is_palindrome(SPACES_RE.sub('', string))
+
+
+def is_pangram(string):
+    """
+    Checks if the string is a pangram (https://en.wikipedia.org/wiki/Pangram).
+
+    :param string: String to check.
+    :return: True if the string is a pangram, False otherwise.
+    """
+    return set(SPACES_RE.sub('', string)).issuperset(letters_set)
+
+
 def words_count(string):
     """
     Returns the number of words contained into the given string.
@@ -380,7 +410,7 @@ def reverse(string):
     :return: Reversed string.
     :rtype: str
     """
-    return ''.join(list(reversed(string)))
+    return string[::-1]
 
 
 def camel_case_to_snake(string, separator='_'):

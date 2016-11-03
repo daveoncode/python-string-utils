@@ -5,7 +5,7 @@ with open('README.md', 'r') as readme:
 
 setup(
     name='python-string-utils',
-    version='0.3.0',
+    version='0.4.0',
     description='Utility functions for strings checking and manipulation.',
     long_description=long_description,
     author='Davide Zanotti',
@@ -17,7 +17,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
@@ -32,6 +32,7 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     keywords='string str utilities development',
     py_modules=['string_utils'],
