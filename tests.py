@@ -1204,6 +1204,14 @@ class PrettifyTestCase(TestCase):
 
 class IsPalindromeTestCase(TestCase):
 
+    def test_non_string_objects_return_false(self):
+        self.assertFalse(is_palindrome(1))
+        self.assertFalse(is_palindrome(['xx']))
+        self.assertFalse(is_palindrome({}))
+        self.assertFalse(is_palindrome(False))
+        self.assertFalse(is_palindrome((1, 2, 3)))
+        self.assertFalse(is_palindrome(object()))
+
     def test_strict_checking(self):
         self.assertFalse(is_palindrome('nope!'))
         self.assertFalse(is_palindrome('i topi non avevano nipoti'))
@@ -1216,6 +1224,14 @@ class IsPalindromeTestCase(TestCase):
 
 
 class IsPangramTestCase(TestCase):
+    def test_non_string_objects_return_false(self):
+        self.assertFalse(is_pangram(1))
+        self.assertFalse(is_pangram(['xx']))
+        self.assertFalse(is_pangram({}))
+        self.assertFalse(is_pangram(False))
+        self.assertFalse(is_pangram((1, 2, 3)))
+        self.assertFalse(is_pangram(object()))
+
     def test_is_pangram_returns_expected_bool(self):
         self.assertFalse(is_pangram('hello world'))
         self.assertTrue(is_pangram('The quick brown fox jumps over the lazy dog'))

@@ -353,6 +353,8 @@ def is_palindrome(string, strict=True):
     :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),
     False otherwise
     """
+    if not is_string(string):
+        return False
     if strict:
         return reverse(string) == string
     return is_palindrome(SPACES_RE.sub('', string))
@@ -365,7 +367,10 @@ def is_pangram(string):
     :param string: String to check.
     :return: True if the string is a pangram, False otherwise.
     """
-    return set(SPACES_RE.sub('', string)).issuperset(letters_set)
+    try:
+        return set(SPACES_RE.sub('', string)).issuperset(letters_set)
+    except TypeError:
+        return False
 
 
 def words_count(string):
