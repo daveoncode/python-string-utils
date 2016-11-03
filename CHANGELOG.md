@@ -1,10 +1,14 @@
 # Python String Utils Changelog
 
+## v0.4.2
+
+### Fixed:
+- is_url
+
 ## v0.4.1
 
 ### Changed:
 - is_palindrome and is_pangram now return False if the given object is not a string instead of raising an exception
-
 
 ## v0.4.0
 

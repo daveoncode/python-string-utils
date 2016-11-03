@@ -55,7 +55,9 @@ class IsUrlTestCase(TestCase):
 
     def test_should_accept_any_scheme_by_default(self):
         self.assertTrue(is_url('http://site.com'))
+        self.assertTrue(is_url('http://www.site.com'))
         self.assertTrue(is_url('https://site.com'))
+        self.assertTrue(is_url('https://www.site.com'))
         self.assertTrue(is_url('ftp://site.com'))
         self.assertTrue(is_url('git://site.com'))
 
@@ -64,7 +66,13 @@ class IsUrlTestCase(TestCase):
         self.assertFalse(is_url('git://site.com', allowed_schemes=['http', 'https']))
 
     def test_url_cannot_start_with_dot(self):
-        self.assertTrue(is_url('http://.site.com'))
+        self.assertFalse(is_url('http://.site.com'))
+
+    def test_url_can_contain_dash(self):
+        self.assertTrue(is_url('http://some-site-name.com'))
+
+    def test_url_cannot_start_with_dash(self):
+        self.assertFalse(is_url('http://-site.com'))
 
     def test_url_cannot_start_with_slash(self):
         self.assertFalse(is_url('http:///www.site.com'))
@@ -92,6 +100,8 @@ class IsUrlTestCase(TestCase):
         self.assertFalse(is_url('http://123.123.123.1234'))
         self.assertFalse(is_url('http://.123.123.123.123'))
         self.assertFalse(is_url('http://123.123.123.123.'))
+        self.assertFalse(is_url('http://123.123...123.123'))
+        self.assertFalse(is_url('http://123..123..123.123'))
 
     def test_url_can_have_port_number(self):
         self.assertTrue(is_url('http://localhost:8080'))
