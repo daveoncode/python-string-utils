@@ -16,6 +16,7 @@ A small utility library to check and manipulate strings.
 ### String checking functions:
 
 - is_string
+- is_full_string
 - is_ip
 - is_url
 - is_email
@@ -26,6 +27,7 @@ A small utility library to check and manipulate strings.
 - is_uuid
 - is_pangram
 - is_palindrome
+- is_isogram
 - words_count
 - contains_html
 

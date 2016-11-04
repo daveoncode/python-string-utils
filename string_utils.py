@@ -6,9 +6,10 @@ from uuid import uuid4
 import random
 
 # module settings
-__version__ = '0.4.2'
+__version__ = '0.5.0'
 __all__ = [
     'is_string',
+    'is_full_string',
     'is_url',
     'is_email',
     'is_credit_card',
@@ -19,6 +20,7 @@ __all__ = [
     'is_ip',
     'is_palindrome',
     'is_pangram',
+    'is_isogram',
     'words_count',
     'contains_html',
     'camel_case_to_snake',
@@ -144,6 +146,7 @@ SPACES_RE = re.compile(r'\s')
 
 letters_set = set('abcdefghijklmnopqrstuvwxyz')
 
+
 # string checking functions
 
 
@@ -161,6 +164,17 @@ def is_string(obj):
         return isinstance(obj, str)
 
 
+def is_full_string(string):
+    """
+    Check if a string is not empty (it must contains at least one non space character).
+
+    :param string: String to check.
+    :type string: str
+    :return: True if not empty, false otherwise.
+    """
+    return is_string(string) and string.strip() != ''
+
+
 # Full url example:
 # scheme://username:password@www.domain.com:8042/folder/subfolder/file.extension?param=value&param2=value2#hash
 def is_url(string, allowed_schemes=None):
@@ -172,10 +186,9 @@ def is_url(string, allowed_schemes=None):
     :return: True if url, false otherwise
     :rtype: bool
     """
-    try:
-        valid = bool(URL_RE.search(string))
-    except TypeError:
+    if not is_full_string(string):
         return False
+    valid = bool(URL_RE.search(string))
     if allowed_schemes:
         return valid and any([string.startswith(s) for s in allowed_schemes])
     return valid
@@ -200,10 +213,7 @@ def is_email(string):
     :return: True if email, false otherwise.
     :rtype: bool
     """
-    try:
-        return bool(EMAIL_RE.search(string))
-    except TypeError:
-        return False
+    return is_full_string(string) and bool(EMAIL_RE.search(string))
 
 
 def is_credit_card(string, card_type=None):
@@ -231,18 +241,17 @@ def is_credit_card(string, card_type=None):
     :return: True if credit card, false otherwise.
     :rtype: bool
     """
-    try:
-        if card_type:
-            if card_type not in CREDIT_CARDS:
-                raise KeyError(
-                    'Invalid card type "%s". Valid types are: %s' % (card_type, ', '.join(CREDIT_CARDS.keys()))
-                )
-            return bool(CREDIT_CARDS[card_type].search(string))
-        for c in CREDIT_CARDS:
-            if CREDIT_CARDS[c].search(string):
-                return True
-    except TypeError:
+    if not is_full_string(string):
         return False
+    if card_type:
+        if card_type not in CREDIT_CARDS:
+            raise KeyError(
+                'Invalid card type "{}". Valid types are: {}'.format(card_type, ', '.join(CREDIT_CARDS.keys()))
+            )
+        return bool(CREDIT_CARDS[card_type].search(string))
+    for c in CREDIT_CARDS:
+        if CREDIT_CARDS[c].search(string):
+            return True
     return False
 
 
@@ -261,10 +270,7 @@ def is_camel_case(string):
     :return: True for a camel case string, false otherwise.
     :rtype: bool
     """
-    try:
-        return bool(CAMEL_CASE_TEST_RE.search(string))
-    except TypeError:
-        return False
+    return is_full_string(string) and bool(CAMEL_CASE_TEST_RE.search(string))
 
 
 def is_snake_case(string, separator='_'):
@@ -285,16 +291,15 @@ def is_snake_case(string, separator='_'):
     :return: True for a snake case string, false otherwise.
     :rtype: bool
     """
-    re_map = {
-        '_': SNAKE_CASE_TEST_RE,
-        '-': SNAKE_CASE_TEST_DASH_RE
-    }
-    re_template = '^[a-z]+([a-z\d]+{sign}|{sign}[a-z\d]+)+[a-z\d]+$'
-    r = re_map.get(separator, re.compile(re_template.format(sign=re.escape(separator))))
-    try:
+    if is_full_string(string):
+        re_map = {
+            '_': SNAKE_CASE_TEST_RE,
+            '-': SNAKE_CASE_TEST_DASH_RE
+        }
+        re_template = '^[a-z]+([a-z\d]+{sign}|{sign}[a-z\d]+)+[a-z\d]+$'
+        r = re_map.get(separator, re.compile(re_template.format(sign=re.escape(separator))))
         return bool(r.search(string))
-    except TypeError:
-        return False
+    return False
 
 
 def is_json(string):
@@ -306,10 +311,11 @@ def is_json(string):
     :return: True if json, false otherwise
     :rtype: bool
     """
-    s = str(string)
-    if bool(JSON_WRAPPER_RE.search(s)):
+    if not is_full_string(string):
+        return False
+    if bool(JSON_WRAPPER_RE.search(string)):
         try:
-            return isinstance(json.loads(s), dict)
+            return isinstance(json.loads(string), dict)
         except (TypeError, ValueError, OverflowError):
             return False
     return False
@@ -336,10 +342,7 @@ def is_ip(string):
     :return: True if an ip, false otherwise.
     :rtype: bool
     """
-    try:
-        return bool(IP_RE.search(string))
-    except TypeError:
-        return False
+    return is_full_string(string) and bool(IP_RE.search(string))
 
 
 def is_palindrome(string, strict=True):
@@ -353,11 +356,11 @@ def is_palindrome(string, strict=True):
     :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),
     False otherwise
     """
-    if not is_string(string):
-        return False
-    if strict:
-        return reverse(string) == string
-    return is_palindrome(SPACES_RE.sub('', string))
+    if is_full_string(string):
+        if strict:
+            return reverse(string) == string
+        return is_palindrome(SPACES_RE.sub('', string))
+    return False
 
 
 def is_pangram(string):
@@ -365,12 +368,21 @@ def is_pangram(string):
     Checks if the string is a pangram (https://en.wikipedia.org/wiki/Pangram).
 
     :param string: String to check.
+    :type string: str
     :return: True if the string is a pangram, False otherwise.
     """
-    try:
-        return set(SPACES_RE.sub('', string)).issuperset(letters_set)
-    except TypeError:
-        return False
+    return is_full_string(string) and set(SPACES_RE.sub('', string)).issuperset(letters_set)
+
+
+def is_isogram(string):
+    """
+    Checks if the string is an isogram (https://en.wikipedia.org/wiki/Isogram).
+
+    :param string: String to check.
+    :type string: str
+    :return: True if isogram, false otherwise.
+    """
+    return is_full_string(string) and len(set(string)) == len(string)
 
 
 def words_count(string):

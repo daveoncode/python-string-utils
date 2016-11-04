@@ -24,6 +24,26 @@ class IsStringTestCase(TestCase):
         self.assertTrue(is_string(r'[a-z]'))
 
 
+class IsFullStringTestCase(TestCase):
+    def test_empty_string_is_not_full(self):
+        self.assertFalse(is_full_string(''))
+
+    def test_white_space_is_not_full(self):
+        self.assertFalse(is_full_string(' '))
+        self.assertFalse(is_full_string('''
+            \n
+            \n
+            \n
+        '''))
+
+    def test_word_string_is_full(self):
+        self.assertTrue(is_full_string('ciao'))
+        self.assertTrue(is_full_string(' hi '))
+        self.assertTrue(is_full_string('1'))
+        self.assertTrue(is_full_string(' @*& '))
+        self.assertTrue(is_full_string('...'))
+
+
 class IsUrlTestCase(TestCase):
     def test_should_return_false_for_non_string_objects(self):
         self.assertFalse(is_url(None))
@@ -1213,7 +1233,6 @@ class PrettifyTestCase(TestCase):
 
 
 class IsPalindromeTestCase(TestCase):
-
     def test_non_string_objects_return_false(self):
         self.assertFalse(is_palindrome(1))
         self.assertFalse(is_palindrome(['xx']))
@@ -1221,6 +1240,11 @@ class IsPalindromeTestCase(TestCase):
         self.assertFalse(is_palindrome(False))
         self.assertFalse(is_palindrome((1, 2, 3)))
         self.assertFalse(is_palindrome(object()))
+
+    def test_empty_strings_are_not_palindromes(self):
+        self.assertFalse(is_palindrome(''))
+        self.assertFalse(is_palindrome(' '))
+        self.assertFalse(is_palindrome(' \n\t '))
 
     def test_strict_checking(self):
         self.assertFalse(is_palindrome('nope!'))
@@ -1245,3 +1269,24 @@ class IsPangramTestCase(TestCase):
     def test_is_pangram_returns_expected_bool(self):
         self.assertFalse(is_pangram('hello world'))
         self.assertTrue(is_pangram('The quick brown fox jumps over the lazy dog'))
+
+
+class IsIsogramTestCase(TestCase):
+    def test_non_string_objects_return_false(self):
+        self.assertFalse(is_isogram(1))
+        self.assertFalse(is_isogram(['xx']))
+        self.assertFalse(is_isogram({}))
+        self.assertFalse(is_isogram(False))
+        self.assertFalse(is_isogram((1, 2, 3)))
+        self.assertFalse(is_isogram(object()))
+
+    def test_empty_strings_are_not_isograms(self):
+        self.assertFalse(is_isogram(''))
+        self.assertFalse(is_isogram(' '))
+        self.assertFalse(is_isogram(' \n \t '))
+
+    def test_is_isogram_returns_expected_bool(self):
+        self.assertFalse(is_isogram('hello'))
+        self.assertFalse(is_isogram('hello world, how are you?'))
+        self.assertTrue(is_isogram('dermatoglyphics'))
+        self.assertTrue(is_isogram('abcdefghilmnopqrs'))
