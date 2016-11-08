@@ -1290,3 +1290,72 @@ class IsIsogramTestCase(TestCase):
         self.assertFalse(is_isogram('hello world, how are you?'))
         self.assertTrue(is_isogram('dermatoglyphics'))
         self.assertTrue(is_isogram('abcdefghilmnopqrs'))
+
+
+class SlugifyTestCase(TestCase):
+    def test_cannot_handle_non_string_objects(self):
+        self.assertRaises(TypeError, lambda: slugify(None))
+        self.assertRaises(TypeError, lambda: slugify(False))
+        self.assertRaises(TypeError, lambda: slugify(0))
+        self.assertRaises(TypeError, lambda: slugify([]))
+        self.assertRaises(TypeError, lambda: slugify({'a': 1}))
+
+    def test_slugify_lowercase_strings(self):
+        self.assertEqual(slugify('BANANA'), 'banana')
+
+    def test_slugify_trim_strings_and_extra_white_spaces(self):
+        self.assertEqual(slugify('hello '), 'hello')
+        self.assertEqual(slugify(' hello'), 'hello')
+        self.assertEqual(slugify(' hello '), 'hello')
+        self.assertEqual(slugify(' hello world '), 'hello-world')
+        self.assertEqual(slugify('''
+            \n\t
+            hello \n\t world
+            \n\t
+        '''), 'hello-world')
+
+    def test_slugify_removes_signs(self):
+        self.assertEqual(slugify('(this is a "test")'), 'this-is-a-test')
+        self.assertEqual(slugify('<<wow>> :: [yeah]'), 'wow-yeah')
+        self.assertEqual(slugify('c++'), 'c')
+        self.assertEqual(slugify('?#foo+bar+baz!'), 'foo-bar-baz')
+
+    def test_slugify_use_given_join_sign(self):
+        self.assertEqual(slugify('Slugify this string please!', '-'), 'slugify-this-string-please')
+        self.assertEqual(slugify('Slugify this string please!', '_'), 'slugify_this_string_please')
+        self.assertEqual(slugify('Slugify this string please!', '.'), 'slugify.this.string.please')
+
+    def test_slugify_converts_non_ascii_letters(self):
+        self.assertEqual(slugify('Mönstér Mägnët'), 'monster-magnet')
+
+    def test_slugify_preserves_numbers(self):
+        self.assertEqual(slugify('12 eggs, 1 gallon of milk, 4 bananas'), '12-eggs-1-gallon-of-milk-4-bananas')
+
+    def test_slugify_removes_dash_duplicates(self):
+        self.assertEqual(slugify('-hello world too--much --dashes---here--'), 'hello-world-too-much-dashes-here')
+
+
+class IsSlugTestCase(TestCase):
+    def test_non_string_objects_return_false(self):
+        self.assertFalse(is_slug(1))
+        self.assertFalse(is_slug(['xx']))
+        self.assertFalse(is_slug({}))
+        self.assertFalse(is_slug(False))
+        self.assertFalse(is_slug((1, 2, 3)))
+        self.assertFalse(is_slug(object()))
+
+    def test_recognizes_slugs(self):
+        self.assertTrue(is_slug('yep-i-am-a-slug'))
+        self.assertTrue(is_slug('yep-i-am-a-slug', '-'))
+        self.assertTrue(is_slug('yep.i.am.a.slug', '.'))
+        self.assertTrue(is_slug('yep_i_am_a_slug', '_'))
+
+    def test_exclude_invalid_slugs(self):
+        self.assertFalse(is_slug(' nope'))
+        self.assertFalse(is_slug('nope '))
+        self.assertFalse(is_slug(' nope '))
+        self.assertFalse(is_slug('#nope'))
+        self.assertFalse(is_slug('-nope-'))
+        self.assertFalse(is_slug('-no-no-no-'))
+        self.assertFalse(is_slug('100%no-slug!'))
+        self.assertFalse(is_slug('NOT-AS-UPPERCASE'))

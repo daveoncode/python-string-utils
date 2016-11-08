@@ -4,9 +4,10 @@ import json
 import re
 from uuid import uuid4
 import random
+import unicodedata
 
 # module settings
-__version__ = '0.5.0'
+__version__ = '0.6.0'
 __all__ = [
     'is_string',
     'is_full_string',
@@ -21,6 +22,7 @@ __all__ = [
     'is_palindrome',
     'is_pangram',
     'is_isogram',
+    'is_slug',
     'words_count',
     'contains_html',
     'camel_case_to_snake',
@@ -30,6 +32,7 @@ __all__ = [
     'shuffle',
     'strip_html',
     'prettify',
+    'slugify',
 ]
 
 # compiled regex
@@ -142,6 +145,7 @@ PRETTIFY_RE = {
         re.MULTILINE | re.UNICODE
     )
 }
+NO_LETTERS_OR_NUMBERS_RE = re.compile(r'[^\w\d]+|_+', re.IGNORECASE | re.UNICODE)
 SPACES_RE = re.compile(r'\s')
 
 letters_set = set('abcdefghijklmnopqrstuvwxyz')
@@ -385,6 +389,22 @@ def is_isogram(string):
     return is_full_string(string) and len(set(string)) == len(string)
 
 
+def is_slug(string, sign='-'):
+    """
+    Checks if a given string is a slug.
+
+    :param string: String to check.
+    :type string: str
+    :param sign: Join sign used by the slug.
+    :type sign: str
+    :return: True if slug, false otherwise.
+    """
+    if not is_full_string(string):
+        return False
+    rex = r'^([a-z\d]+' + re.escape(sign) + r'?)*[a-z\d]$'
+    return re.match(rex, string) is not None
+
+
 def words_count(string):
     """
     Returns the number of words contained into the given string.
@@ -523,7 +543,7 @@ def prettify(string):
 
     - String cannot start or end with spaces
     - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")
-    - Arithmetic operators ("+", "-", "/", "*", "=") must have one, and only one space before and after themselves
+    - Arithmetic operators (+, -, /, \*, =) must have one, and only one space before and after themselves
     - The first letter after a dot, an exclamation or a question mark must be uppercase
     - One, and only one space should follow a dot, an exclamation or a question mark
     - Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and \
@@ -573,3 +593,38 @@ def prettify(string):
         return p[0].capitalize() + p[1:]
     except IndexError:
         return p
+
+
+def slugify(string, sign='-'):
+    """
+    Converts a string into a slug using provided join sign.
+    (**(This Is A "Test"!)** -> **this-is-a-test**)
+
+    :param string: String to convert.
+    :type string: str
+    :param sign: Sign used to join string tokens (default to "-").
+    :type sign: str
+    :return: Slugified string
+    """
+    if not is_string(string):
+        raise TypeError('Expected string')
+
+    # unicode casting for python 2 (unicode is default for python 3)
+    try:
+        string = unicode(string, 'utf-8')
+    except NameError:
+        pass
+
+    # replace any character that is NOT letter or number with spaces
+    s = NO_LETTERS_OR_NUMBERS_RE.sub(' ', string.lower()).strip()
+
+    # replace spaces with join sign
+    s = SPACES_RE.sub(sign, s)
+
+    # normalize joins (remove duplicates)
+    s = re.sub(re.escape(sign) + r'+', sign, s)
+
+    # translate non-ascii signs
+    s = unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode('utf-8')
+
+    return s

@@ -1,5 +1,12 @@
 # Python String Utils Changelog
 
+## v0.6.0
+
+### Added:
+
+- slugify
+- is_slug
+
 ## v0.5.0
 
 ### Added:

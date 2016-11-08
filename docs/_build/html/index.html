@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to Python String Utils’s documentation! &mdash; Python String Utils 0.5.0 documentation</title>
+  <title>string_utils documentation &mdash; Python String Utils 0.6.0 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Python String Utils 0.5.0 documentation" href="#"/> 
+    <link rel="top" title="Python String Utils 0.6.0 documentation" href="#"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.5.0
+                0.6.0
               </div>
             
           
@@ -84,7 +84,7 @@
             
                 <!-- Local TOC -->
                 <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Welcome to Python String Utils&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#">string_utils documentation</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </div>
@@ -116,7 +116,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
-    <li>Welcome to Python String Utils&#8217;s documentation!</li>
+    <li>string_utils documentation</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -130,8 +130,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-python-string-utils-s-documentation">
-<h1>Welcome to Python String Utils&#8217;s documentation!<a class="headerlink" href="#welcome-to-python-string-utils-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="string-utils-documentation">
+<h1>string_utils documentation<a class="headerlink" href="#string-utils-documentation" title="Permalink to this headline">¶</a></h1>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 </div>
@@ -421,6 +421,27 @@ A string is considered snake case when:</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="string_utils.is_slug">
+<code class="descclassname">string_utils.</code><code class="descname">is_slug</code><span class="sig-paren">(</span><em>string</em>, <em>sign='-'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.is_slug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a given string is a slug.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to check.</li>
+<li><strong>sign</strong> (<em>str</em>) &#8211; Join sign used by the slug.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if slug, false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="string_utils.words_count">
 <code class="descclassname">string_utils.</code><code class="descname">words_count</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.words_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the number of words contained into the given string.</p>
@@ -596,7 +617,7 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
 <ul class="simple">
 <li>String cannot start or end with spaces</li>
 <li>String cannot have multiple sequential spaces, empty lines or punctuation (except for &#8221;?&#8221;, &#8221;!&#8221; and &#8221;.&#8221;)</li>
-<li>Arithmetic operators (&#8220;+&#8221;, &#8220;-&#8221;, &#8220;/&#8221;, &#8220;*&#8221;, &#8220;=&#8221;) must have one, and only one space before and after themselves</li>
+<li>Arithmetic operators (+, -, /, *, =) must have one, and only one space before and after themselves</li>
 <li>The first letter after a dot, an exclamation or a question mark must be uppercase</li>
 <li>One, and only one space should follow a dot, an exclamation or a question mark</li>
 <li>Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and     after quotes (foo&#8221; bar&#8221;baz -&gt; foo &#8220;bar&#8221; baz)</li>
@@ -613,6 +634,28 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Prettified string.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.slugify">
+<code class="descclassname">string_utils.</code><code class="descname">slugify</code><span class="sig-paren">(</span><em>string</em>, <em>sign='-'</em><span class="sig-paren">)</span><a class="headerlink" href="#string_utils.slugify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a string into a slug using provided join sign.
+(<strong>(This Is A &#8220;Test&#8221;!)</strong> -&gt; <strong>this-is-a-test</strong>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> (<em>str</em>) &#8211; String to convert.</li>
+<li><strong>sign</strong> (<em>str</em>) &#8211; Sign used to join string tokens (default to &#8220;-&#8221;).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Slugified string</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -660,7 +703,7 @@ as an html validator, its goal is to detect &#8220;malicious&#8221; or undesired
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.5.0',
+            VERSION:'0.6.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

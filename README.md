@@ -28,6 +28,7 @@ A small utility library to check and manipulate strings.
 - is_pangram
 - is_palindrome
 - is_isogram
+- is_slug
 - words_count
 - contains_html
 
@@ -40,6 +41,7 @@ A small utility library to check and manipulate strings.
 - shuffle
 - strip_html
 - prettify
+- slugify
 
 
 ...and more are coming!
