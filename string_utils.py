@@ -2,6 +2,7 @@
 
 import json
 import re
+import string
 from uuid import uuid4
 import random
 import unicodedata
@@ -520,6 +521,20 @@ def shuffle(string):
     s = sorted(string)  # turn the string into a list of chars
     random.shuffle(s)  # shuffle the list
     return ''.join(s)  # convert the shuffled list back to string
+
+def caesar(string, shift):
+    letters_lower = 'abcdefghijklmnopqrstuvwxyz'
+    letters_upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    shifted = []
+    for x in string:
+        if x.strip() and x in letters_lower:
+            shifted.append(letters_lower[(letters_lower.index(x) + shift) % 26])
+        elif x.strip() and x in letters_upper:
+            shifted.append(letters_upper[(letters_upper.index(x) + shift) % 26])
+        else:
+            shifted.append(x)
+    return ''.join(shifted)
+    
 
 
 def strip_html(string, keep_tag_content=False):
