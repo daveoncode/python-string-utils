@@ -9,3 +9,7 @@ install:
 script:
   - python -m unittest
   - cd docs && make html
+branches:
+  only:
+  - master
+  - develop
