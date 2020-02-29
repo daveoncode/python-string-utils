@@ -13,12 +13,11 @@ __all__ = [
 ]
 
 
-def uuid():
+def uuid() -> str:
     """
-    Generated an UUID string (using uuid.uuid4()).
+    Generated an UUID string (using `uuid.uuid4()`).
 
     :return: uuid string.
-    :rtype: str
     """
     return str(uuid4())
 
@@ -27,11 +26,12 @@ def random_string(size: int) -> str:
     """
     Returns a string of the specified size containing random characters (uppercase/lowercase ascii letters and digits).
 
-    Example:
+    *Example:*
 
     >>> random_string(9) # possible output: "cx3QQbzYg"
 
     :param size: Desired string size
+    :type size: int
     :return: Random string
     """
     if not is_integer(str(size)) or size < 1:
@@ -47,10 +47,16 @@ def random_string(size: int) -> str:
 def secure_random_hex(byte_count: int) -> str:
     """
     Generates a random string using secure low level random generator (os.urandom).
-    BEAR IN MIND: due to hex conversion, the returned string will have a size that is exactly
+
+    BEAR IN MIND: due to hex conversion, the returned string will have a size that is exactly\
     the double of the given `byte_count`.
 
+    *Example:*
+
+    >>> secure_random_hex(9) # possible output: 'aac4cf1d1d87bd5036'
+
     :param byte_count: Number of random bytes to generate
+    :type byte_count: int
     :return: Hexadecimal string representation of generated random bytes
     """
     if not is_integer(str(byte_count)) or byte_count < 1:

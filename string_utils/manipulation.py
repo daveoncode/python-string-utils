@@ -34,7 +34,6 @@ def reverse(input_string: str) -> str:
     :param input_string: String to revert.
     :type input_string: str
     :return: Reversed string.
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -52,7 +51,6 @@ def camel_case_to_snake(input_string, separator='_'):
     :param separator: Sign to use as separator.
     :type separator: str
     :return: Converted string.
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -75,7 +73,6 @@ def snake_case_to_camel(input_string: str, upper_case_first: bool = True, separa
     :param separator: Sign to use as separator (default to "_").
     :type separator: str
     :return: Converted string
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -100,7 +97,6 @@ def shuffle(input_string: str) -> str:
     :param input_string: String to shuffle
     :type input_string: str
     :return: Shuffled string
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -124,7 +120,6 @@ def strip_html(input_string: str, keep_tag_content: bool = False) -> str:
     :param keep_tag_content: True to preserve tag content, False to remove tag and its content too (default).
     :type keep_tag_content: bool
     :return: String with html removed.
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -138,21 +133,20 @@ def prettify(input_string: str) -> str:
     """
     Turns an ugly text string into a beautiful one by applying a regex pipeline which ensures the following:
 
-    - String cannot start or end with spaces
-    - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")
-    - Arithmetic operators (+, -, /, *, =) must have one, and only one space before and after themselves
-    - The first letter after a dot, an exclamation or a question mark must be uppercase
-    - One, and only one space should follow a dot, an exclamation or a question mark
+    - String cannot start or end with spaces\
+    - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")\
+    - Arithmetic operators (+, -, /, \\*, =) must have one, and only one space before and after themselves\
+    - The first letter after a dot, an exclamation or a question mark must be uppercase\
+    - One, and only one space should follow a dot, an exclamation or a question mark\
     - Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and \
     after quotes (foo" bar"baz -> foo "bar" baz)
     - Text inside round brackets cannot start or end with spaces, but one, and only one space must come first and \
-    after brackets ("foo(bar )baz" -> "foo (bar) baz")
-    - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")
+    after brackets ("foo(bar )baz" -> "foo (bar) baz")\
+    - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")\
     - Saxon genitive is correct ("Dave' s dog" -> "Dave's dog")
 
     :param input_string: String to manipulate
     :return: Prettified string.
-    :rtype: str
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -262,6 +256,7 @@ def booleanize(input_string: str) -> bool:
     >>> booleanize('true') # returns True
 
     :param input_string: String to convert
+    :type input_string: str
     :return: True if the string contains a boolean-like positive value, false otherwise
     """
     if not is_string(input_string):
@@ -275,6 +270,7 @@ def strip_margin(input_string: str) -> str:
     Removes tab indentation from multi line strings (inspired by analogous Scala function).
 
     :param input_string: String to format
+    :type input_string: str
     :return: A string without left margins
     """
     if not is_string(input_string):
@@ -315,8 +311,11 @@ class StringCompressor:
         Behind the scenes this method makes use of the standard Python's zlib and base64 libraries.
 
         :param input_string: String to compress (must be not empty or a ValueError will be raised).
+        :type input_string: str
         :param encoding: String encoding (default to "utf-8").
+        :type encoding: str
         :param compression_level: A value between 0 (no compression) and 9 (best compression), default to 9.
+        :type compression_level: int
         :return: Compressed string.
         """
         cls.__require_valid_input_and_encoding(input_string, encoding)
@@ -347,7 +346,9 @@ class StringCompressor:
         back to its original state.
 
         :param input_string: String to restore.
+        :type input_string: str
         :param encoding: Original string encoding.
+        :type encoding: str
         :return: Decompressed string.
         """
 
@@ -417,12 +418,18 @@ class RomanNumbers:
         Why this limit? You may be wondering:
 
         1. zero is forbidden since there is no related representation in roman numbers
-        2. the upper bound 3999 is due to the limitation in the ascii charset
-        (the higher quantity sign displayable in ascii is "M" which is equal to 1000, therefore based on
-        roman numbers rules we can use 3 times M to reach 3000 but we can't go any further in thousands without
+        2. the upper bound 3999 is due to the limitation in the ascii charset\
+        (the higher quantity sign displayable in ascii is "M" which is equal to 1000, therefore based on\
+        roman numbers rules we can use 3 times M to reach 3000 but we can't go any further in thousands without\
         special "boxed chars").
 
+        *Examples:*
+
+        >>> RomanNumbers.encode(37) # returns 'XXXVIII'
+        >>> RomanNumbers.encode('2020') # returns 'MMXX'
+
         :param input_number: An integer or a string to be converted.
+        :type input_number: Union[str, int]
         :return: Roman number string.
         """
 
@@ -468,7 +475,12 @@ class RomanNumbers:
         """
         Decode a roman number string into an integer if the provided string is valid.
 
+        *Example:*
+
+        >>> RomanNumbers.decode('VII') # returns 7
+
         :param input_string: (Assumed) Roman number
+        :type input_string: str
         :return: Integer value
         """
 

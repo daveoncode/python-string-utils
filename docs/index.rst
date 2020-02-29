@@ -3,15 +3,27 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-string_utils documentation
-==========================
+Python String Utils Documentation
+=================================
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: string_utils
+.. automodule:: string_utils.validation
+   :members:
+
+.. automodule:: string_utils.manipulation
+   :members:
+
+.. autoclass:: string_utils.manipulation.StringCompressor
+   :members:
+
+.. autoclass:: string_utils.manipulation.RomanNumbers
+   :members:
+
+.. automodule:: string_utils.generation
    :members:
 
 Indices and tables

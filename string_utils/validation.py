@@ -38,7 +38,6 @@ def is_string(obj: Any) -> bool:
 
     :param obj: Object to test.
     :return: True if string, false otherwise.
-    :rtype: bool
     """
     return isinstance(obj, str)
 
@@ -46,6 +45,13 @@ def is_string(obj: Any) -> bool:
 def is_full_string(input_string: Any) -> bool:
     """
     Check if a string is not empty (it must contains at least one non space character).
+
+    *Examples:*
+
+    >>> is_full_string(None) # returns false
+    >>> is_full_string('') # returns false
+    >>> is_full_string(' ') # returns false
+    >>> is_full_string('hello') # returns true
 
     :param input_string: String to check.
     :type input_string: str
@@ -57,10 +63,20 @@ def is_full_string(input_string: Any) -> bool:
 def is_number(input_string: str) -> bool:
     """
     Checks if a string is a valid number.
-    The number can be a signed (eg: "+1", "-2", "-3.3") or unsigned (eg: "1", "2", "3.3") integer or double
-    or use the "scientific notation" (eg: "1e5")
+
+    The number can be a signed (eg: +1, -2, -3.3) or unsigned (eg: 1, 2, 3.3) integer or double
+    or use the "scientific notation" (eg: 1e5).
+
+    *Examples:*
+
+    >>> is_number('42') # returns true
+    >>> is_number('19.99') # returns true
+    >>> is_number('-9.12') # returns true
+    >>> is_number('1e3') # returns true
+    >>> is_number('1 2 3') # returns false
 
     :param input_string: String to check
+    :type input_string: str
     :return: True if the string represents a number, false otherwise
     """
     if not isinstance(input_string, str):
@@ -72,9 +88,16 @@ def is_number(input_string: str) -> bool:
 def is_integer(input_string: str) -> bool:
     """
     Checks whether the given string represents an integer or not.
+
     An integer may be signed or unsigned or use a "scientific notation".
 
+    *Examples:*
+
+    >>> is_integer('42') # returns true
+    >>> is_integer('42.0') # returns false
+
     :param input_string: String to check
+    :type input_string: str
     :return: True if integer, false otherwise
     """
     return is_number(input_string) and '.' not in input_string
@@ -83,9 +106,14 @@ def is_integer(input_string: str) -> bool:
 def is_decimal(input_string: str) -> bool:
     """
     Checks whether the given string represents a decimal or not.
+
     A decimal may be signed or unsigned or use a "scientific notation".
 
+    >>> is_decimal('42.0') # returns true
+    >>> is_decimal('42') # returns false
+
     :param input_string: String to check
+    :type input_string: str
     :return: True if integer, false otherwise
     """
     return is_number(input_string) and '.' in input_string
@@ -97,10 +125,17 @@ def is_url(input_string: Any, allowed_schemes: Optional[List[str]] = None) -> bo
     """
     Check if a string is a valid url.
 
+    *Examples:*
+
+    >>> is_url('http://www.mysite.com') # returns true
+    >>> is_url('https://mysite.com') # returns true
+    >>> is_url('.mysite.com') # returns false
+
     :param input_string: String to check.
+    :type input_string: str
     :param allowed_schemes: List of valid schemes ('http', 'https', 'ftp'...). Default to None (any scheme is valid).
+    :type allowed_schemes: Optional[List[str]]
     :return: True if url, false otherwise
-    :rtype: bool
     """
     if not is_full_string(input_string):
         return False
@@ -117,20 +152,20 @@ def is_email(input_string: Any) -> bool:
     """
     Check if a string is an email.
 
-    | **IMPORTANT NOTES**:
-    | By design, the implementation of this checking does not follow the specification for a valid \
+    By design, the implementation of this checking does not follow the specification for a valid \
     email address, but instead it's based on real world cases in order to match more than 99% \
     of emails and catch user mistakes. For example the percentage sign "%" is a valid sign for an email, \
     but actually no one use it, instead if such sign is found in a string coming from user input (like a \
     web form) is very likely that the intention was to type "5" (which is on the same key on a US keyboard).
 
-    | You can take a look at "**IsEmailTestCase**" in tests.py for further details.
+    *Examples:*
 
+    >>> is_email('my.email@the-provider.com') # returns true
+    >>> is_email('@gmail.com') # returns false
 
     :param input_string: String to check.
     :type input_string: str
     :return: True if email, false otherwise.
-    :rtype: bool
     """
     return is_full_string(input_string) and EMAIL_RE.match(input_string) is not None
 
@@ -143,10 +178,7 @@ def is_credit_card(input_string: Any, card_type: str = None) -> bool:
 
     :param input_string: String to check.
     :type input_string: str
-    :param card_type: Card type.
-    :type card_type: str
-
-    Can be one of these:
+    :param card_type: Card type. Can be one of these:
 
     * VISA
     * MASTERCARD
@@ -157,8 +189,9 @@ def is_credit_card(input_string: Any, card_type: str = None) -> bool:
 
     or None. Default to None (any card).
 
+    :type card_type: str
+
     :return: True if credit card, false otherwise.
-    :rtype: bool
     """
     if not is_full_string(input_string):
         return False
@@ -180,17 +213,21 @@ def is_credit_card(input_string: Any, card_type: str = None) -> bool:
 def is_camel_case(input_string: Any) -> bool:
     """
     Checks if a string is formatted as camel case.
+
     A string is considered camel case when:
 
     - it's composed only by letters ([a-zA-Z]) and optionally numbers ([0-9])
     - it contains both lowercase and uppercase letters
     - it does not start with a number
 
+    *Examples:*
+
+    >>> is_camel_case('MyString') # returns true
+    >>> is_camel_case('mystring') # returns false
 
     :param input_string: String to test.
     :type input_string: str
     :return: True for a camel case string, false otherwise.
-    :rtype: bool
     """
     return is_full_string(input_string) and CAMEL_CASE_TEST_RE.match(input_string) is not None
 
@@ -198,6 +235,7 @@ def is_camel_case(input_string: Any) -> bool:
 def is_snake_case(input_string: Any, separator: str = '_') -> bool:
     """
     Checks if a string is formatted as "snake case".
+
     A string is considered snake case when:
 
     * it's composed only by lowercase letters ([a-z]), underscores (or provided separator) \
@@ -205,13 +243,16 @@ def is_snake_case(input_string: Any, separator: str = '_') -> bool:
     * it does not start/end with an underscore (or provided separator)
     * it does not start with a number
 
+    *Examples:*
+
+    >>> is_snake_case('foo_bar_baz') # returns true
+    >>> is_snake_case('foo') # returns false
 
     :param input_string: String to test.
     :type input_string: str
     :param separator: String to use as separator.
     :type separator: str
     :return: True for a snake case string, false otherwise.
-    :rtype: bool
     """
     if is_full_string(input_string):
         re_map = {
@@ -233,10 +274,15 @@ def is_json(input_string: Any) -> bool:
     """
     Check if a string is a valid json.
 
+    *Examples:*
+
+    >>> is_json('{"name": "Peter"}') # returns true
+    >>> is_json('[1, 2, 3]') # returns true
+    >>> is_json('{nope}') # returns false
+
     :param input_string: String to check.
     :type input_string: str
     :return: True if json, false otherwise
-    :rtype: bool
     """
     if is_full_string(input_string) and JSON_WRAPPER_RE.match(input_string) is not None:
         try:
@@ -254,7 +300,6 @@ def is_uuid(input_string: Any) -> bool:
     :param input_string: String to check.
     :type input_string: str
     :return: True if UUID, false otherwise
-    :rtype: bool
     """
     # string casting is used to allow UUID itself as input data type
     return UUID_RE.match(str(input_string)) is not None
@@ -264,10 +309,15 @@ def is_ip_v4(input_string: Any) -> bool:
     """
     Checks if a string is a valid ip v4.
 
+    *Examples:*
+
+    >>> is_ip_v4('255.200.100.75') # returns true
+    >>> is_ip_v4('nope') # returns false (not an ip)
+    >>> is_ip_v4('255.200.100.999') # returns false (999 is out of range)
+
     :param input_string: String to check.
     :type input_string: str
     :return: True if an ip v4, false otherwise.
-    :rtype: bool
     """
     if not is_full_string(input_string) or SHALLOW_IP_V4_RE.match(input_string) is None:
         return False
@@ -284,10 +334,14 @@ def is_ip_v6(input_string: Any) -> bool:
     """
     Checks if a string is a valid ip v6.
 
+    *Examples:*
+
+    >>> is_ip_v6('2001:db8:85a3:0000:0000:8a2e:370:7334') # returns true
+    >>> is_ip_v6('2001:db8:85a3:0000:0000:8a2e:370:?') # returns false (invalid "?")
+
     :param input_string: String to check.
     :type input_string: str
     :return: True if a v6 ip, false otherwise.
-    :rtype: bool
     """
     return is_full_string(input_string) and IP_V6_RE.match(input_string) is not None
 
@@ -296,12 +350,17 @@ def is_ip(input_string: Any) -> bool:
     """
     Checks if a string is a valid ip (either v4 or v6).
 
+    *Examples:*
+
+    >>> is_ip('255.200.100.75') # returns true
+    >>> is_ip('2001:db8:85a3:0000:0000:8a2e:370:7334') # returns true
+    >>> is_ip('1.2.3') # returns false
+
     :param input_string: String to check.
     :type input_string: str
     :return: True if an ip, false otherwise.
-    :rtype: bool
     """
-    return is_ip_v4(input_string) or is_ip_v6(input_string)
+    return is_ip_v6(input_string) or is_ip_v4(input_string)
 
 
 def is_palindrome(input_string: Any, strict: bool = True) -> bool:
@@ -312,7 +371,7 @@ def is_palindrome(input_string: Any, strict: bool = True) -> bool:
     :type input_string: str
     :param strict: True if white spaces matter (default), false otherwise.
     :type strict: bool
-    :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),
+    :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),\
     False otherwise
     """
     if is_full_string(input_string):
@@ -389,7 +448,6 @@ def contains_html(input_string: str) -> bool:
     :param input_string: Text to check
     :type input_string: str
     :return: True if string contains html, false otherwise.
-    :rtype: bool
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -409,7 +467,6 @@ def words_count(input_string: str) -> int:
     :param input_string: String to check.
     :type input_string: str
     :return: Number of words.
-    :rtype: int
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
