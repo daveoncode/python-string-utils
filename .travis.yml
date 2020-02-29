@@ -7,7 +7,8 @@ python:
 install:
   - pip install -r dev.requirements.txt
 script:
-  - python -m unittest
+  - coverage run -m unittest && coverage report
+  - bash <(curl -s https://codecov.io/bash)
   - cd docs && make html
 branches:
   only:
