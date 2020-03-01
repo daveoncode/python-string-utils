@@ -13,13 +13,23 @@ __all__ = [
 ]
 
 
-def uuid() -> str:
+def uuid(as_hex: bool = False) -> str:
     """
     Generated an UUID string (using `uuid.uuid4()`).
 
+    *Example:*
+
+    >>> uuid() # possible output: '97e3a716-6b33-4ab9-9bb1-8128cb24d76b'
+
+    :param as_hex: True to return the hex value of the UUID, False to get its default representation (default).
     :return: uuid string.
     """
-    return str(uuid4())
+    uid = uuid4()
+
+    if as_hex:
+        return uid.hex
+
+    return str(uid)
 
 
 def random_string(size: int) -> str:
