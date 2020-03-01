@@ -3,7 +3,7 @@
 import base64
 import random
 import unicodedata
-from typing import Union
+from typing import Union, Generator
 from uuid import uuid4
 
 __all__ = [
@@ -13,6 +13,7 @@ __all__ = [
     'shuffle',
     'strip_html',
     'prettify',
+    'asciify',
     'slugify',
     'booleanize',
     'strip_margin',
@@ -209,11 +210,40 @@ def prettify(input_string: str) -> str:
     return prettified
 
 
+def asciify(input_string: str) -> str:
+    """
+    Force string content to be ascii-only by translating all non-ascii chars into the closest possible representation
+    (eg: ó -> o, Ë -> E, ç -> c...).
+
+    Some chars may be lost if impossible to translate.
+
+    *Example:*
+
+    >>> asciify('èéùúòóäåëýñÅÀÁÇÌÍÑÓË') # returns 'eeuuooaaeynAAACIINOE'
+
+    :param input_string: String to convert
+    :return: Ascii utf-8 string
+    """
+    if not is_string(input_string):
+        raise InvalidInputError(input_string)
+
+    # "NFKD" is the algorithm which is able to successfully translate the most of non-ascii chars
+    normalized = unicodedata.normalize('NFKD', input_string)
+
+    # encode string forcing ascii and ignore any errors (unrepresentable chars will be stripped out)
+    ascii_bytes = normalized.encode('ascii', 'ignore')
+
+    # turns encoded bytes into an utf-8 string
+    ascii_string = ascii_bytes.decode('utf-8')
+
+    return ascii_string
+
+
 def slugify(input_string: str, separator: str = '-') -> str:
     """
     Converts a string into a slug using provided separator.
 
-    Example:
+    *Example:*
 
     >>> slugify(' This Is A "Test"! ') # returns: "this-is-a-test"
 
@@ -227,18 +257,18 @@ def slugify(input_string: str, separator: str = '-') -> str:
         raise InvalidInputError(input_string)
 
     # replace any character that is NOT letter or number with spaces
-    s = NO_LETTERS_OR_NUMBERS_RE.sub(' ', input_string.lower()).strip()
+    out = NO_LETTERS_OR_NUMBERS_RE.sub(' ', input_string.lower()).strip()
 
     # replace spaces with join sign
-    s = SPACES_RE.sub(separator, s)
+    out = SPACES_RE.sub(separator, out)
 
     # normalize joins (remove duplicates)
-    s = re.sub(re.escape(separator) + r'+', separator, s)
+    out = re.sub(re.escape(separator) + r'+', separator, out)
 
     # translate non-ascii signs
-    s = unicodedata.normalize('NFD', s).encode('ascii', 'ignore').decode('utf-8')
+    out = asciify(out)
 
-    return s
+    return out
 
 
 def booleanize(input_string: str) -> bool:
@@ -251,7 +281,7 @@ def booleanize(input_string: str) -> bool:
     - "y"
     Otherwise False is returned.
 
-    Example:
+    *Example:*
 
     >>> booleanize('true') # returns True
 
@@ -320,7 +350,7 @@ class StringCompressor:
         """
         cls.__require_valid_input_and_encoding(input_string, encoding)
 
-        if not is_integer(str(compression_level)) or compression_level < 0 or compression_level > 9:
+        if not isinstance(compression_level, int) or compression_level < 0 or compression_level > 9:
             raise ValueError('Invalid compression_level: it must be an "int" between 0 and 9')
 
         # turns input string into a sequence of bytes using provided encoding
@@ -384,25 +414,25 @@ class RomanNumbers:
     __reversed_mappings = [{v: k for k, v in m.items()} for m in __mappings]
 
     @classmethod
-    def __convert_digit(cls, index: int, value: int) -> str:
+    def __encode_digit(cls, index: int, value: int) -> str:
         # if digit is zero, there is no sign to display
         if value == 0:
             return ''
 
-        if value < 9:
-            # from 1 to 3 we have just to repeat the sign N times (eg: III, XXX...)
-            if value <= 3:
-                return cls.__mappings[index][1] * value
+        # from 1 to 3 we have just to repeat the sign N times (eg: III, XXX...)
+        if value <= 3:
+            return cls.__mappings[index][1] * value
 
-            # if 4 we have to add unit prefix
-            if value == 4:
-                return cls.__mappings[index][1] + cls.__mappings[index][5]
+        # if 4 we have to add unit prefix
+        if value == 4:
+            return cls.__mappings[index][1] + cls.__mappings[index][5]
 
-            # if is 5, is a straight map
-            if value == 5:
-                return cls.__mappings[index][5]
+        # if is 5, is a straight map
+        if value == 5:
+            return cls.__mappings[index][5]
 
-            # if 6, 7 or 8 we have to append unit suffixes
+        # if 6, 7 or 8 we have to append unit suffixes
+        if value <= 8:
             suffix = cls.__mappings[index][1] * (value - 5)
             return cls.__mappings[index][5] + suffix
 
@@ -444,21 +474,20 @@ class RomanNumbers:
         if value < 1 or value > 3999:
             raise ValueError('Input must be >= 1 and <= 3999')
 
-        # turns the given number into a sequence of integers (eg. from 1256 to [1, 2, 5, 6])
-        int_tokens = [int(v) for v in input_string]
+        input_len = len(input_string)
+        output = ''
 
-        # flip tokens in order to start from units first, then go up to tens, hundreds and thousands
-        reversed_int_tokens = list(reversed(int_tokens))
+        # decode digits from right to left (start from units to thousands)
+        for index in range(input_len):
+            # get actual digit value as int
+            digit = int(input_string[input_len - index - 1])
 
-        # for each token obtain the relative roman string representation
-        converted_tokens = [cls.__convert_digit(i, v) for i, v in enumerate(reversed_int_tokens)]
+            # encode digit to roman string
+            encoded_digit = cls.__encode_digit(index, digit)
 
-        # flip back tokens in order to have them placed correctly
-        # (units on the right then tens, hundreds, thousands on the left)
-        sorted_tokens = list(reversed(converted_tokens))
-
-        # final output string
-        output = ''.join(sorted_tokens)
+            # prepend encoded value to the current output in order to have the final string sorted
+            # from thousands to units
+            output = encoded_digit + output
 
         return output
 
@@ -523,3 +552,36 @@ class RomanNumbers:
             last_value = sign_value
 
         return output
+
+    @classmethod
+    def range(cls, stop: int, start: int = 1, step: int = 1) -> Generator:
+        """
+        Similarly to native Python's `range()`, returns a Generator object which generates a new roman number
+        on each iteration instead of an integer.
+
+        *Example:*
+
+        >>> for n in RomanNumbers.range(7): print(n) # prints: I, II, III, IV, V, VI, VII
+
+        :param stop: Number at which the generation must stop (must be <= 3999).
+        :param start: Number at which the generation must start (must be >= 1).
+        :param step: Increment of each generation step (default to 1).
+        :return: Generator of roman numbers.
+        """
+
+        def validate(arg_value, arg_name):
+            if not isinstance(arg_value, int) or (arg_value < 1 or arg_value > 3999):
+                raise ValueError('"{}" must be an integer in the range 1-3999'.format(arg_name))
+
+        def generate():
+            current_step = start
+
+            while current_step < stop + 1:
+                yield cls.encode(current_step)
+                current_step += step
+
+        validate(stop, 'stop')
+        validate(start, 'start')
+        validate(step, 'step')
+
+        return generate()
