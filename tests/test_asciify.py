@@ -26,9 +26,4 @@ class AsciifyTestCase(TestCase):
         self.assertEqual(asciify('<foo></foo>'), '<foo></foo>')
 
     def test_returns_asciified_string(self):
-        input_string = 'èéùúòóäåëýñÅÀÁÇÌÍÑÓË'
-        ascii_string = asciify(input_string)
-
-        self.assertFalse(input_string.isascii())
-        self.assertTrue(ascii_string.isascii())
-        self.assertEqual('eeuuooaaeynAAACIINOE', ascii_string)
+        self.assertEqual('eeuuooaaeynAAACIINOE', asciify('èéùúòóäåëýñÅÀÁÇÌÍÑÓË'))
