@@ -9,8 +9,8 @@ install:
 script:
   - coverage run -m unittest && coverage report # runs tests with coverage
   - bash <(curl -s https://codecov.io/bash) # generate coverage report
-  - cd docs && make html # generate html docs
   - python setup.py sdist bdist_wheel # build python package
+  - cd docs && make html # generate html docs
 branches:
   only:
   - master
