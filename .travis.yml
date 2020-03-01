@@ -7,9 +7,10 @@ python:
 install:
   - pip install -r dev.requirements.txt
 script:
-  - coverage run -m unittest && coverage report
-  - bash <(curl -s https://codecov.io/bash)
-  - cd docs && make html
+  - coverage run -m unittest && coverage report # runs tests with coverage
+  - bash <(curl -s https://codecov.io/bash) # generate coverage report
+  - cd docs && make html # generate html docs
+  - python setup.py sdist bdist_wheel # build python package
 branches:
   only:
   - master
