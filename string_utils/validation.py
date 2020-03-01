@@ -293,16 +293,29 @@ def is_json(input_string: Any) -> bool:
     return False
 
 
-def is_uuid(input_string: Any) -> bool:
+def is_uuid(input_string: Any, allow_hex: bool = False) -> bool:
     """
     Check if a string is a valid UUID.
 
+    *Example:*
+
+    >>> is_uuid('6f8aa2f9-686c-4ac3-8766-5712354a04cf') # returns true
+    >>> is_uuid('6f8aa2f9686c4ac387665712354a04cf') # returns false
+    >>> is_uuid('6f8aa2f9686c4ac387665712354a04cf', allow_hex=True) # returns true
+
     :param input_string: String to check.
     :type input_string: str
+    :param allow_hex: True to allow UUID hex representation as valid, false otherwise (default)
+    :type allow_hex: bool
     :return: True if UUID, false otherwise
     """
     # string casting is used to allow UUID itself as input data type
-    return UUID_RE.match(str(input_string)) is not None
+    s = str(input_string)
+
+    if allow_hex:
+        return UUID_HEX_OK_RE.match(s) is not None
+
+    return UUID_RE.match(s) is not None
 
 
 def is_ip_v4(input_string: Any) -> bool:

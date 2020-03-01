@@ -1,5 +1,5 @@
 from unittest import TestCase
-from uuid import uuid4
+from uuid import uuid4, uuid1
 
 from string_utils import is_uuid
 
@@ -25,7 +25,15 @@ class IsUUIDTestCase(TestCase):
         for i in range(1000):
             # noinspection PyTypeChecker
             self.assertTrue(is_uuid(uuid4()))
+            self.assertTrue(is_uuid(uuid1()))
 
     def test_should_accept_valid_uuid_strings(self):
         for i in range(1000):
             self.assertTrue(is_uuid(str(uuid4())))
+            self.assertTrue(is_uuid(str(uuid1())))
+
+    def test_accepts_hex_value_of_uuid(self):
+        for i in range(1000):
+            # noinspection PyTypeChecker
+            self.assertTrue(is_uuid(uuid4().hex, True))
+            self.assertTrue(is_uuid(uuid1().hex, True))

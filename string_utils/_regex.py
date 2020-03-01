@@ -53,6 +53,8 @@ JSON_WRAPPER_RE = re.compile(r'^\s*[\[{]\s*(.*)\s*[\}\]]\s*$', re.MULTILINE | re
 
 UUID_RE = re.compile(r'^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$', re.IGNORECASE)
 
+UUID_HEX_OK_RE = re.compile(r'^[a-f\d]{8}-?[a-f\d]{4}-?[a-f\d]{4}-?[a-f\d]{4}-?[a-f\d]{12}$', re.IGNORECASE)
+
 SHALLOW_IP_V4_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 IP_V6_RE = re.compile(r'^([a-z\d]{0,4}:){7}[a-z\d]{0,4}$', re.IGNORECASE)
