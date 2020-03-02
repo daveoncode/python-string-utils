@@ -20,6 +20,9 @@ __all__ = [
     'is_ip_v4',
     'is_ip_v6',
     'is_ip',
+    'is_isbn_10',
+    'is_isbn_13',
+    'is_isbn',
     'is_palindrome',
     'is_pangram',
     'is_isogram',
@@ -31,6 +34,50 @@ __all__ = [
 from ._regex import *
 from string_utils.errors import InvalidInputError
 
+
+# PRIVATE API
+
+
+class _ISBNChecker:
+    def __init__(self, input_string: str, normalize: bool = True):
+        if not is_string(input_string):
+            raise InvalidInputError(input_string)
+
+        self.input_string = input_string.replace('-', '') if normalize else input_string
+
+    def is_isbn_13(self) -> bool:
+        if len(self.input_string) == 13:
+            product = 0
+
+            try:
+                for index, digit in enumerate(self.input_string):
+                    weight = 1 if (index % 2 == 0) else 3
+                    product += int(digit) * weight
+
+                return product % 10 == 0
+
+            except ValueError:
+                pass
+
+        return False
+
+    def is_isbn_10(self) -> bool:
+        if len(self.input_string) == 10:
+            product = 0
+
+            try:
+                for index, digit in enumerate(self.input_string):
+                    product += int(digit) * (index + 1)
+
+                return product % 11 == 0
+
+            except ValueError:
+                pass
+
+        return False
+
+
+# PUBLIC API
 
 def is_string(obj: Any) -> bool:
     """
@@ -485,3 +532,45 @@ def words_count(input_string: str) -> int:
         raise InvalidInputError(input_string)
 
     return len(WORDS_COUNT_RE.findall(input_string))
+
+
+def is_isbn_10(input_string: str, normalize: bool = True) -> bool:
+    """
+    Checks if the given string represents a valid ISBN 10 (International Standard Book Number).
+    By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+    function with `normalize=False` only digit-only strings will pass the validation.
+
+    :param input_string: String to check.
+    :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
+    :return: True if valid ISBN 10, false otherwise.
+    """
+    checker = _ISBNChecker(input_string, normalize)
+    return checker.is_isbn_10()
+
+
+def is_isbn_13(input_string: str, normalize: bool = True) -> bool:
+    """
+    Checks if the given string represents a valid ISBN 13 (International Standard Book Number).
+    By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+    function with `normalize=False` only digit-only strings will pass the validation.
+
+    :param input_string: String to check.
+    :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
+    :return: True if valid ISBN 13, false otherwise.
+    """
+    checker = _ISBNChecker(input_string, normalize)
+    return checker.is_isbn_13()
+
+
+def is_isbn(input_string: str, normalize: bool = True) -> bool:
+    """
+    Checks if the given string represents a valid ISBN (International Standard Book Number).
+    By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+    function with `normalize=False` only digit-only strings will pass the validation.
+
+    :param input_string: String to check.
+    :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
+    :return: True if valid ISBN (10 or 13), false otherwise.
+    """
+    checker = _ISBNChecker(input_string, normalize)
+    return checker.is_isbn_13() or checker.is_isbn_10()

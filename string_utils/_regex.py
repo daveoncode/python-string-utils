@@ -151,3 +151,7 @@ PRETTIFY_RE = {
 NO_LETTERS_OR_NUMBERS_RE = re.compile(r'[^\w\d]+|_+', re.IGNORECASE | re.UNICODE)
 
 MARGIN_RE = re.compile(r'^[^\S\r\n]+')
+
+LOCALE_RE = re.compile(r'^[a-z]{2}_[A-Z]{2}$')
+
+INSENSITIVE_LOCALE_RE = re.compile(r'^[a-z]{2}_[a-z]{2}$', re.IGNORECASE)

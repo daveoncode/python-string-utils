@@ -28,8 +28,10 @@ class IsIsogramTestCase(TestCase):
         self.assertFalse(is_isogram(' '))
         self.assertFalse(is_isogram(' \n \t '))
 
-    def test_is_isogram_returns_expected_bool(self):
-        self.assertFalse(is_isogram('hello'))
-        self.assertFalse(is_isogram('hello world, how are you?'))
+    def test_is_isogram_returns_true_if_isogram(self):
         self.assertTrue(is_isogram('dermatoglyphics'))
         self.assertTrue(is_isogram('abcdefghilmnopqrs'))
+
+    def test_is_isogram_returns_false_if_not_isogram(self):
+        self.assertFalse(is_isogram('hello'))
+        self.assertFalse(is_isogram('hello world, how are you?'))
