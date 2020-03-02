@@ -9,7 +9,7 @@
 # Python String Utils
 ##### Latest version: [1.0.0]((https://github.com/daveoncode/python-string-utils/blob/master/CHANGELOG.md))
 
-An handy library to validate, manipulate and generate strings, which is:
+A handy library to validate, manipulate and generate strings, which is:
 
 - Simple and "pythonic"
 - Fully documented!
@@ -24,7 +24,7 @@ An handy library to validate, manipulate and generate strings, which is:
 
 ### Library structure
 
-The library is basically a python package `string_utils`, containing the following modules:
+The library basically consists in the python package `string_utils`, containing the following modules:
 
 - `validation.py` (contains string check api)
 - `manipulation.py` (contains string transformation api)
@@ -32,8 +32,9 @@ The library is basically a python package `string_utils`, containing the followi
 - `errors.py` (contains library-specific errors)
 - `_regex.py` (contains compiled regex **FOR INTERNAL USAGE ONLY**)
 
-plus a secondary package `tests` which includes several submodules, specifically one for each test suite and named according to 
-the api to test (eg. tests for `is_ip()` will be in `test_is_ip.py` and so on)
+Plus a secondary package `tests` which includes several submodules.\
+Specifically one for each test suite and named according to the api to test (eg. tests for `is_ip()` 
+will be in `test_is_ip.py` and so on)
 
 ### Api overview
 
@@ -234,7 +235,8 @@ prettify(' unprettified string ,, like this one,will be"prettified" .it\' s awes
 
 **asciify**: Converts all non-ascii chars contained in a string into the closest possible ascii representation
 ~~~~
-asciify('èéùúòóäåëýñÅÀÁÇÌÍÑÓË') # returns 'eeuuooaaeynAAACIINOE' (string is deliberately dumb in order to show char conversion)
+asciify('èéùúòóäåëýñÅÀÁÇÌÍÑÓË') 
+# returns 'eeuuooaaeynAAACIINOE' (string is deliberately dumb in order to show char conversion)
 ~~~~
 
 **slugify**: Convert a string into formatted slug
@@ -286,7 +288,7 @@ roman_encode(37) # returns 'XXXVII'
 roman_decode('XXXVII') # returns 37
 ~~~~
 
-**roman_range**: Generator which returns roman numbers on each iteration
+**roman_range**: Generator which returns roman numbers on each iteration (perhaps one of the most funny api)
 ~~~~
 for n in roman_range(10): print(n) # prints: I, II, III, IV, V, VI, VII, VIII, IX, X
 ~~~~
@@ -296,6 +298,7 @@ for n in roman_range(10): print(n) # prints: I, II, III, IV, V, VI, VII, VIII, I
 **uuid**: Returns the string representation of a newly created UUID object
 ~~~~
 uuid() # possible output: 'ce2cd4ee-83de-46f6-a054-5ee4ddae1582'
+uuid(as_hex=True) # possible output: 'ce2cd4ee83de46f6a0545ee4ddae1582'
 ~~~~
 
 **random_string**: Creates a string of the specified size with random chars
