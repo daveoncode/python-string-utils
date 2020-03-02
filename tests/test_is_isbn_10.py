@@ -48,3 +48,5 @@ class IsISBN10TestCase(TestCase):
         self.assertFalse(is_isbn_10('1506715214!'))
         self.assertFalse(is_isbn_10(' 1506715214'))
         self.assertFalse(is_isbn_10('1506715214y'))
+        self.assertFalse(is_isbn_10('x' * 10))
+        self.assertFalse(is_isbn_10(''))

@@ -46,3 +46,5 @@ class IsISBN13TestCase(TestCase):
         self.assertFalse(is_isbn_13('9780312498580!'))
         self.assertFalse(is_isbn_13(' 9780312498580'))
         self.assertFalse(is_isbn_13('x9780312498580'))
+        self.assertFalse(is_isbn_13('x' * 13))
+        self.assertFalse(is_isbn_13(''))
