@@ -401,11 +401,20 @@ otherwise any known credit card number will be accepted.</p>
 
 <dl class="function">
 <dt id="string_utils.validation.is_uuid">
-<code class="sig-prename descclassname">string_utils.validation.</code><code class="sig-name descname">is_uuid</code><span class="sig-paren">(</span><em class="sig-param">input_string: Any</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#string_utils.validation.is_uuid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">string_utils.validation.</code><code class="sig-name descname">is_uuid</code><span class="sig-paren">(</span><em class="sig-param">input_string: Any</em>, <em class="sig-param">allow_hex: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#string_utils.validation.is_uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if a string is a valid UUID.</p>
+<p><em>Example:</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_uuid</span><span class="p">(</span><span class="s1">&#39;6f8aa2f9-686c-4ac3-8766-5712354a04cf&#39;</span><span class="p">)</span> <span class="c1"># returns true</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_uuid</span><span class="p">(</span><span class="s1">&#39;6f8aa2f9686c4ac387665712354a04cf&#39;</span><span class="p">)</span> <span class="c1"># returns false</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_uuid</span><span class="p">(</span><span class="s1">&#39;6f8aa2f9686c4ac387665712354a04cf&#39;</span><span class="p">,</span> <span class="n">allow_hex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># returns true</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – String to check.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_string</strong> (<em>str</em>) – String to check.</p></li>
+<li><p><strong>allow_hex</strong> (<em>bool</em>) – True to allow UUID hex representation as valid, false otherwise (default)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if UUID, false otherwise</p>
@@ -468,6 +477,63 @@ otherwise any known credit card number will be accepted.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>True if an ip, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.validation.is_isbn_10">
+<code class="sig-prename descclassname">string_utils.validation.</code><code class="sig-name descname">is_isbn_10</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">normalize: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#string_utils.validation.is_isbn_10" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given string represents a valid ISBN 10 (International Standard Book Number).
+By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+function with <cite>normalize=False</cite> only digit-only strings will pass the validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_string</strong> – String to check.</p></li>
+<li><p><strong>normalize</strong> – True to ignore hyphens (“-“) in the string (default), false otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if valid ISBN 10, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.validation.is_isbn_13">
+<code class="sig-prename descclassname">string_utils.validation.</code><code class="sig-name descname">is_isbn_13</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">normalize: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#string_utils.validation.is_isbn_13" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given string represents a valid ISBN 13 (International Standard Book Number).
+By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+function with <cite>normalize=False</cite> only digit-only strings will pass the validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_string</strong> – String to check.</p></li>
+<li><p><strong>normalize</strong> – True to ignore hyphens (“-“) in the string (default), false otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if valid ISBN 13, false otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.validation.is_isbn">
+<code class="sig-prename descclassname">string_utils.validation.</code><code class="sig-name descname">is_isbn</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">normalize: bool = True</em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#string_utils.validation.is_isbn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given string represents a valid ISBN (International Standard Book Number).
+By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
+function with <cite>normalize=False</cite> only digit-only strings will pass the validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_string</strong> – String to check.</p></li>
+<li><p><strong>normalize</strong> – True to ignore hyphens (“-“) in the string (default), false otherwise.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if valid ISBN (10 or 13), false otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -669,10 +735,30 @@ will be 4 not 1 (even if there are no spaces in the string).</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="string_utils.manipulation.asciify">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">asciify</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.asciify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force string content to be ascii-only by translating all non-ascii chars into the closest possible representation
+(eg: ó -&gt; o, Ë -&gt; E, ç -&gt; c…).</p>
+<p>Some chars may be lost if impossible to translate.</p>
+<p><em>Example:</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">asciify</span><span class="p">(</span><span class="s1">&#39;èéùúòóäåëýñÅÀÁÇÌÍÑÓË&#39;</span><span class="p">)</span> <span class="c1"># returns &#39;eeuuooaaeynAAACIINOE&#39;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_string</strong> – String to convert</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Ascii utf-8 string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="string_utils.manipulation.slugify">
 <code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">slugify</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">separator: str = '-'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.slugify" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a string into a slug using provided separator.</p>
-<p>Example:</p>
+<p><em>Example:</em></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slugify</span><span class="p">(</span><span class="s1">&#39; This Is A &quot;Test&quot;! &#39;</span><span class="p">)</span> <span class="c1"># returns: &quot;this-is-a-test&quot;</span>
 </pre></div>
 </div>
@@ -699,7 +785,7 @@ A positive boolean (True) is returned if the string value is one of the followin
 - “yes”
 - “y”
 Otherwise False is returned.</p>
-<p>Example:</p>
+<p><em>Example:</em></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">booleanize</span><span class="p">(</span><span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="c1"># returns True</span>
 </pre></div>
 </div>
@@ -727,14 +813,11 @@ Otherwise False is returned.</p>
 </dl>
 </dd></dl>
 
-<dl class="class">
-<dt id="string_utils.manipulation.StringCompressor">
-<em class="property">class </em><code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">StringCompressor</code><a class="headerlink" href="#string_utils.manipulation.StringCompressor" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="string_utils.manipulation.StringCompressor.compress">
-<em class="property">classmethod </em><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">encoding: str = 'utf-8'</em>, <em class="sig-param">compression_level: int = 9</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.StringCompressor.compress" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="string_utils.manipulation.compress">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">encoding: str = 'utf-8'</em>, <em class="sig-param">compression_level: int = 9</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compress the given string by returning a shorter one that can be safely used in any context (like URL) and
-restored back to its original state using <cite>StringCompressor.decompress()</cite>.</p>
+restored back to its original state using <cite>decompress()</cite>.</p>
 <p>Besides the provided <cite>compression_level</cite>, the compression result (how much the string is actually compressed
 by resulting into a shorter string) depends on the amount and type of data contained inside the string.
 For instance, short strings might not provide a significant compression result or even be longer than the
@@ -755,11 +838,10 @@ in order to be able to restore it later on).</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="string_utils.manipulation.StringCompressor.decompress">
-<em class="property">classmethod </em><code class="sig-name descname">decompress</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.StringCompressor.decompress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restore a previously compressed string (obtained using <cite>StringCompressor.compress()</cite>)
-back to its original state.</p>
+<dl class="function">
+<dt id="string_utils.manipulation.decompress">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">decompress</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em>, <em class="sig-param">encoding: str = 'utf-8'</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.decompress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restore a previously compressed string (obtained using <cite>compress()</cite>) back to its original state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -773,42 +855,19 @@ back to its original state.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="string_utils.manipulation.RomanNumbers">
-<em class="property">class </em><code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">RomanNumbers</code><a class="headerlink" href="#string_utils.manipulation.RomanNumbers" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
-<dt id="string_utils.manipulation.RomanNumbers.decode">
-<em class="property">classmethod </em><code class="sig-name descname">decode</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#string_utils.manipulation.RomanNumbers.decode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decode a roman number string into an integer if the provided string is valid.</p>
-<p><em>Example:</em></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RomanNumbers</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;VII&#39;</span><span class="p">)</span> <span class="c1"># returns 7</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – (Assumed) Roman number</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Integer value</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="string_utils.manipulation.RomanNumbers.encode">
-<em class="property">classmethod </em><code class="sig-name descname">encode</code><span class="sig-paren">(</span><em class="sig-param">input_number: Union[str, int]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.RomanNumbers.encode" title="Permalink to this definition">¶</a></dt>
+<dl class="function">
+<dt id="string_utils.manipulation.roman_encode">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">roman_encode</code><span class="sig-paren">(</span><em class="sig-param">input_number: Union[str, int]</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.manipulation.roman_encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the given number/string into a roman number.
 The passed input must represents a positive integer in the range 1-3999 (inclusive).</p>
 <p>Why this limit? You may be wondering:</p>
 <ol class="arabic simple">
 <li><p>zero is forbidden since there is no related representation in roman numbers</p></li>
-<li><p>the upper bound 3999 is due to the limitation in the ascii charset        (the higher quantity sign displayable in ascii is “M” which is equal to 1000, therefore based on        roman numbers rules we can use 3 times M to reach 3000 but we can’t go any further in thousands without        special “boxed chars”).</p></li>
+<li><p>the upper bound 3999 is due to the limitation in the ascii charset    (the higher quantity sign displayable in ascii is “M” which is equal to 1000, therefore based on    roman numbers rules we can use 3 times M to reach 3000 but we can’t go any further in thousands without    special “boxed chars”).</p></li>
 </ol>
 <p><em>Examples:</em></p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">RomanNumbers</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span> <span class="c1"># returns &#39;XXXVIII&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">RomanNumbers</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;2020&#39;</span><span class="p">)</span> <span class="c1"># returns &#39;MMXX&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">roman_encode</span><span class="p">(</span><span class="mi">37</span><span class="p">)</span> <span class="c1"># returns &#39;XXXVIII&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">roman_encode</span><span class="p">(</span><span class="s1">&#39;2020&#39;</span><span class="p">)</span> <span class="c1"># returns &#39;MMXX&#39;</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -821,15 +880,61 @@ The passed input must represents a positive integer in the range 1-3999 (inclusi
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="string_utils.manipulation.roman_decode">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">roman_decode</code><span class="sig-paren">(</span><em class="sig-param">input_string: str</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#string_utils.manipulation.roman_decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode a roman number string into an integer if the provided string is valid.</p>
+<p><em>Example:</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">roman_decode</span><span class="p">(</span><span class="s1">&#39;VII&#39;</span><span class="p">)</span> <span class="c1"># returns 7</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – (Assumed) Roman number</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Integer value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="string_utils.manipulation.roman_range">
+<code class="sig-prename descclassname">string_utils.manipulation.</code><code class="sig-name descname">roman_range</code><span class="sig-paren">(</span><em class="sig-param">stop: int</em>, <em class="sig-param">start: int = 1</em>, <em class="sig-param">step: int = 1</em><span class="sig-paren">)</span> &#x2192; Generator<a class="headerlink" href="#string_utils.manipulation.roman_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarly to native Python’s <cite>range()</cite>, returns a Generator object which generates a new roman number
+on each iteration instead of an integer.</p>
+<p><em>Example:</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">roman_range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c1"># prints: I, II, III, IV, V, VI, VII</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stop</strong> – Number at which the generation must stop (must be &lt;= 3999).</p></li>
+<li><p><strong>start</strong> – Number at which the generation must start (must be &gt;= 1).</p></li>
+<li><p><strong>step</strong> – Increment of each generation step (default to 1).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Generator of roman numbers.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <span class="target" id="module-string_utils.generation"></span><dl class="function">
 <dt id="string_utils.generation.uuid">
-<code class="sig-prename descclassname">string_utils.generation.</code><code class="sig-name descname">uuid</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.generation.uuid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">string_utils.generation.</code><code class="sig-name descname">uuid</code><span class="sig-paren">(</span><em class="sig-param">as_hex: bool = False</em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#string_utils.generation.uuid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generated an UUID string (using <cite>uuid.uuid4()</cite>).</p>
+<p><em>Example:</em></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">uuid</span><span class="p">()</span> <span class="c1"># possible output: &#39;97e3a716-6b33-4ab9-9bb1-8128cb24d76b&#39;</span>
+</pre></div>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>uuid string.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>as_hex</strong> – True to return the hex value of the UUID, False to get its default representation (default).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>uuid string.</p>
 </dd>
 </dl>
 </dd></dl>

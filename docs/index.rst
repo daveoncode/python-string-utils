@@ -17,12 +17,6 @@ Contents:
 .. automodule:: string_utils.manipulation
    :members:
 
-.. autoclass:: string_utils.manipulation.StringCompressor
-   :members:
-
-.. autoclass:: string_utils.manipulation.RomanNumbers
-   :members:
-
 .. automodule:: string_utils.generation
    :members:
 
