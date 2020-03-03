@@ -6,10 +6,10 @@ from typing import Any, Optional, List
 
 __all__ = [
     'is_string',
+    'is_full_string',
     'is_number',
     'is_integer',
     'is_decimal',
-    'is_full_string',
     'is_url',
     'is_email',
     'is_credit_card',
@@ -82,6 +82,11 @@ class _ISBNChecker:
 def is_string(obj: Any) -> bool:
     """
     Checks if an object is a string.
+
+    *Example:*
+
+    >>> is_string('foo') # returns true
+    >>> is_string(b'foo') # returns false
 
     :param obj: Object to test.
     :return: True if string, false otherwise.
@@ -423,42 +428,60 @@ def is_ip(input_string: Any) -> bool:
     return is_ip_v6(input_string) or is_ip_v4(input_string)
 
 
-def is_palindrome(input_string: Any, strict: bool = True) -> bool:
+def is_palindrome(input_string: Any, ignore_spaces: bool = False, ignore_case: bool = False) -> bool:
     """
     Checks if the string is a palindrome (https://en.wikipedia.org/wiki/Palindrome).
 
+    *Examples:*
+
+    >>> is_palindrome('LOL') # returns true
+    >>> is_palindrome('Lol') # returns false
+    >>> is_palindrome('Lol', ignore_case=True) # returns true
+    >>> is_palindrome('ROTFL') # returns false
+
     :param input_string: String to check.
     :type input_string: str
-    :param strict: True if white spaces matter (default), false otherwise.
-    :type strict: bool
+    :param ignore_spaces: False if white spaces matter (default), true otherwise.
+    :type ignore_spaces: bool
+    :param ignore_case: False if char case matters (default), true otherwise.
+    :type ignore_case: bool
     :return: True if the string is a palindrome (like "otto", or "i topi non avevano nipoti" if strict=False),\
     False otherwise
     """
-    if is_full_string(input_string):
-        if strict:
-            string_len = len(input_string)
+    if not is_full_string(input_string):
+        return False
 
-            # Traverse the string one char at step, and for each step compares the
-            # "head_char" (the one on the left of the string) to the "tail_char" (the one on the right).
-            # In this way we avoid to manipulate the whole string in advance if not necessary and provide a faster
-            # algorithm which can scale very well for long strings.
-            for index in range(string_len):
-                head_char = input_string[index]
-                tail_char = input_string[string_len - index - 1]
+    if ignore_spaces:
+        input_string = SPACES_RE.sub('', input_string)
 
-                if head_char != tail_char:
-                    return False
+    string_len = len(input_string)
 
-            return True
+    # Traverse the string one char at step, and for each step compares the
+    # "head_char" (the one on the left of the string) to the "tail_char" (the one on the right).
+    # In this way we avoid to manipulate the whole string in advance if not necessary and provide a faster
+    # algorithm which can scale very well for long strings.
+    for index in range(string_len):
+        head_char = input_string[index]
+        tail_char = input_string[string_len - index - 1]
 
-        return is_palindrome(SPACES_RE.sub('', input_string))
+        if ignore_case:
+            head_char = head_char.lower()
+            tail_char = tail_char.lower()
 
-    return False
+        if head_char != tail_char:
+            return False
+
+    return True
 
 
 def is_pangram(input_string: Any) -> bool:
     """
     Checks if the string is a pangram (https://en.wikipedia.org/wiki/Pangram).
+
+    *Examples:*
+
+    >>> is_pangram('The quick brown fox jumps over the lazy dog') # returns true
+    >>> is_pangram('hello world') # returns false
 
     :param input_string: String to check.
     :type input_string: str
@@ -474,6 +497,11 @@ def is_isogram(input_string: Any) -> bool:
     """
     Checks if the string is an isogram (https://en.wikipedia.org/wiki/Isogram).
 
+    *Examples:*
+
+    >>> is_isogram('dermatoglyphics') # returns true
+    >>> is_isogram('hello') # returns false
+
     :param input_string: String to check.
     :type input_string: str
     :return: True if isogram, false otherwise.
@@ -484,6 +512,11 @@ def is_isogram(input_string: Any) -> bool:
 def is_slug(input_string: Any, sign: str = '-') -> bool:
     """
     Checks if a given string is a slug.
+
+    *Examples:*
+
+    >>> is_slug('my-blog-post-title') # returns true
+    >>> is_slug('My blog post title') # returns false
 
     :param input_string: String to check.
     :type input_string: str
@@ -505,6 +538,11 @@ def contains_html(input_string: str) -> bool:
     By design, this function is very permissive regarding what to consider html code, don't expect to use it
     as an html validator, its goal is to detect "malicious" or undesired html tags in the text.
 
+    *Examples:*
+
+    >>> contains_html('my string is <strong>bold</strong>') # returns true
+    >>> contains_html('my string is not bold') # returns false
+
     :param input_string: Text to check
     :type input_string: str
     :return: True if string contains html, false otherwise.
@@ -524,6 +562,11 @@ def words_count(input_string: str) -> int:
     Moreover it is aware of punctuation, so the count for a string like "one,two,three.stop"
     will be 4 not 1 (even if there are no spaces in the string).
 
+    *Examples:*
+
+    >>> words_count('hello world') # returns 2
+    >>> words_count('one,two,three') # returns 3 (no need for spaces, punctuation is recognized!)
+
     :param input_string: String to check.
     :type input_string: str
     :return: Number of words.
@@ -540,6 +583,12 @@ def is_isbn_10(input_string: str, normalize: bool = True) -> bool:
     By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
     function with `normalize=False` only digit-only strings will pass the validation.
 
+    *Examples:*
+
+    >>> is_isbn_10('1506715214') # returns true
+    >>> is_isbn_10('150-6715214') # returns true
+    >>> is_isbn_10('150-6715214', normalize=False) # returns false
+
     :param input_string: String to check.
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
     :return: True if valid ISBN 10, false otherwise.
@@ -554,6 +603,12 @@ def is_isbn_13(input_string: str, normalize: bool = True) -> bool:
     By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
     function with `normalize=False` only digit-only strings will pass the validation.
 
+    *Examples:*
+
+    >>> is_isbn_13('9780312498580') # returns true
+    >>> is_isbn_13('978-0312498580') # returns true
+    >>> is_isbn_13('978-0312498580', normalize=False) # returns false
+
     :param input_string: String to check.
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
     :return: True if valid ISBN 13, false otherwise.
@@ -567,6 +622,11 @@ def is_isbn(input_string: str, normalize: bool = True) -> bool:
     Checks if the given string represents a valid ISBN (International Standard Book Number).
     By default hyphens in the string are ignored, so digits can be separated in different ways, by calling this
     function with `normalize=False` only digit-only strings will pass the validation.
+
+    *Examples:*
+
+    >>> is_isbn('9780312498580') # returns true
+    >>> is_isbn('1506715214') # returns true
 
     :param input_string: String to check.
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.

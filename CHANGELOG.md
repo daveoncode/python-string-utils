@@ -64,7 +64,8 @@ leading or trailing underscores and string containing multiple underscores in se
 - String checks should now be a bit faster (switched from `.search()` to `.match()` in internal regex when the goal 
 is to match the full string)
 - `is_palindrome()` algorithm has been redesigned to offer a faster check and better memory usage 
-(only 2 chars are now being access at the same time instead of the whole string)
+(only 2 chars are now being access at the same time instead of the whole string)... 
+signature has changed (now it has two optional boolean arguments: `ignore_spaces` and `ignore_case`)
 - `slugify()` is now able to translate more non-ascii chars during the string conversion 
 (it now makes use of the new extracted method `asciify()`)
 - `is_uuid()` has now a second parameter `allow_hex` that if true, considers as valid UUID hex value

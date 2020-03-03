@@ -26,14 +26,20 @@ class IsPalindromeTestCase(TestCase):
     def test_empty_strings_are_not_palindromes(self):
         self.assertFalse(is_palindrome(''))
         self.assertFalse(is_palindrome(' '))
-        self.assertFalse(is_palindrome(' \n\t '))
+        self.assertFalse(is_palindrome('\n\t\n'))
 
-    def test_strict_checking(self):
-        self.assertFalse(is_palindrome('nope!'))
-        self.assertFalse(is_palindrome('i topi non avevano nipoti'))
+    def test_returns_true_if_palindrome_with_default_options(self):
+        self.assertTrue(is_palindrome('LOL'))
         self.assertTrue(is_palindrome('otto'))
 
-    def test_no_strict_mode(self):
-        self.assertFalse(is_palindrome('nope!', False))
-        self.assertTrue(is_palindrome('i topi non avevano nipoti', False))
-        self.assertTrue(is_palindrome('otto', False))
+    def test_returns_false_if_not_palindrome_with_default_options(self):
+        self.assertFalse(is_palindrome('nope!'))
+        self.assertFalse(is_palindrome('ROTFL'))
+
+    def test_if_not_specified_case_matters(self):
+        self.assertFalse(is_palindrome('Lol'))
+        self.assertTrue(is_palindrome('Lol', ignore_case=True))
+
+    def test_if_not_specified_spaces_matter(self):
+        self.assertFalse(is_palindrome('i topi non avevano nipoti'))
+        self.assertTrue(is_palindrome('i topi non avevano nipoti', ignore_spaces=True))

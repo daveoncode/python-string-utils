@@ -178,7 +178,7 @@ contains_html('my string is not bold') # returns false
 **words_count**: Returns the number of words contained in the string
 ~~~~
 words_count('hello world') # returns 2
-words_count('one,two,three') # returns 3 (no need for spaces, punctuation is regnognized!)
+words_count('one,two,three') # returns 3 (no need for spaces, punctuation is recognized!)
 ~~~~
 
 **is_palindrome**: Checks if the string is a palindrome
@@ -322,3 +322,4 @@ secure_random_hex(12)
 ## Documentation
 
 Full API documentation available on: http://python-string-utils.readthedocs.org/en/latest/
+

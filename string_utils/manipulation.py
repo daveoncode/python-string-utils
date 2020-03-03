@@ -301,7 +301,11 @@ class _StringFormatter:
 
 def reverse(input_string: str) -> str:
     """
-    Returns the string reversed ("abc" -> "cba").
+    Returns the string with its chars reversed.
+
+    *Example:*
+
+    >>> reverse('hello') # returns 'olleh'
 
     :param input_string: String to revert.
     :type input_string: str
@@ -317,6 +321,10 @@ def camel_case_to_snake(input_string, separator='_'):
     """
     Convert a camel case string into a snake case one.
     (The original string is returned if is not a valid camel case string)
+
+    *Example:*
+
+    >>> camel_case_to_snake('ThisIsACamelStringTest') # returns 'this_is_a_camel_case_string_test'
 
     :param input_string: String to convert.
     :type input_string: str
@@ -337,6 +345,10 @@ def snake_case_to_camel(input_string: str, upper_case_first: bool = True, separa
     """
     Convert a snake case string into a camel case one.
     (The original string is returned if is not a valid snake case string)
+
+    *Example:*
+
+    >>> snake_case_to_camel('the_snake_is_green') # returns 'TheSnakeIsGreen'
 
     :param input_string: String to convert.
     :type input_string: str
@@ -364,7 +376,11 @@ def snake_case_to_camel(input_string: str, upper_case_first: bool = True, separa
 
 def shuffle(input_string: str) -> str:
     """
-    Return a new string containing shuffled items.
+    Return a new string containing same chars of the given one but in a randomized order.
+
+    *Example:*
+
+    >>> shuffle('hello world') # possible output: 'l wodheorll'
 
     :param input_string: String to shuffle
     :type input_string: str
@@ -386,6 +402,11 @@ def shuffle(input_string: str) -> str:
 def strip_html(input_string: str, keep_tag_content: bool = False) -> str:
     """
     Remove html code contained into the given string.
+
+    *Examples:*
+
+    >>> strip_html('test: <a href="foo/bar">click here</a>') # returns 'test: '
+    >>> strip_html('test: <a href="foo/bar">click here</a>', keep_tag_content=True) # returns 'test: click here'
 
     :param input_string: String to manipulate.
     :type input_string: str
@@ -416,6 +437,11 @@ def prettify(input_string: str) -> str:
     after brackets ("foo(bar )baz" -> "foo (bar) baz")\
     - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")\
     - Saxon genitive is correct ("Dave' s dog" -> "Dave's dog")
+
+    *Examples:*
+
+    >>> prettify(' unprettified string ,, like this one,will be"prettified" .it\\' s awesome! ')
+    >>> # the ouput will be: 'Unprettified string, like this one, will be "prettified". It\'s awesome!'
 
     :param input_string: String to manipulate
     :return: Prettified string.
