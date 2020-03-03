@@ -34,7 +34,15 @@ The library basically consists in the python package `string_utils`, containing 
 
 Plus a secondary package `tests` which includes several submodules.\
 Specifically one for each test suite and named according to the api to test (eg. tests for `is_ip()` 
-will be in `test_is_ip.py` and so on)
+will be in `test_is_ip.py` and so on).
+
+All the public API are importable directly from the main package `string_utils`, so this:
+
+`from string_utils.validation import is_ip`
+
+can be simplified as:
+ 
+ `from string_utils import is_ip`
 
 ### Api overview
 
@@ -239,9 +247,9 @@ asciify('èéùúòóäåëýñÅÀÁÇÌÍÑÓË')
 # returns 'eeuuooaaeynAAACIINOE' (string is deliberately dumb in order to show char conversion)
 ~~~~
 
-**slugify**: Convert a string into formatted slug
+**slugify**: Convert a string into a formatted "slug"
 ~~~~
-slugify('Top 10 Reasons To Love Dogs') # returns: 'top-10-reasons-to-love-dogs'
+slugify('Top 10 Reasons To Love Dogs!!!') # returns: 'top-10-reasons-to-love-dogs'
 ~~~~
 
 **booleanize**: Convert a string into a boolean based on its content

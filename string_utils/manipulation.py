@@ -3,7 +3,7 @@
 import base64
 import random
 import unicodedata
-from typing import Union, Generator
+from typing import Union
 from uuid import uuid4
 
 __all__ = [
@@ -21,7 +21,6 @@ __all__ = [
     'decompress',
     'roman_encode',
     'roman_decode',
-    'roman_range',
 ]
 
 import zlib
@@ -34,7 +33,7 @@ from .validation import is_snake_case, is_full_string, is_camel_case, is_integer
 # PRIVATE API
 
 
-class _RomanNumbers:
+class __RomanNumbers:
     # internal rule mappings for encode()
     __mappings = [
         # units
@@ -156,25 +155,6 @@ class _RomanNumbers:
 
         return output
 
-    @classmethod
-    def range(cls, stop: int, start: int = 1, step: int = 1) -> Generator:
-        def validate(arg_value, arg_name):
-            if not isinstance(arg_value, int) or (arg_value < 1 or arg_value > 3999):
-                raise ValueError('"{}" must be an integer in the range 1-3999'.format(arg_name))
-
-        def generate():
-            current_step = start
-
-            while current_step < stop + 1:
-                yield cls.encode(current_step)
-                current_step += step
-
-        validate(stop, 'stop')
-        validate(start, 'start')
-        validate(step, 'step')
-
-        return generate()
-
 
 class _StringCompressor:
 
@@ -233,9 +213,9 @@ class _StringFormatter:
     def __init__(self, input_string):
         if not is_string(input_string):
             raise InvalidInputError(input_string)
-        
+
         self.input_string = input_string
-    
+
     def __uppercase_first_char(self, regex_match):
         return regex_match.group(0).upper()
 
@@ -266,7 +246,7 @@ class _StringFormatter:
     @staticmethod
     def __placeholder_key():
         return '$' + uuid4().hex + '$'
-    
+
     def format(self) -> str:
         # map of temporary placeholders
         placeholders = {}
@@ -293,7 +273,7 @@ class _StringFormatter:
         # restore placeholder keys with their associated original value
         for p in placeholders:
             out = out.replace(p, placeholders[p], 1)
-            
+
         return out
 
 
@@ -481,17 +461,26 @@ def asciify(input_string: str) -> str:
 
 def slugify(input_string: str, separator: str = '-') -> str:
     """
-    Converts a string into a slug using provided separator.
+    Converts a string into a "slug" using provided separator.
+    The returned string has the following properties:
 
-    *Example:*
+    - it has no spaces
+    - all letters are in lower case
+    - all punctuation signs and non alphanumeric chars are removed
+    - words are divided using provided separator
+    - all chars are encoded as ascii (by using `asciify()`)
+    - is safe for URL
 
-    >>> slugify(' This Is A "Test"! ') # returns: "this-is-a-test"
+    *Examples:*
+
+    >>> slugify('Top 10 Reasons To Love Dogs!!!') # returns: 'top-10-reasons-to-love-dogs'
+    >>> slugify('Mönstér Mägnët') # returns 'monster-magnet'
 
     :param input_string: String to convert.
     :type input_string: str
     :param separator: Sign used to join string tokens (default to "-").
     :type separator: str
-    :return: Slugified string
+    :return: Slug string
     """
     if not is_string(input_string):
         raise InvalidInputError(input_string)
@@ -555,13 +544,26 @@ def compress(input_string: str, encoding: str = 'utf-8', compression_level: int 
     Compress the given string by returning a shorter one that can be safely used in any context (like URL) and
     restored back to its original state using `decompress()`.
 
+    **Bear in mind:**
     Besides the provided `compression_level`, the compression result (how much the string is actually compressed
-    by resulting into a shorter string) depends on the amount and type of data contained inside the string.
-    For instance, short strings might not provide a significant compression result or even be longer than the
-    given input string (this is due to the fact that some bytes have to be embedded into the compressed string
-    in order to be able to restore it later on).
+    by resulting into a shorter string) depends on 2 factors:
+
+    1. The amount of data (string size): short strings might not provide a significant compression result\
+    or even be longer than the given input string (this is due to the fact that some bytes have to be embedded\
+    into the compressed string in order to be able to restore it later on)\
+
+    2. The content type: random sequences of chars are very unlikely to be successfully compressed, while the best\
+    compression result is obtained when the string contains several recurring char sequences (like in the example).
 
     Behind the scenes this method makes use of the standard Python's zlib and base64 libraries.
+
+    *Examples:*
+
+    >>> n = 0 # fix for Pycharm (not fixable using ignore comments)... ignore it
+    >>> # "original" will be a string with 169 chars:
+    >>> original = ' '.join(['word n{}'.format(n) for n in range(20)])
+    >>> # "compressed" will be a string of 88 chars
+    >>> compressed = compress(original)
 
     :param input_string: String to compress (must be not empty or a ValueError will be raised).
     :type input_string: str
@@ -609,7 +611,7 @@ def roman_encode(input_number: Union[str, int]) -> str:
     :type input_number: Union[str, int]
     :return: Roman number string.
     """
-    return _RomanNumbers.encode(input_number)
+    return __RomanNumbers.encode(input_number)
 
 
 def roman_decode(input_string: str) -> int:
@@ -624,21 +626,4 @@ def roman_decode(input_string: str) -> int:
     :type input_string: str
     :return: Integer value
     """
-    return _RomanNumbers.decode(input_string)
-
-
-def roman_range(stop: int, start: int = 1, step: int = 1) -> Generator:
-    """
-    Similarly to native Python's `range()`, returns a Generator object which generates a new roman number
-    on each iteration instead of an integer.
-
-    *Example:*
-
-    >>> for n in roman_range(7): print(n) # prints: I, II, III, IV, V, VI, VII
-
-    :param stop: Number at which the generation must stop (must be <= 3999).
-    :param start: Number at which the generation must start (must be >= 1).
-    :param step: Increment of each generation step (default to 1).
-    :return: Generator of roman numbers.
-    """
-    return _RomanNumbers.range(stop, start, step)
+    return __RomanNumbers.decode(input_string)

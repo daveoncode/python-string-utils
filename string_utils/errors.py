@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+from typing import Any
 
 
 class InvalidInputError(TypeError):
-    def __init__(self, input_data):
-        """
-        Custom error used when received object is not a string as expected.
+    """
+    Custom error raised when received object is not a string as expected.
+    """
 
+    def __init__(self, input_data: Any):
+        """
         :param input_data: Any received object
         """
         type_name = type(input_data).__name__

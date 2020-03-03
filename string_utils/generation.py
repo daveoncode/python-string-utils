@@ -1,15 +1,17 @@
 import binascii
 import os
 import random
+from typing import Generator
 from uuid import uuid4
 import string
 
-from string_utils import is_integer
+from string_utils import is_integer, roman_encode
 
 __all__ = [
     'uuid',
     'random_string',
     'secure_random_hex',
+    'roman_range',
 ]
 
 
@@ -77,3 +79,36 @@ def secure_random_hex(byte_count: int) -> str:
     hex_string = hex_bytes.decode()
 
     return hex_string
+
+
+def roman_range(stop: int, start: int = 1, step: int = 1) -> Generator:
+    """
+    Similarly to native Python's `range()`, returns a Generator object which generates a new roman number
+    on each iteration instead of an integer.
+
+    *Example:*
+
+    >>> for n in roman_range(7): print(n) # prints: I, II, III, IV, V, VI, VII
+
+    :param stop: Number at which the generation must stop (must be <= 3999).
+    :param start: Number at which the generation must start (must be >= 1).
+    :param step: Increment of each generation step (default to 1).
+    :return: Generator of roman numbers.
+    """
+
+    def validate(arg_value, arg_name):
+        if not isinstance(arg_value, int) or (arg_value < 1 or arg_value > 3999):
+            raise ValueError('"{}" must be an integer in the range 1-3999'.format(arg_name))
+
+    def generate():
+        current_step = start
+
+        while current_step < stop + 1:
+            yield roman_encode(current_step)
+            current_step += step
+
+    validate(stop, 'stop')
+    validate(start, 'start')
+    validate(step, 'step')
+
+    return generate()

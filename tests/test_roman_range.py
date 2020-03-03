@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from string_utils.manipulation import roman_range
+from string_utils.generation import roman_range
 
 
 class RomanRangeTestCase(TestCase):
