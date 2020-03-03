@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/daveoncode/python-string-utils.svg?branch=develop)](https://travis-ci.com/daveoncode/python-string-utils)
 [![codecov](https://codecov.io/gh/daveoncode/python-string-utils/branch/develop/graph/badge.svg)](https://codecov.io/gh/daveoncode/python-string-utils)
-[![Documentation Status](https://readthedocs.org/projects/python-string-utils/badge/?version=develop)](https://python-string-utils.readthedocs.io/en/latest/?badge=develop)
+[![Documentation Status](https://readthedocs.org/projects/python-string-utils/badge/?version=develop)](https://python-string-utils.readthedocs.io/en/develop)
 [![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)](https://www.python.org/downloads/release/python-350/)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
