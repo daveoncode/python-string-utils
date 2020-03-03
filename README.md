@@ -12,9 +12,9 @@
 A handy library to validate, manipulate and generate strings, which is:
 
 - Simple and "pythonic"
-- Fully documented!
-- 100% code coverage!
-- Tested against all officially supported Python versions (3.5, 3.6, 3.7, 3.8)
+- Fully documented and with examples! (html version on [readthedocs.io](https://python-string-utils.readthedocs.io/en/develop))
+- 100% code coverage! (see it with your own eyes on [codecov.io](https://codecov.io/gh/daveoncode/python-string-utils/branch/develop))
+- Tested (automatically on each push thanks to Travis CI) against all officially supported Python versions: 3.5, 3.6, 3.7, 3.8.
 - Fast (mostly based on compiled regex)
 - Free from external dependencies
 - PEP8 complaint
