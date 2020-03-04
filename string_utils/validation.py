@@ -234,17 +234,14 @@ def is_email(input_string: Any) -> bool:
         # we expect 2 tokens, one before "@" and one after, otherwise we have an exception and the email is not valid
         head, tail = input_string.split('@')
 
+        # head's size must be <= 64, tail <= 255, head must not start with a dot or contain multiple consecutive dots
+        if len(head) > 64 or len(tail) > 255 or head.endswith('.') or ('..' in head):
+            return False
+
         # removes escaped spaces, so that later on the test regex will accept the string
         head = head.replace('\\ ', '')
         if head.startswith('"') and head.endswith('"'):
             head = head.replace(' ', '')[1:-1]
-
-        if head.endswith('.') or len(head) > 64 or len(tail) > 255:
-            return False
-
-        # multiple consecutive dots are forbidden
-        if '..' in head:
-            return False
 
         return EMAIL_RE.match(head + '@' + tail) is not None
 
@@ -252,8 +249,7 @@ def is_email(input_string: Any) -> bool:
         # borderline case in which we have multiple "@" signs but the head part is correctly escaped
         if ESCAPED_AT_SIGN.search(input_string) is not None:
             # replace "@" with "a" in the head
-            sanitized = ESCAPED_AT_SIGN.sub('a', input_string)
-            return is_email(sanitized)
+            return is_email(ESCAPED_AT_SIGN.sub('a', input_string))
 
         return False
 
