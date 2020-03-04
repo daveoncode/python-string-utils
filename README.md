@@ -296,9 +296,10 @@ roman_encode(37) # returns 'XXXVII'
 roman_decode('XXXVII') # returns 37
 ~~~~
 
-**roman_range**: Generator which returns roman numbers on each iteration (perhaps one of the most funny api)
+**roman_range**: Generator which returns roman numbers on each iteration
 ~~~~
 for n in roman_range(10): print(n) # prints: I, II, III, IV, V, VI, VII, VIII, IX, X
+for n in roman_range(start=7, stop=1, step=-1): print(n) prints: VII, VI, V, IV, III, II, I
 ~~~~
 
 #### String generations:
