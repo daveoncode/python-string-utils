@@ -200,17 +200,6 @@ def is_url(input_string: Any, allowed_schemes: Optional[List[str]] = None) -> bo
     return valid
 
 
-# todo: fix me
-'''
-That limit is a maximum of 64 characters (octets)
-   in the "local part" (before the "@") and a maximum of 255 characters
-   (octets) in the domain part (after the "@") for a total length of 320
-   characters.  Systems that handle email should be prepared to process
-   addresses which are that long, even though they are rarely
-   encountered.
-'''
-
-
 def is_email(input_string: Any) -> bool:
     """
     Check if a string is a valid email.

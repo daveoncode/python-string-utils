@@ -47,7 +47,6 @@ language = None
 # directories to ignore when looking for source files.
 exclude_patterns = ['build', '_build', '_templates', '.venv', '.tox', 'htmlcov']
 
-# If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
