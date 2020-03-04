@@ -299,7 +299,7 @@ roman_decode('XXXVII') # returns 37
 **roman_range**: Generator which returns roman numbers on each iteration
 ~~~~
 for n in roman_range(10): print(n) # prints: I, II, III, IV, V, VI, VII, VIII, IX, X
-for n in roman_range(start=7, stop=1, step=-1): print(n) prints: VII, VI, V, IV, III, II, I
+for n in roman_range(start=7, stop=1, step=-1): print(n) # prints: VII, VI, V, IV, III, II, I
 ~~~~
 
 #### String generations:
@@ -328,9 +328,17 @@ secure_random_hex(12)
     pip install python-string-utils
 
 
+## Checking installed version
+
+~~~
+import string_utils
+string_utils.__version__
+'1.0.0' # (if '1.0.0' is the installed version)
+~~~
+
 ## Documentation
 
-Full API documentation available on: http://python-string-utils.readthedocs.org/en/latest/
+Full API documentation available on [readthedocs.io](https://python-string-utils.readthedocs.io/en/develop)
 
 
 ## Support the project!
