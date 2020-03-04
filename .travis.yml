@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+install:
+  - pip install -r dev.requirements.txt
+script:
+  - coverage run -m unittest && coverage report # runs tests with coverage
+  - bash <(curl -s https://codecov.io/bash) # generate coverage report
+  - python setup.py sdist bdist_wheel # build python package
+  - cd docs && make html # generate html docs
+branches:
+  only:
+  - master
+  - develop
