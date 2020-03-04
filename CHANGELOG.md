@@ -4,9 +4,10 @@
 
 ### Project reboot:
 
-I realized that this project, which I started back in 2015 and I was thinking no one care about it, it's actually now
-being used by several projects on GitHub (despite it has only few stars).
-So I'm rebooting it with a brand new version with tons of new api and improvements.
+I've started this project back in 2015, then abandoned it one year later, thinking no one care about it.\
+Recently I've instead discovered that it's actually being used by several projects on GitHub 
+(despite it has only few stars).\
+So I'm rebooting it with new found enthusiasm and a brand new version with tons of new api and improvements.
 
 Besides the code, the project configuration is now mature and professional: 
 - Automatic builds and testing against multiple python versions with Travis CI
