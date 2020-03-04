@@ -58,6 +58,14 @@ is_string('hello') # returns true
 is_string(b'hello') # returns false
 ~~~~
 
+**is_full_string**: checks if the given object is non empty string
+~~~~
+is_full_string(None) # returns false
+is_full_string('') # returns false
+is_full_string(' ') # returns false
+is_full_string('foo') # returns true
+~~~~
+
 **is_number**: checks if the given string represents a valid number
 ~~~~
 is_number('42') # returns true
@@ -76,14 +84,6 @@ is_integer('42.0') # returns false
 ~~~~
 is_decimal('42.0') # returns true
 is_decimal('42') # returns false
-~~~~
-
-**is_full_string**: checks if the given object is non empty string
-~~~~
-is_full_string(None) # returns false
-is_full_string('') # returns false
-is_full_string(' ') # returns false
-is_full_string('foo') # returns true
 ~~~~
 
 **is_url**: checks if the given string is an url
