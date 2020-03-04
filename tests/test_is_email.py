@@ -44,11 +44,9 @@ class IsEmailTestCase(TestCase):
         self.assertFalse(is_email('me@foo.___'))
         self.assertFalse(is_email('me@foo.toolongext'))
 
-    def test_name_part_cannot_contain_bad_signs(self):
-        self.assertFalse(is_email('#me#@foo.com'))
-        self.assertFalse(is_email('me!@foo.com'))
-        self.assertFalse(is_email('[][]@foo.com'))
-        self.assertFalse(is_email('john%@john5music.net'))
+    def test_name_part_cannot_contain_suqare_brackets(self):
+        self.assertFalse(is_email('[myemail@foo.com'))
+        self.assertFalse(is_email('my]email@foo.com'))
 
     def test_domain_part_cannot_contain_bad_signs(self):
         self.assertFalse(is_email('me@#foo#.com'))
@@ -74,3 +72,100 @@ class IsEmailTestCase(TestCase):
         self.assertTrue(is_email('foo@domamin.subdomain.com'))
         self.assertTrue(is_email('is1email@domain.org'))
         self.assertTrue(is_email('UPPER_CASE_EMAIL@somesite.com'))
+
+    def test_max_email_length_is_respected(self):
+        invalid_email = ('a' * 320) + '@gmail.com'
+        self.assertFalse(is_email(invalid_email))
+
+    def test_local_part_length_is_respected(self):
+        # max local part is 64 (before "@")
+        invalid_email = ('a' * 65) + '@gmail.com'
+        self.assertFalse(is_email(invalid_email))
+
+    def test_octects_part_length_is_respected(self):
+        # max octets part is 255 (after "@")
+        invalid_email = 'a@{}.com'.format(255 * 'x')
+        self.assertFalse(is_email(invalid_email))
+
+    def test_plus_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my+mail@gmail.com"))
+
+    def test_minus_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my-mail@gmail.com"))
+
+    def test_slash_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my/mail@gmail.com"))
+
+    def test_back_slash_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my\\mail@gmail.com"))
+
+    def test_equal_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my=mail@gmail.com"))
+
+    def test_question_mark_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my?mail@gmail.com"))
+
+    def test_sharp_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my#mail@gmail.com"))
+
+    def test_dollar_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my$mail@gmail.com"))
+
+    def test_and_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my&mail@gmail.com"))
+
+    def test_asterisk_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my*mail@gmail.com"))
+
+    def test_apostrophe_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my'mail@gmail.com"))
+
+    def test_acute_accent_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my`mail@gmail.com"))
+
+    def test_percentage_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my%mail@gmail.com"))
+
+    def test_exclamation_mark_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my!mail@gmail.com"))
+
+    def test_caret_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my^mail@gmail.com"))
+
+    def test_pipe_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my|mail@gmail.com"))
+
+    def test_tilde_is_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my~mail@gmail.com"))
+
+    def test_curly_braces_are_valid_char_in_local_part(self):
+        self.assertTrue(is_email("my{mail@gmail.com"))
+        self.assertTrue(is_email("my}mail@gmail.com"))
+        self.assertTrue(is_email("{mymail}@gmail.com"))
+
+    def test_local_part_cannot_start_with_period(self):
+        self.assertFalse(is_email('.myemail@gmail.com'))
+
+    def test_local_part_cannot_end_with_period(self):
+        self.assertFalse(is_email('myemail.@gmail.com'))
+
+    def test_local_part_cannot_have_multiple_consecutive_periods(self):
+        self.assertFalse(is_email('my..email@gmail.com'))
+        self.assertFalse(is_email('my.email...nope@gmail.com'))
+
+    def test_empty_spaces_are_allowed_only_if_escaped(self):
+        self.assertFalse(is_email('my mail@gmail.com'))
+        self.assertTrue(is_email('my\\ mail@gmail.com'))
+        self.assertTrue(is_email('"my mail"@gmail.com'))
+
+    def test_local_part_can_be_quoted(self):
+        self.assertTrue(is_email('"foo"@example.com'))
+
+    def test_with_quoted_string_multiple_at_are_accepted(self):
+        self.assertTrue(is_email('"Abc@def"@example.com'))
+
+    def test_with_escape_multiple_at_are_accepted(self):
+        self.assertTrue(is_email('Abc\\@def@example.com'))
+
+    def test_local_part_can_have_self_escape(self):
+        self.assertTrue(is_email('Joe.\\\\Blow@example.com'))

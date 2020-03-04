@@ -22,7 +22,9 @@ URL_RE = re.compile(r'^{}$'.format(URLS_RAW_STRING), re.IGNORECASE)
 
 URLS_RE = re.compile(r'({})'.format(URLS_RAW_STRING), re.IGNORECASE)
 
-EMAILS_RAW_STRING = r'[a-zA-Z\d._+-]+@[a-z\d-]+\.?[a-z\d-]+\.[a-z]{2,4}'
+ESCAPED_AT_SIGN = re.compile(r'(?!"[^"]*)@+(?=[^"]*")|\\@')
+
+EMAILS_RAW_STRING = r"[a-zA-Z\d._\+\-'`!%#$&*/=\?\^\{\}\|~\\]+@[a-z\d-]+\.?[a-z\d-]+\.[a-z]{2,4}"
 
 EMAIL_RE = re.compile(r'^{}$'.format(EMAILS_RAW_STRING))
 

@@ -200,15 +200,22 @@ def is_url(input_string: Any, allowed_schemes: Optional[List[str]] = None) -> bo
     return valid
 
 
+# todo: fix me
+'''
+That limit is a maximum of 64 characters (octets)
+   in the "local part" (before the "@") and a maximum of 255 characters
+   (octets) in the domain part (after the "@") for a total length of 320
+   characters.  Systems that handle email should be prepared to process
+   addresses which are that long, even though they are rarely
+   encountered.
+'''
+
+
 def is_email(input_string: Any) -> bool:
     """
-    Check if a string is an email.
+    Check if a string is a valid email.
 
-    By design, the implementation of this checking does not strictly follow the specification for a valid \
-    email address, but instead it's based on real world cases in order to match more than 99% \
-    of emails and catch user mistakes. For example the percentage sign "%" is a valid sign for an email, \
-    but actually no one use it, instead if such sign is found in a string coming from user input (like a \
-    web form) it's very likely that it's a mistake.
+    Reference: https://tools.ietf.org/html/rfc3696#section-3
 
     *Examples:*
 
@@ -219,7 +226,36 @@ def is_email(input_string: Any) -> bool:
     :type input_string: str
     :return: True if email, false otherwise.
     """
-    return is_full_string(input_string) and EMAIL_RE.match(input_string) is not None
+    # first simple "pre check": it must be a non empty string with max len 320 and cannot start with a dot
+    if not is_full_string(input_string) or len(input_string) > 320 or input_string.startswith('.'):
+        return False
+
+    try:
+        # we expect 2 tokens, one before "@" and one after, otherwise we have an exception and the email is not valid
+        head, tail = input_string.split('@')
+
+        # removes escaped spaces, so that later on the test regex will accept the string
+        head = head.replace('\\ ', '')
+        if head.startswith('"') and head.endswith('"'):
+            head = head.replace(' ', '')[1:-1]
+
+        if head.endswith('.') or len(head) > 64 or len(tail) > 255:
+            return False
+
+        # multiple consecutive dots are forbidden
+        if '..' in head:
+            return False
+
+        return EMAIL_RE.match(head + '@' + tail) is not None
+
+    except ValueError:
+        # borderline case in which we have multiple "@" signs but the head part is correctly escaped
+        if ESCAPED_AT_SIGN.search(input_string) is not None:
+            # replace "@" with "a" in the head
+            sanitized = ESCAPED_AT_SIGN.sub('a', input_string)
+            return is_email(sanitized)
+
+        return False
 
 
 def is_credit_card(input_string: Any, card_type: str = None) -> bool:
