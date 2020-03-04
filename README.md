@@ -17,7 +17,7 @@ A handy library to validate, manipulate and generate strings, which is:
 - Tested (automatically on each push thanks to Travis CI) against all officially supported Python versions
 - Fast (mostly based on compiled regex)
 - Free from external dependencies
-- PEP8 complaint
+- PEP8 compliant
 
 
 ## What's inside...

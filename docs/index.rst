@@ -9,7 +9,7 @@ This is a handy library to validate, manipulate and generate strings, which is:
 - Tested against all officially supported Python versions: 3.5, 3.6, 3.7, 3.8.
 - Fast (mostly based on compiled regex)
 - Free from external dependencies
-- PEP8 complaint
+- PEP8 compliant
 
 
 Installing
