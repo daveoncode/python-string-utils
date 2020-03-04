@@ -8,6 +8,7 @@ setuptools.setup(
     version='1.0.0',
     description='Utility functions for strings validation and manipulation.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Davide Zanotti',
     author_email='davidezanotti@gmail.com',
     license='MIT',
