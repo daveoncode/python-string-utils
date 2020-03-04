@@ -16,7 +16,6 @@ from typing import Generator
 from uuid import uuid4
 
 from .manipulation import roman_encode
-from .validation import is_integer
 
 
 def uuid(as_hex: bool = False) -> str:
@@ -51,7 +50,7 @@ def random_string(size: int) -> str:
     :type size: int
     :return: Random string
     """
-    if not is_integer(str(size)) or size < 1:
+    if not isinstance(size, int) or size < 1:
         raise ValueError('size must be >= 1')
 
     chars = string.ascii_letters + string.digits
@@ -76,7 +75,7 @@ def secure_random_hex(byte_count: int) -> str:
     :type byte_count: int
     :return: Hexadecimal string representation of generated random bytes
     """
-    if not is_integer(str(byte_count)) or byte_count < 1:
+    if not isinstance(byte_count, int) or byte_count < 1:
         raise ValueError('byte_count must be >= 1')
 
     random_bytes = os.urandom(byte_count)
