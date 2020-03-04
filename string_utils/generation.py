@@ -15,7 +15,8 @@ import string
 from typing import Generator
 from uuid import uuid4
 
-from string_utils import is_integer, roman_encode
+from .manipulation import roman_encode
+from .validation import is_integer
 
 
 def uuid(as_hex: bool = False) -> str:
