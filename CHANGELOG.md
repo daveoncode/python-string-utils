@@ -86,6 +86,7 @@ signature has changed (now it has two optional boolean arguments: `ignore_spaces
 (it now makes use of the new extracted method `asciify()`)
 - `is_uuid()` has now a second parameter `allow_hex` that if true, considers as valid UUID hex value
 - `uuid()` has now an optional boolean parameter `as_hex` which allows to return UUID string as hex representation
+- `shuffle()` is now faster
 
 ---
 

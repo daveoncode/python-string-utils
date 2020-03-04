@@ -370,7 +370,7 @@ def shuffle(input_string: str) -> str:
         raise InvalidInputError(input_string)
 
     # turn the string into a list of chars
-    chars = sorted(input_string)
+    chars = list(input_string)
 
     # shuffle the list
     random.shuffle(chars)
