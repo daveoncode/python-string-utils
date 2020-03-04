@@ -7,14 +7,14 @@
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
 # Python String Utils
-##### Latest version: [1.0.0](https://github.com/daveoncode/python-string-utils/blob/master/CHANGELOG.md)
+##### Latest version: [1.0.0](https://github.com/daveoncode/python-string-utils/blob/master/CHANGELOG.md) (March 2020)
 
 A handy library to validate, manipulate and generate strings, which is:
 
 - Simple and "pythonic"
 - Fully documented and with examples! (html version on [readthedocs.io](https://python-string-utils.readthedocs.io/en/develop))
 - 100% code coverage! (see it with your own eyes on [codecov.io](https://codecov.io/gh/daveoncode/python-string-utils/branch/develop))
-- Tested (automatically on each push thanks to Travis CI) against all officially supported Python versions: 3.5, 3.6, 3.7, 3.8.
+- Tested (automatically on each push thanks to Travis CI) against all officially supported Python versions
 - Fast (mostly based on compiled regex)
 - Free from external dependencies
 - PEP8 complaint
@@ -46,8 +46,8 @@ can be simplified as:
 
 ### Api overview
 
-*Bear in mind: this is just an overview, 
-for the full API documentation go here:* http://python-string-utils.readthedocs.org/en/latest/
+***Bear in mind**: this is just an overview, 
+for the full API documentation see:* [readthedocs.io](https://python-string-utils.readthedocs.io/en/develop)
 
 #### String validation functions:
 

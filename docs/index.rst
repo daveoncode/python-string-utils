@@ -18,6 +18,14 @@ Installing
 >>> pip install python-string-utils
 
 
+Checking installed version
+--------------------------
+
+>>> import string_utils
+>>> string_utils.__version__
+>>> '1.0.0' # (if '1.0.0' is the installed version)
+
+
 Library structure
 -----------------
 
