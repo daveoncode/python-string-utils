@@ -52,6 +52,7 @@ in your code (inspired by Scala)
 
 ### Fixes:
 
+- `is_email()` is now fully complaint with email specifications (https://tools.ietf.org/html/rfc3696#section-3)
 - `is_ip()` now checks both ip v4 (and validates 0-255 range) and ip v6 
 (the previous implementation was really shallow, my apologies :P)
 - `is_json()` now considers as valid json array objects (eg. `is_json('[1, 2, 3]')` returns true now)
