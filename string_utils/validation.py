@@ -543,7 +543,7 @@ def is_isogram(input_string: Any) -> bool:
     return is_full_string(input_string) and len(set(input_string)) == len(input_string)
 
 
-def is_slug(input_string: Any, sign: str = '-') -> bool:
+def is_slug(input_string: Any, separator: str = '-') -> bool:
     """
     Checks if a given string is a slug (as created by `slugify()`).
 
@@ -554,14 +554,14 @@ def is_slug(input_string: Any, sign: str = '-') -> bool:
 
     :param input_string: String to check.
     :type input_string: str
-    :param sign: Join sign used by the slug.
-    :type sign: str
+    :param separator: Join sign used by the slug.
+    :type separator: str
     :return: True if slug, false otherwise.
     """
     if not is_full_string(input_string):
         return False
 
-    rex = r'^([a-z\d]+' + re.escape(sign) + r'?)*[a-z\d]$'
+    rex = r'^([a-z\d]+' + re.escape(separator) + r'*?)*[a-z\d]$'
 
     return re.match(rex, input_string) is not None
 

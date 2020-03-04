@@ -67,6 +67,7 @@ importable as before (`from string_utils import xxx`). Similarly `tests.py` has 
 with a module for each test case
 - `is_snake_case()` now considers as "snake case" strings with mixed upper and lower case characters, strings with 
 leading or trailing underscores and string containing multiple underscores in sequence
+- `is_slug()` now allows multiple consecutive separator signs between words
 
 ### Improvements:
 
