@@ -331,3 +331,12 @@ secure_random_hex(12)
 
 Full API documentation available on: http://python-string-utils.readthedocs.org/en/latest/
 
+
+## Support the project!
+
+Do you like this project? Would you like to see it updated more often with new features and improvements?
+If so, you can make a small donation by clicking the button down below, it would be really appreciated! :)
+
+<a href="https://www.buymeacoffee.com/c4yYUvp" target="_blank">
+<img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" width="217" height="51" />
+</a>

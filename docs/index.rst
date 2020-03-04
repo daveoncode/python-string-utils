@@ -32,7 +32,6 @@ The library basically consists in the python package `string_utils`, containing 
 Plus a secondary package `tests` which includes several submodules.
 Specifically one for each test suite and named according to the api to test (eg. tests for `is_ip()`
 will be in `test_is_ip.py` and so on).
-
 All the public API are importable directly from the main package `string_utils`, so this:
 
 >>> from string_utils.validation import is_ip

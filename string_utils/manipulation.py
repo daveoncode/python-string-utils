@@ -404,24 +404,24 @@ def strip_html(input_string: str, keep_tag_content: bool = False) -> str:
 
 def prettify(input_string: str) -> str:
     """
-    Turns an ugly text string into a beautiful one by applying a regex pipeline which ensures the following:
+    Reformat a string by applying the following basic grammar and formatting rules:
 
-    - String cannot start or end with spaces\
-    - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")\
-    - Arithmetic operators (+, -, /, \\*, =) must have one, and only one space before and after themselves\
-    - The first letter after a dot, an exclamation or a question mark must be uppercase\
-    - One, and only one space should follow a dot, an exclamation or a question mark\
+    - String cannot start or end with spaces
+    - The first letter in the string and the ones after a dot, an exclamation or a question mark must be uppercase
+    - String cannot have multiple sequential spaces, empty lines or punctuation (except for "?", "!" and ".")
+    - Arithmetic operators (+, -, /, \\*, =) must have one, and only one space before and after themselves
+    - One, and only one space should follow a dot, a comma, an exclamation or a question mark
     - Text inside double quotes cannot start or end with spaces, but one, and only one space must come first and \
     after quotes (foo" bar"baz -> foo "bar" baz)
     - Text inside round brackets cannot start or end with spaces, but one, and only one space must come first and \
-    after brackets ("foo(bar )baz" -> "foo (bar) baz")\
-    - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")\
+    after brackets ("foo(bar )baz" -> "foo (bar) baz")
+    - Percentage sign ("%") cannot be preceded by a space if there is a number before ("100 %" -> "100%")
     - Saxon genitive is correct ("Dave' s dog" -> "Dave's dog")
 
     *Examples:*
 
     >>> prettify(' unprettified string ,, like this one,will be"prettified" .it\\' s awesome! ')
-    >>> # the ouput will be: 'Unprettified string, like this one, will be "prettified". It\'s awesome!'
+    >>> # -> 'Unprettified string, like this one, will be "prettified". It\'s awesome!'
 
     :param input_string: String to manipulate
     :return: Prettified string.
@@ -435,7 +435,7 @@ def asciify(input_string: str) -> str:
     Force string content to be ascii-only by translating all non-ascii chars into the closest possible representation
     (eg: ó -> o, Ë -> E, ç -> c...).
 
-    Some chars may be lost if impossible to translate.
+    **Bear in mind**: Some chars may be lost if impossible to translate.
 
     *Example:*
 
@@ -500,16 +500,21 @@ def slugify(input_string: str, separator: str = '-') -> str:
 def booleanize(input_string: str) -> bool:
     """
     Turns a string into a boolean based on its content (CASE INSENSITIVE).
+
     A positive boolean (True) is returned if the string value is one of the following:
+
     - "true"
     - "1"
     - "yes"
     - "y"
+
     Otherwise False is returned.
 
-    *Example:*
+    *Examples:*
 
     >>> booleanize('true') # returns True
+    >>> booleanize('YES') # returns True
+    >>> booleanize('nope') # returns False
 
     :param input_string: String to convert
     :type input_string: str
@@ -524,6 +529,20 @@ def booleanize(input_string: str) -> bool:
 def strip_margin(input_string: str) -> str:
     """
     Removes tab indentation from multi line strings (inspired by analogous Scala function).
+
+    *Example:*
+
+    >>> strip_margin('''
+    >>>                 line 1
+    >>>                 line 2
+    >>>                 line 3
+    >>> ''')
+    >>> # returns:
+    >>> '''
+    >>> line 1
+    >>> line 2
+    >>> line 3
+    >>> '''
 
     :param input_string: String to format
     :type input_string: str
@@ -559,7 +578,7 @@ def compress(input_string: str, encoding: str = 'utf-8', compression_level: int 
 
     *Examples:*
 
-    >>> n = 0 # fix for Pycharm (not fixable using ignore comments)... ignore it
+    >>> n = 0 # <- ignore this, it's a fix for Pycharm (not fixable using ignore comments)
     >>> # "original" will be a string with 169 chars:
     >>> original = ' '.join(['word n{}'.format(n) for n in range(20)])
     >>> # "compressed" will be a string of 88 chars
@@ -592,6 +611,7 @@ def decompress(input_string: str, encoding: str = 'utf-8') -> str:
 def roman_encode(input_number: Union[str, int]) -> str:
     """
     Convert the given number/string into a roman number.
+
     The passed input must represents a positive integer in the range 1-3999 (inclusive).
 
     Why this limit? You may be wondering:

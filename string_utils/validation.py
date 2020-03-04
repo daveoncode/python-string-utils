@@ -204,11 +204,11 @@ def is_email(input_string: Any) -> bool:
     """
     Check if a string is an email.
 
-    By design, the implementation of this checking does not follow the specification for a valid \
+    By design, the implementation of this checking does not strictly follow the specification for a valid \
     email address, but instead it's based on real world cases in order to match more than 99% \
     of emails and catch user mistakes. For example the percentage sign "%" is a valid sign for an email, \
     but actually no one use it, instead if such sign is found in a string coming from user input (like a \
-    web form) is very likely that the intention was to type "5" (which is on the same key on a US keyboard).
+    web form) it's very likely that it's a mistake.
 
     *Examples:*
 
@@ -225,22 +225,21 @@ def is_email(input_string: Any) -> bool:
 def is_credit_card(input_string: Any, card_type: str = None) -> bool:
     """
     Checks if a string is a valid credit card number.
-    If card type is provided then it checks that specific type,
+    If card type is provided then it checks against that specific type only,
     otherwise any known credit card number will be accepted.
+
+    Supported card types are the following:
+
+    - VISA
+    - MASTERCARD
+    - AMERICAN_EXPRESS
+    - DINERS_CLUB
+    - DISCOVER
+    - JCB
 
     :param input_string: String to check.
     :type input_string: str
-    :param card_type: Card type. Can be one of these:
-
-    * VISA
-    * MASTERCARD
-    * AMERICAN_EXPRESS
-    * DINERS_CLUB
-    * DISCOVER
-    * JCB
-
-    or None. Default to None (any card).
-
+    :param card_type: Card type. Default to None (any card).
     :type card_type: str
 
     :return: True if credit card, false otherwise.
@@ -290,10 +289,9 @@ def is_snake_case(input_string: Any, separator: str = '_') -> bool:
 
     A string is considered snake case when:
 
-    * it's composed only by lowercase letters ([a-z]), underscores (or provided separator) \
-    and optionally numbers ([0-9])
-    * it does not start/end with an underscore (or provided separator)
-    * it does not start with a number
+    - it's composed only by lowercase/uppercase letters and digits
+    - it contains at least one underscore (or provided separator)
+    - it does not start with a number
 
     *Examples:*
 
@@ -511,7 +509,7 @@ def is_isogram(input_string: Any) -> bool:
 
 def is_slug(input_string: Any, sign: str = '-') -> bool:
     """
-    Checks if a given string is a slug.
+    Checks if a given string is a slug (as created by `slugify()`).
 
     *Examples:*
 
@@ -534,9 +532,10 @@ def is_slug(input_string: Any, sign: str = '-') -> bool:
 
 def contains_html(input_string: str) -> bool:
     """
-    Checks if the given string contains html code.
-    By design, this function is very permissive regarding what to consider html code, don't expect to use it
-    as an html validator, its goal is to detect "malicious" or undesired html tags in the text.
+    Checks if the given string contains HTML/XML tags.
+
+    By design, this function matches ANY type of tag, so don't expect to use it
+    as an HTML validator, its goal is to detect "malicious" or undesired tags in the text.
 
     *Examples:*
 
@@ -565,7 +564,7 @@ def words_count(input_string: str) -> int:
     *Examples:*
 
     >>> words_count('hello world') # returns 2
-    >>> words_count('one,two,three') # returns 3 (no need for spaces, punctuation is recognized!)
+    >>> words_count('one,two,three.stop') # returns 4
 
     :param input_string: String to check.
     :type input_string: str
