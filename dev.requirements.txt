@@ -14,7 +14,6 @@ idna==2.9
 imagesize==1.2.0
 jeepney==0.4.2
 Jinja2==2.11.1
-keyring==21.1.0
 MarkupSafe==1.1.1
 packaging==20.1
 pkginfo==1.5.0.1
@@ -41,7 +40,7 @@ sphinxcontrib-serializinghtml==1.1.4
 toml==0.10.0
 tox==3.14.5
 tqdm==4.43.0
-twine==3.1.1
+twine==1.15.0
 urllib3==1.25.8
 virtualenv==20.0.7
 webencodings==0.5.1
