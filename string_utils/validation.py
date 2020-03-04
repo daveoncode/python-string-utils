@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import json
-import string
-from typing import Any, Optional, List
-
+# public api to export
 __all__ = [
     'is_string',
     'is_full_string',
@@ -31,14 +28,18 @@ __all__ = [
     'words_count',
 ]
 
+import json
+import string
+from typing import Any, Optional, List
+
 from ._regex import *
-from string_utils.errors import InvalidInputError
+from .errors import InvalidInputError
 
 
 # PRIVATE API
 
 
-class _ISBNChecker:
+class __ISBNChecker:
     def __init__(self, input_string: str, normalize: bool = True):
         if not is_string(input_string):
             raise InvalidInputError(input_string)
@@ -613,7 +614,7 @@ def is_isbn_10(input_string: str, normalize: bool = True) -> bool:
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
     :return: True if valid ISBN 10, false otherwise.
     """
-    checker = _ISBNChecker(input_string, normalize)
+    checker = __ISBNChecker(input_string, normalize)
     return checker.is_isbn_10()
 
 
@@ -633,7 +634,7 @@ def is_isbn_13(input_string: str, normalize: bool = True) -> bool:
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
     :return: True if valid ISBN 13, false otherwise.
     """
-    checker = _ISBNChecker(input_string, normalize)
+    checker = __ISBNChecker(input_string, normalize)
     return checker.is_isbn_13()
 
 
@@ -652,5 +653,5 @@ def is_isbn(input_string: str, normalize: bool = True) -> bool:
     :param normalize: True to ignore hyphens ("-") in the string (default), false otherwise.
     :return: True if valid ISBN (10 or 13), false otherwise.
     """
-    checker = _ISBNChecker(input_string, normalize)
+    checker = __ISBNChecker(input_string, normalize)
     return checker.is_isbn_13() or checker.is_isbn_10()

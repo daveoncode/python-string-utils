@@ -1,18 +1,21 @@
-import binascii
-import os
-import random
-from typing import Generator
-from uuid import uuid4
-import string
+# -*- coding: utf-8 -*-
 
-from string_utils import is_integer, roman_encode
-
+# public api to export
 __all__ = [
     'uuid',
     'random_string',
     'secure_random_hex',
     'roman_range',
 ]
+
+import binascii
+import os
+import random
+import string
+from typing import Generator
+from uuid import uuid4
+
+from string_utils import is_integer, roman_encode
 
 
 def uuid(as_hex: bool = False) -> str:

@@ -1,11 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import base64
-import random
-import unicodedata
-from typing import Union
-from uuid import uuid4
-
+# public api to export
 __all__ = [
     'camel_case_to_snake',
     'snake_case_to_camel',
@@ -23,7 +18,12 @@ __all__ = [
     'roman_decode',
 ]
 
+import base64
+import random
+import unicodedata
 import zlib
+from typing import Union
+from uuid import uuid4
 
 from ._regex import *
 from .errors import InvalidInputError
@@ -156,7 +156,7 @@ class __RomanNumbers:
         return output
 
 
-class _StringCompressor:
+class __StringCompressor:
 
     @staticmethod
     def __require_valid_input_and_encoding(input_string: str, encoding: str):
@@ -209,7 +209,7 @@ class _StringCompressor:
         return original_string
 
 
-class _StringFormatter:
+class __StringFormatter:
     def __init__(self, input_string):
         if not is_string(input_string):
             raise InvalidInputError(input_string)
@@ -426,7 +426,7 @@ def prettify(input_string: str) -> str:
     :param input_string: String to manipulate
     :return: Prettified string.
     """
-    formatted = _StringFormatter(input_string).format()
+    formatted = __StringFormatter(input_string).format()
     return formatted
 
 
@@ -592,7 +592,7 @@ def compress(input_string: str, encoding: str = 'utf-8', compression_level: int 
     :type compression_level: int
     :return: Compressed string.
     """
-    return _StringCompressor.compress(input_string, encoding, compression_level)
+    return __StringCompressor.compress(input_string, encoding, compression_level)
 
 
 def decompress(input_string: str, encoding: str = 'utf-8') -> str:
@@ -605,7 +605,7 @@ def decompress(input_string: str, encoding: str = 'utf-8') -> str:
     :type encoding: str
     :return: Decompressed string.
     """
-    return _StringCompressor.decompress(input_string, encoding)
+    return __StringCompressor.decompress(input_string, encoding)
 
 
 def roman_encode(input_number: Union[str, int]) -> str:
