@@ -1,7 +1,10 @@
 import setuptools
 
-with open('README.md', 'r') as readme:
-    long_description = readme.read()
+try:
+    with open('README.md', 'r') as readme:
+        long_description = readme.read()
+except Exception:
+    long_description = ''
 
 setuptools.setup(
     name='python-string-utils',
@@ -23,7 +26,6 @@ setuptools.setup(
     ],
     keywords='string str utilities validation compression development',
     packages=['string_utils'],
-    data_files=[('README', ['README.md'])],
     python_requires='>=3.5',
     setup_requires=['wheel'],
 )
