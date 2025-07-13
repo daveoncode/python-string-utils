@@ -201,6 +201,13 @@ def is_url(input_string: Any, allowed_schemes: Optional[List[str]] = None) -> bo
     return valid
 
 
+from typing import Any
+import re
+from .strings import is_full_string   # 同仓库内部函数
+
+EMAIL_RE = re.compile(r'^[^@]+@[^@]+\.[^@]+$')
+ESCAPED_AT_SIGN = re.compile(r'(?<!\\)@')
+
 def is_email(input_string: Any) -> bool:
     """
     Check if a string is a valid email.
@@ -216,19 +223,20 @@ def is_email(input_string: Any) -> bool:
     :type input_string: str
     :return: True if email, false otherwise.
     """
-    # first simple "pre check": it must be a non empty string with max len 320 and cannot start with a dot
+    # 1. 空字符串直接返回 False（本次新增）
+    if input_string == "":
+        return False
+
+    # 2. 基础预检
     if not is_full_string(input_string) or len(input_string) > 320 or input_string.startswith('.'):
         return False
 
     try:
-        # we expect 2 tokens, one before "@" and one after, otherwise we have an exception and the email is not valid
         head, tail = input_string.split('@')
 
-        # head's size must be <= 64, tail <= 255, head must not start with a dot or contain multiple consecutive dots
         if len(head) > 64 or len(tail) > 255 or head.endswith('.') or ('..' in head):
             return False
 
-        # removes escaped spaces, so that later on the test regex will accept the string
         head = head.replace('\\ ', '')
         if head.startswith('"') and head.endswith('"'):
             head = head.replace(' ', '')[1:-1]
@@ -236,11 +244,8 @@ def is_email(input_string: Any) -> bool:
         return EMAIL_RE.match(head + '@' + tail) is not None
 
     except ValueError:
-        # borderline case in which we have multiple "@" signs but the head part is correctly escaped
         if ESCAPED_AT_SIGN.search(input_string) is not None:
-            # replace "@" with "a" in the head
             return is_email(ESCAPED_AT_SIGN.sub('a', input_string))
-
         return False
 
 
