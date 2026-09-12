@@ -68,7 +68,8 @@ class __ISBNChecker:
 
             try:
                 for index, digit in enumerate(self.input_string):
-                    product += int(digit) * (index + 1)
+                    value = 10 if index == 9 and digit == 'X' else int(digit)
+                    product += value * (index + 1)
 
                 return product % 11 == 0
 
