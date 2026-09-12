@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from string_utils.errors import InvalidInputError
-from string_utils.validation import is_isbn_10
+from string_utils.validation import is_isbn, is_isbn_10
 
 
 class IsISBN10TestCase(TestCase):
@@ -25,6 +25,20 @@ class IsISBN10TestCase(TestCase):
         self.assertTrue(is_isbn_10('0451494504'))
         self.assertTrue(is_isbn_10('0718079183'))
         self.assertTrue(is_isbn_10('8830102180'))
+
+    def test_x_check_digit(self):
+        for isbn in ('080442957X', '0-8044-2957-X', '097522980X'):
+            with self.subTest(isbn=isbn):
+                self.assertTrue(is_isbn_10(isbn))
+                self.assertTrue(is_isbn(isbn))
+        self.assertTrue(is_isbn_10('080442957X', normalize=False))
+        self.assertFalse(is_isbn_10('0-8044-2957-X', normalize=False))
+
+    def test_invalid_x_check_digit(self):
+        for isbn in ('080442958X', 'X804429570', '08044295XX', '080442957x'):
+            with self.subTest(isbn=isbn):
+                self.assertFalse(is_isbn_10(isbn))
+                self.assertFalse(is_isbn(isbn))
 
     def test_dashes_are_not_considered_by_default(self):
         # isbn numbers have been taken from actual books on amazon
