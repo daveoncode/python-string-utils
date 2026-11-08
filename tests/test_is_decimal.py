@@ -4,6 +4,14 @@ from string_utils import is_decimal
 
 
 class IsDecimalTestCase(TestCase):
+    def test_scientific_notation_keeps_mantissa_based_classification(self):
+        for value in ('1.0E3', '.5e2', '-1.5e-3', '+.5E+2'):
+            with self.subTest(value=value):
+                self.assertTrue(is_decimal(value))
+        for value in ('1E3', '-1e-3', '+1E+3', '1.5E+', '.5e--3'):
+            with self.subTest(value=value):
+                self.assertFalse(is_decimal(value))
+
     def test_cannot_handle_non_string_objects(self):
         with self.assertRaises(TypeError) as raised:
             # noinspection PyTypeChecker

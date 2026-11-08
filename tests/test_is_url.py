@@ -86,6 +86,20 @@ class IsUrlTestCase(TestCase):
     def test_url_can_have_port_number(self):
         self.assertTrue(is_url('http://localhost:8080'))
 
+    def test_url_accepts_one_to_five_digit_ports(self):
+        for host in ('localhost', '127.0.0.1', 'example.com'):
+            for port in ('0', '7', '9', '80', '443', '8080', '65535'):
+                with self.subTest(host=host, port=port):
+                    self.assertTrue(is_url('http://{}:{}'.format(host, port)))
+        self.assertTrue(is_url('https://user:password@localhost:8/a?b=c#d'))
+        self.assertFalse(is_url('ftp://localhost:8', allowed_schemes=['https']))
+
+    def test_url_rejects_malformed_or_overlong_ports(self):
+        for port in ('', '-1', '+1', 'abc', '123456'):
+            with self.subTest(port=port):
+                self.assertFalse(is_url('http://localhost:{}'.format(port)))
+
+
     def test_url_can_contain_sub_folders(self):
         self.assertTrue(is_url('http://www.site.com/one'))
         self.assertTrue(is_url('http://www.site.com/one/'))

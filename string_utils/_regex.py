@@ -4,14 +4,14 @@ import re
 
 # INTERNAL USE ONLY REGEX!
 
-NUMBER_RE = re.compile(r'^([+\-]?)((\d+)(\.\d+)?(e\d+)?|\.\d+)$')
+NUMBER_RE = re.compile(r'^([+\-]?)((\d+)(\.\d+)?|\.\d+)([eE][+\-]?\d+)?$')
 
 URLS_RAW_STRING = (
     r'([a-z-]+://)'  # scheme
     r'([a-z_\d-]+:[a-z_\d-]+@)?'  # user:password
     r'(www\.)?'  # www.
     r'((?<!\.)[a-z\d]+[a-z\d.-]+\.[a-z]{2,6}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|localhost)'  # domain
-    r'(:\d{2,})?'  # port number
+    r'(:\d{1,5})?'  # port number
     r'(/[a-z\d_%+-]*)*'  # folders
     r'(\.[a-z\d_%+-]+)*'  # file extension
     r'(\?[a-z\d_+%-=]*)?'  # query string

@@ -4,6 +4,14 @@ from string_utils import is_integer
 
 
 class IsIntegerTestCase(TestCase):
+    def test_scientific_notation_keeps_mantissa_based_classification(self):
+        for value in ('1E3', '-1e-3', '+1E+3'):
+            with self.subTest(value=value):
+                self.assertTrue(is_integer(value))
+        for value in ('1.0E3', '.5e2', '-1.5e-3', '1E+', '1e--3'):
+            with self.subTest(value=value):
+                self.assertFalse(is_integer(value))
+
     def test_cannot_handle_non_string_objects(self):
         with self.assertRaises(TypeError) as raised:
             # noinspection PyTypeChecker

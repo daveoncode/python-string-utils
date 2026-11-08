@@ -118,7 +118,7 @@ def is_number(input_string: str) -> bool:
     Checks if a string is a valid number.
 
     The number can be a signed (eg: +1, -2, -3.3) or unsigned (eg: 1, 2, 3.3) integer or double
-    or use the "scientific notation" (eg: 1e5).
+    or use the "scientific notation" (eg: 1e5, 1E+5, 1.5e-3).
 
     *Examples:*
 
@@ -143,6 +143,8 @@ def is_integer(input_string: str) -> bool:
     Checks whether the given string represents an integer or not.
 
     An integer may be signed or unsigned or use a "scientific notation".
+    Classification depends on whether the mantissa contains a decimal point,
+    not on the value after applying the exponent.
 
     *Examples:*
 
@@ -161,6 +163,7 @@ def is_decimal(input_string: str) -> bool:
     Checks whether the given string represents a decimal or not.
 
     A decimal may be signed or unsigned or use a "scientific notation".
+    The mantissa must contain a decimal point, regardless of the exponent.
 
     >>> is_decimal('42.0') # returns true
     >>> is_decimal('42') # returns false
@@ -496,7 +499,8 @@ def is_palindrome(input_string: Any, ignore_spaces: bool = False, ignore_case: b
 
 def is_pangram(input_string: Any) -> bool:
     """
-    Checks if the string is a pangram (https://en.wikipedia.org/wiki/Pangram).
+    Checks if the string is a pangram (https://en.wikipedia.org/wiki/Pangram),
+    ignoring letter case.
 
     *Examples:*
 
@@ -510,7 +514,7 @@ def is_pangram(input_string: Any) -> bool:
     if not is_full_string(input_string):
         return False
 
-    return set(SPACES_RE.sub('', input_string)).issuperset(set(string.ascii_lowercase))
+    return set(SPACES_RE.sub('', input_string.lower())).issuperset(set(string.ascii_lowercase))
 
 
 def is_isogram(input_string: Any) -> bool:

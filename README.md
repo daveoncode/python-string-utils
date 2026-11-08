@@ -71,6 +71,7 @@ is_full_string('foo') # returns true
 is_number('42') # returns true
 is_number('-25.99') # returns true
 is_number('1e3') # returns true
+is_number('1E-3') # returns true
 is_number(' 1 2 3 ') # returns false
 ~~~~
 
@@ -78,12 +79,14 @@ is_number(' 1 2 3 ') # returns false
 ~~~~
 is_integer('42') # returns true
 is_integer('42.0') # returns false
+is_integer('1e-3') # returns true (the mantissa has no decimal point)
 ~~~~
 
 **is_decimal**: checks if the given string represents a valid decimal number
 ~~~~
 is_decimal('42.0') # returns true
 is_decimal('42') # returns false
+is_decimal('1.5E+3') # returns true
 ~~~~
 
 **is_url**: checks if the given string is an url
@@ -91,6 +94,7 @@ is_decimal('42') # returns false
 is_url('foo.com') # returns false
 is_url('http://www.foo.com') # returns true
 is_url('https://foo.com') # returns true
+is_url('http://localhost:8') # returns true
 ~~~~
 
 **is_email**: Checks if the given string is an email
@@ -198,6 +202,7 @@ is_palindrome('ROTFL') # returns false
 **is_pangram**: Checks if the string is a pangram
 ~~~~
 is_pangram('The quick brown fox jumps over the lazy dog') # returns true
+is_pangram('THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG') # returns true
 is_pangram('hello world') # returns false
 ~~~~
 
