@@ -115,3 +115,15 @@ class IsNumberTestCase(TestCase):
         self.assertTrue(is_number('1e3'))
         self.assertTrue(is_number('50e2'))
         self.assertTrue(is_number('1.245e10'))
+
+    def test_scientific_notation_accepts_signed_exponents_and_uppercase_e(self):
+        for value in ('1E3', '1e-3', '1E+3', '-1.5e-3', '+1.5E+3',
+                      '.5e2', '-.5E-2', '0e0', '1e-0', '1e9999'):
+            with self.subTest(value=value):
+                self.assertTrue(is_number(value))
+
+    def test_scientific_notation_rejects_malformed_exponents(self):
+        for value in ('e3', '.e3', '1e', '1E+', '1e-', '1e+-3', '1e--3',
+                      '1e++3', '1e3.5', '1e2e3', '1 e3', '1e 3', '1E- 3'):
+            with self.subTest(value=value):
+                self.assertFalse(is_number(value))

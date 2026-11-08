@@ -267,6 +267,12 @@ class PrettifyTestCase(TestCase):
         multiple_urls = ['http://www.site1.com', 'http://foo.com', 'https://www.something.it']
         self.assertEqual(prettify(','.join(multiple_urls)), ', '.join(multiple_urls))
 
+    def test_preserves_url_with_single_digit_port(self):
+        for url in ('http://localhost:8', 'https://127.0.0.1:7/a?x=1#part'):
+            with self.subTest(url=url):
+                self.assertEqual(url, prettify(url))
+                self.assertEqual('Visit {}'.format(url), prettify('visit {}'.format(url)))
+
     def test_does_not_try_to_format_ip(self):
         ip = '127.0.0.1'
         self.assertEqual(ip, prettify(ip))
