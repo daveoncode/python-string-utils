@@ -1,9 +1,26 @@
 from unittest import TestCase
 
-from string_utils import is_ip_v6
+from string_utils import is_ip, is_ip_v6
 
 
 class IsIpV6TestCase(TestCase):
+    def test_compressed_and_ipv4_embedded_addresses(self):
+        for address in ('7::128.128.0.127', '::ffff:192.0.2.1',
+                        '0:0:0:0:0:ffff:192.0.2.1', '::', '::1',
+                        '2001:db8::1', '2001:DB8::'):
+            with self.subTest(address=address):
+                self.assertTrue(is_ip_v6(address))
+                self.assertTrue(is_ip(address))
+
+    def test_invalid_compression_and_embedded_ipv4(self):
+        for address in ('1::2::3', '1:2:3:4:5:6:7::8', '::ffff:256.0.2.1',
+                        '::ffff:192.0.2', 'gggg:0:0:0:0:0:0:1',
+                        ':::::::', '[::1]', '::1/128', 'fe80::1%eth0',
+                        ' ::1', '::1 '):
+            with self.subTest(address=address):
+                self.assertFalse(is_ip_v6(address))
+                self.assertFalse(is_ip(address))
+
     def test_return_false_for_non_string_objects(self):
         # noinspection PyTypeChecker
         self.assertFalse(is_ip_v6(None))
