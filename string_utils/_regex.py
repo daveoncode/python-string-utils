@@ -10,7 +10,7 @@ URLS_RAW_STRING = (
     r'([a-z-]+://)'  # scheme
     r'([a-z_\d-]+:[a-z_\d-]+@)?'  # user:password
     r'(www\.)?'  # www.
-    r'((?<!\.)[a-z\d]+[a-z\d.-]+\.[a-z]{2,6}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|localhost)'  # domain
+    r'((?<!\.)[a-z\d]+[a-z\d.-]+\.[a-z]{2,63}\.?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|localhost)'  # domain
     r'(:\d{2,})?'  # port number
     r'(/[a-z\d_%+-]*)*'  # folders
     r'(\.[a-z\d_%+-]+)*'  # file extension
