@@ -30,6 +30,7 @@ __all__ = [
 
 import json
 import string
+from ipaddress import IPv6Address
 from typing import Any, Optional, List
 
 from ._regex import *
@@ -417,7 +418,7 @@ def is_ip_v4(input_string: Any) -> bool:
 
 def is_ip_v6(input_string: Any) -> bool:
     """
-    Checks if a string is a valid ip v6.
+    Checks if a string is a valid ip v6, including compressed and IPv4-embedded addresses.
 
     *Examples:*
 
@@ -428,7 +429,13 @@ def is_ip_v6(input_string: Any) -> bool:
     :type input_string: str
     :return: True if a v6 ip, false otherwise.
     """
-    return is_full_string(input_string) and IP_V6_RE.match(input_string) is not None
+    if not is_full_string(input_string) or '%' in input_string:
+        return False
+    try:
+        IPv6Address(input_string)
+    except ValueError:
+        return False
+    return True
 
 
 def is_ip(input_string: Any) -> bool:
