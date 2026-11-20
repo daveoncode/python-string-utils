@@ -29,9 +29,21 @@ class IsUrlTestCase(TestCase):
         self.assertFalse(is_url('http://google'))
         self.assertFalse(is_url('http://google.'))
 
-    def test_domain_extension_should_be_between_2_and_6_letters(self):
+    def test_domain_extension_should_be_between_2_and_63_letters(self):
         self.assertFalse(is_url('http://google.c'))
-        self.assertFalse(is_url('http://google.abcdefghi'))
+        self.assertFalse(is_url('http://example.' + 'a' * 64))
+
+    def test_long_top_level_domains(self):
+        for tld in ('technology', 'international', 'a' * 63):
+            with self.subTest(tld=tld):
+                self.assertTrue(is_url('https://example.' + tld))
+
+    def test_fully_qualified_domain_names(self):
+        for url in ('http://www.foo.bar./', 'https://example.com.',
+                    'https://example.technology.:8080/path?x=1#anchor'):
+            with self.subTest(url=url):
+                self.assertTrue(is_url(url))
+        self.assertFalse(is_url('https://example.com..'))
 
     def test_should_accept_any_scheme_by_default(self):
         self.assertTrue(is_url('http://site.com'))
