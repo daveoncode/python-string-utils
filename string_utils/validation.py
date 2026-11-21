@@ -196,7 +196,8 @@ def is_url(input_string: Any, allowed_schemes: Optional[List[str]] = None) -> bo
     valid = URL_RE.match(input_string) is not None
 
     if allowed_schemes:
-        return valid and any([input_string.startswith(s) for s in allowed_schemes])
+        scheme = input_string.split(':', 1)[0].lower()
+        return valid and any(scheme == allowed.lower() for allowed in allowed_schemes)
 
     return valid
 

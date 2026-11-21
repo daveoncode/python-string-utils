@@ -45,6 +45,25 @@ class IsUrlTestCase(TestCase):
         self.assertTrue(is_url('git://site.com'))
         self.assertFalse(is_url('git://site.com', allowed_schemes=['http', 'https']))
 
+    def test_allowed_schemes_match_the_entire_scheme(self):
+        for scheme in ('https', 'httpx', 'http-custom'):
+            with self.subTest(scheme=scheme):
+                self.assertFalse(is_url(scheme + '://site.com', allowed_schemes=['http']))
+        self.assertFalse(is_url('http://site.com', allowed_schemes=['h', '']))
+        self.assertTrue(is_url('https://site.com', allowed_schemes=['http', 'https']))
+
+    def test_allowed_schemes_are_case_insensitive(self):
+        for scheme, allowed in (('HTTP', 'http'), ('http', 'HTTP'), ('HtTp', 'hTtP')):
+            with self.subTest(scheme=scheme, allowed=allowed):
+                self.assertTrue(is_url(scheme + '://site.com', allowed_schemes=[allowed]))
+
+    def test_allowed_schemes_do_not_bypass_url_validation(self):
+        self.assertFalse(is_url('http://', allowed_schemes=['http']))
+        self.assertFalse(is_url('http://site.com with spaces', allowed_schemes=['http']))
+
+    def test_empty_allowed_schemes_keeps_unrestricted_behavior(self):
+        self.assertTrue(is_url('git://site.com', allowed_schemes=[]))
+
     def test_url_cannot_start_with_dot(self):
         self.assertFalse(is_url('http://.site.com'))
 
