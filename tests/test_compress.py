@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from string_utils import compress
+from string_utils import compress, decompress
 from string_utils.errors import InvalidInputError
 
 
@@ -60,3 +60,12 @@ class CompressTestCase(TestCase):
         self.assertTrue(isinstance(compressed, str))
         self.assertTrue(len(compressed) < len(self.input_string_with_utf8_chars))
         self.assertFalse(' ' in compressed)
+
+    def test_compress_is_url_safe_and_reversible_for_supported_encodings(self):
+        original = 'café ' * 30
+        for encoding in ('utf-8', 'latin1', 'utf-16', 'utf-16-le', 'utf-16-be',
+                         'utf-32', 'utf-32-le', 'utf-32-be', 'cp037'):
+            with self.subTest(encoding=encoding):
+                compressed = compress(original, encoding=encoding)
+                self.assertRegex(compressed, r'^[A-Za-z0-9_-]+={0,2}$')
+                self.assertEqual(decompress(compressed, encoding=encoding), original)

@@ -187,8 +187,8 @@ class __StringCompressor:
         # context such URLs)
         encoded_bytes = base64.urlsafe_b64encode(compressed_bytes)
 
-        # finally turns base64 bytes into a string
-        output = encoded_bytes.decode(encoding)
+        # base64 text is ASCII, independently of the original string encoding
+        output = encoded_bytes.decode('ascii')
 
         return output
 
