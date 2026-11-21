@@ -30,6 +30,21 @@ class RomanEncodeTestCase(TestCase):
         self.assertEqual(roman_encode('9'), 'IX')
         self.assertEqual(roman_encode('30'), 'XXX')
 
+    def test_encode_accepts_positive_signs(self):
+        for value, expected in (('+1', 'I'), ('+42', 'XLII'), ('+3999', 'MMMCMXCIX')):
+            with self.subTest(value=value):
+                self.assertEqual(roman_encode(value), expected)
+
+    def test_encode_accepts_zero_padded_positive_strings(self):
+        self.assertEqual(roman_encode('00042'), 'XLII')
+        self.assertEqual(roman_encode('+00042'), 'XLII')
+
+    def test_encode_rejects_signed_values_outside_the_supported_range(self):
+        for value in ('+0', '-1', '+4000'):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    roman_encode(value)
+
     def test_units_are_encoded_as_expected(self):
         self.assertEqual(roman_encode(1), 'I')
         self.assertEqual(roman_encode(2), 'II')

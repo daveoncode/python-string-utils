@@ -88,6 +88,8 @@ class __RomanNumbers:
         if value < 1 or value > 3999:
             raise ValueError('Input must be >= 1 and <= 3999')
 
+        # Iterate the validated value, without an optional sign or leading zeros.
+        input_string = str(value)
         input_len = len(input_string)
         output = ''
 
