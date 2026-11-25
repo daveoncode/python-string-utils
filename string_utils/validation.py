@@ -337,7 +337,7 @@ def is_snake_case(input_string: Any, separator: str = '_') -> bool:
             re.compile(re_template.format(sign=re.escape(separator)), re.IGNORECASE)
         )
 
-        return r.match(input_string) is not None
+        return r.fullmatch(input_string) is not None
 
     return False
 
