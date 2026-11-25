@@ -486,6 +486,7 @@ def slugify(input_string: str, separator: str = '-') -> str:
         raise InvalidInputError(input_string)
 
     # replace any character that is NOT letter or number with spaces
+    input_string = unicodedata.normalize('NFC', input_string)
     out = NO_LETTERS_OR_NUMBERS_RE.sub(' ', input_string.lower()).strip()
 
     # replace spaces with join sign
